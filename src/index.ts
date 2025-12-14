@@ -1,236 +1,147 @@
-type Coordinates = {
-	x: number;
-	y: number;
-};
+import type BaseModule from '@/baseModule';
+import type {
+	Coordinates,
+	GeneralArguments,
+	GeneralObject,
+	ModuleConstructor,
+	Pointers,
+} from '@/declarations';
 
-type RuntimeOptions = {
-	proControlSchema: boolean;
-	zoomFactor: number;
-	preventDefault: boolean;
-	lockControlSchema: boolean;
-};
+type Hooks = 'onPointerDown' | 'onPointerUp' | 'onPointerMove' | 'onWheel' | 'onStart' | 'onStop' | 'dispose';
 
-export default class Pointeract extends EventTarget {
-	private monitoringElement: HTMLElement;
-	private pointers: Map<
-		number,
-		{
-			startX: number;
-			startY: number;
-			lastX: number;
-			lastY: number;
-			interrupted: boolean;
-			target: EventTarget | null;
-		}
-	> = new Map();
-	private pinchZoomState: {
-		lastDistance: number;
-		lastMidpoint: { x: number; y: number };
-	} = {
-		lastDistance: 0,
-		lastMidpoint: { x: 0, y: 0 },
-	};
-	private options: RuntimeOptions;
+export { default as BaseModule } from '@/baseModule';
+export type { Coordinates, Pointer, Pointers } from '@/declarations';
+export { default as MultiPointer_PanZoom } from '@/multiPointer_panZoom';
+export { default as SinglePointer_Pan } from '@/singlePointer_pan';
+export { default as SinglePointer_TrueClick } from '@/singlePointer_trueClick';
+export { default as Wheel_PanZoom } from '@/wheel_panZoom';
+
+export class Pointeract extends EventTarget {
+	#monitoringElement: HTMLElement;
+	#pointers: Pointers = new Map();
+	#moduleList: Array<BaseModule> = [];
+	options: GeneralObject;
 
 	constructor(
 		monitoringElement: HTMLElement,
-		options: {
-			preventDefault?: boolean;
-			proControlSchema?: boolean;
-			zoomFactor?: number;
-			lockControlSchema?: boolean;
-		} = {},
+		modules: Array<ModuleConstructor> = [],
+		options: GeneralObject = {},
 	) {
 		super();
-		function fillIn(target: typeof options, patch: RuntimeOptions) {
-			// biome-ignore lint/suspicious/noExplicitAny: bypass dumb type check
-			for (const [k, v] of Object.entries(patch)) if (!(k in target)) (target as any)[k] = v;
-			return target as RuntimeOptions;
+		function fillIn(patch: GeneralObject) {
+			for (const [k, v] of Object.entries(patch)) if (!(k in options)) options[k] = v;
 		}
-		this.monitoringElement = monitoringElement;
-		this.options = fillIn(options, {
-			preventDefault: true,
-			proControlSchema: false,
-			zoomFactor: 0.1,
-			lockControlSchema: false,
+		this.#monitoringElement = monitoringElement;
+		this.options = options;
+		fillIn({
+			preventDefault: false,
+		});
+		modules.forEach(module => {
+			const instance = new module(this);
+			this.#moduleList.push(instance);
+			if (instance.options) fillIn(instance.options);
 		});
 	}
 
-	private getNthValue(n: number) {
-		if (n < 0 || n >= this.pointers.size) return;
+	getNthValue(n: number) {
+		const error = new Error('[Pointeract] Invalid pointer index');
+		if (n < 0 || n >= this.#pointers.size) throw error;
 		let i = 0;
-		for (const value of this.pointers.values()) {
+		for (const value of this.#pointers.values()) {
 			if (i === n) return value;
 			i++;
 		}
-	}
-
-	private getTwoPointers(firstIndex: number = 0, secondIndex: number = 1) {
-		const pointer0 = this.getNthValue(firstIndex);
-		const pointer1 = this.getNthValue(secondIndex);
-		if (!pointer0 || !pointer1) throw new Error('[Pointeract] Invalid pointer index!');
-		return { pointer0, pointer1 };
-	}
-
-	private getPointerDistance() {
-		const { pointer0, pointer1 } = this.getTwoPointers();
-		const dx = pointer0.lastX - pointer1.lastX;
-		const dy = pointer0.lastY - pointer1.lastY;
-		return Math.sqrt(dx * dx + dy * dy);
-	}
-
-	// output screen coords
-	private getPointerMidpoint() {
-		const { pointer0, pointer1 } = this.getTwoPointers();
-		return {
-			x: (pointer0.lastX + pointer1.lastX) / 2,
-			y: (pointer0.lastY + pointer1.lastY) / 2,
-		};
+		throw error;
 	}
 
 	// Screen to Container
-	private S2C({ x: screenX, y: screenY }: Coordinates) {
-		const rect = this.monitoringElement.getBoundingClientRect();
+	screenToPercent({ x: screenX, y: screenY }: Coordinates) {
+		const rect = this.#monitoringElement.getBoundingClientRect();
 		return {
-			x: screenX - rect.left,
-			y: screenY - rect.top,
+			x: (screenX - rect.left) / rect.width,
+			y: (screenY - rect.top) / rect.height,
 		};
 	}
 
-	private onPointerDown = (e: PointerEvent) => {
-		if (this.pointers.size >= 2) return;
-		if (e.isPrimary) this.pointers.clear();
-		this.pointers.set(e.pointerId, {
-			startX: e.clientX,
-			startY: e.clientY,
-			lastX: e.clientX,
-			lastY: e.clientY,
-			interrupted: false,
+	#runHooks(field: Hooks, ...args: GeneralArguments) {
+		this.#moduleList.forEach(module => {
+			if (module[field]) module[field](...args);
+		});
+	}
+
+	#onPointerDown = (e: PointerEvent) => {
+		if (this.#pointers.size >= 2) return;
+		if (e.isPrimary) this.#pointers.clear();
+		const pointer = {
+			records: [{ x: e.clientX, y: e.clientY, timestamp: Date.now() }],
 			target: e.target,
-		});
-		if (this.pointers.size === 2) {
-			const { pointer0, pointer1 } = this.getTwoPointers(0, e.pointerId);
-			pointer0.interrupted = true;
-			pointer1.interrupted = true;
-			this.pinchZoomState.lastDistance = this.getPointerDistance();
-			this.pinchZoomState.lastMidpoint = this.S2C(this.getPointerMidpoint());
-		}
+		};
+		this.#pointers.set(e.pointerId, pointer);
+		this.#runHooks('onPointerDown', e, pointer, this.#pointers);
 	};
 
-	private onPointerMove = (e: PointerEvent) => {
-		const pointer = this.pointers.get(e.pointerId);
+	#onPointerMove = (e: PointerEvent) => {
+		const pointer = this.#pointers.get(e.pointerId);
 		if (!pointer) return;
-		if (this.pointers.size === 1) {
-			const dx = e.clientX - pointer.lastX;
-			const dy = e.clientY - pointer.lastY;
-			this.dispatchPanEvent({ x: dx, y: dy });
-		}
-		this.pointers.set(e.pointerId, {
-			startX: pointer.startX,
-			startY: pointer.startY,
-			lastX: e.clientX,
-			lastY: e.clientY,
-			interrupted: pointer.interrupted,
-			target: pointer.target,
-		});
-		if (this.pointers.size === 2) {
-			const newDistance = this.getPointerDistance();
-			const newMidpointOnScreen = this.getPointerMidpoint();
-			const zoomFactor = newDistance / this.pinchZoomState.lastDistance;
-			this.pinchZoomState.lastDistance = newDistance;
-			const newMidpoint = this.S2C(newMidpointOnScreen);
-			const dx = newMidpoint.x - this.pinchZoomState.lastMidpoint.x;
-			const dy = newMidpoint.y - this.pinchZoomState.lastMidpoint.y;
-			this.pinchZoomState.lastMidpoint = newMidpoint;
-			this.dispatchPanEvent({ x: dx, y: dy });
-			this.dispatchZoomEvent(zoomFactor, newMidpoint);
-		}
+		pointer.records.push({ x: e.clientX, y: e.clientY, timestamp: Date.now() });
+		this.#runHooks('onPointerMove', e, pointer, this.#pointers);
 	};
 
-	private onPointerUp = (e: PointerEvent) => {
-		const pointer = this.pointers.get(e.pointerId);
+	#onPointerUp = (e: PointerEvent) => {
+		const pointer = this.#pointers.get(e.pointerId);
 		if (!pointer) return;
-		this.pointers.delete(e.pointerId);
-		if (this.pointers.size === 0 && !pointer.interrupted) {
-			if (Math.abs(pointer.startX - e.clientX) + Math.abs(pointer.startY - e.clientY) < 5) {
-				const coords = this.S2C({ x: e.clientX, y: e.clientY });
-				const clickEvent = new CustomEvent<{ position: Coordinates; target: EventTarget | null }>(
-					'trueClick',
-					{ detail: { position: coords, target: pointer.target } },
-				);
-				this.dispatchEvent(clickEvent);
-			}
-		}
+		this.#pointers.delete(e.pointerId);
+		this.#runHooks('onPointerUp', e, pointer, this.#pointers);
 	};
 
-	private onWheel = (e: WheelEvent) => {
-		const factor = this.options.zoomFactor;
-		if (
-			!this.options.lockControlSchema &&
-			!this.options.proControlSchema &&
-			(e.ctrlKey || e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))
-		) this.options.proControlSchema = true;
+	#onWheel = (e: WheelEvent) => {
 		if (this.options.preventDefault) e.preventDefault();
-		if (this.options.proControlSchema) {
-			if (e.ctrlKey) {
-				const scaleFactor = e.deltaY > 0 ? 1 - factor : 1 + factor;
-				const origin = this.S2C({ x: e.clientX, y: e.clientY });
-				this.dispatchZoomEvent(scaleFactor, origin);
-			} else if (e.shiftKey && Math.abs(e.deltaX) <= Math.abs(e.deltaY))
-				this.dispatchPanEvent({ x: -e.deltaY, y: -e.deltaX });
-			else this.dispatchPanEvent({ x: -e.deltaX, y: -e.deltaY });
-		} else {
-			const scaleFactor = 1 - factor / 50 * e.deltaY;
-			const origin = this.S2C({ x: e.clientX, y: e.clientY });
-			this.dispatchZoomEvent(scaleFactor, origin);
-		}
+		this.#runHooks('onWheel', e);
 	};
 
-	private dispatchPanEvent(diff: Coordinates) {
-		const panEvent = new CustomEvent<Coordinates>('pan', { detail: diff });
-		this.dispatchEvent(panEvent);
+	dispatch<T>(name: string, detail?: T) {
+		const event = new CustomEvent<T>(name, { detail: detail });
+		this.dispatchEvent(event);
 	}
 
-	private dispatchZoomEvent(factor: number, origin: Coordinates) {
-		const zoomEvent = new CustomEvent<{ factor: number; origin: Coordinates }>('zoom', {
-			detail: { factor: factor, origin: origin },
-		});
-		this.dispatchEvent(zoomEvent);
-	}
-
-	private preventDefaultFunction = (e: Event) => e.preventDefault;
+	#preventDefaultFunction = (e: Event) => e.preventDefault();
 
 	stop = () => {
-		this.monitoringElement.removeEventListener('pointerdown', this.onPointerDown);
-		window.removeEventListener('pointermove', this.onPointerMove);
-		window.removeEventListener('pointerup', this.onPointerUp);
-		this.monitoringElement.removeEventListener('wheel', this.onWheel);
+		this.#monitoringElement.removeEventListener('pointerdown', this.#onPointerDown);
+		window.removeEventListener('pointermove', this.#onPointerMove);
+		window.removeEventListener('pointerup', this.#onPointerUp);
+		this.#monitoringElement.removeEventListener('wheel', this.#onWheel);
 		if (this.options.preventDefault) {
-			this.monitoringElement.style.touchAction = '';
-			this.monitoringElement.removeEventListener('gesturestart', this.preventDefaultFunction);
-			this.monitoringElement.removeEventListener('gesturechange', this.preventDefaultFunction);
+			this.#monitoringElement.style.touchAction = '';
+			this.#monitoringElement.removeEventListener('gesturestart', this.#preventDefaultFunction);
+			this.#monitoringElement.removeEventListener('gesturechange', this.#preventDefaultFunction);
 		}
+		this.#runHooks('onStop');
 	};
 
 	start = () => {
-		this.monitoringElement.addEventListener('pointerdown', this.onPointerDown);
-		window.addEventListener('pointermove', this.onPointerMove);
-		window.addEventListener('pointerup', this.onPointerUp);
-		this.monitoringElement.addEventListener(
+		this.#monitoringElement.addEventListener('pointerdown', this.#onPointerDown);
+		window.addEventListener('pointermove', this.#onPointerMove);
+		window.addEventListener('pointerup', this.#onPointerUp);
+		this.#monitoringElement.addEventListener(
 			'wheel',
-			this.onWheel,
+			this.#onWheel,
 			this.options.preventDefault ? { passive: false } : {},
 		);
 		if (this.options.preventDefault) {
-			this.monitoringElement.style.touchAction = 'none';
-			this.monitoringElement.addEventListener('gesturestart', this.preventDefaultFunction, {
+			this.#monitoringElement.style.touchAction = 'none';
+			this.#monitoringElement.addEventListener('gesturestart', this.#preventDefaultFunction, {
 				passive: false,
 			});
-			this.monitoringElement.addEventListener('gesturechange', this.preventDefaultFunction, {
+			this.#monitoringElement.addEventListener('gesturechange', this.#preventDefaultFunction, {
 				passive: false,
 			});
 		}
+		this.#runHooks('onStart');
 	};
 
-	dispose = () => this.stop();
+	dispose = () => {
+		this.stop();
+		this.#runHooks('dispose');
+	};
 }
