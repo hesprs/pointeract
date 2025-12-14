@@ -1,0 +1,1 @@
+- [ ] transform to adapt modularity practice (main class maintains `pointers` map only, other imports share map and register hooks)

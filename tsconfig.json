@@ -1,0 +1,20 @@
+{
+	"compilerOptions": {
+		"target": "ESNext",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"esModuleInterop": true,
+		"skipLibCheck": true,
+		"forceConsistentCasingInFileNames": true,
+		"noEmit": true,
+		"allowImportingTsExtensions": true,
+		"lib": ["ESNext", "DOM"],
+		"paths": {
+			"@/*": ["./src/*"],
+			"@": ["./src"]
+		}
+	},
+	"include": ["src/**/*", "test/**/*", "omniTypes.ts"],
+	"exclude": ["node_modules", "./dist"]
+}

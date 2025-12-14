@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pointeract Test</title>
+    <style>
+        #test-square {
+            position: absolute;
+            top: calc(50% - 200px);
+            left: calc(50% - 200px);
+            width: 400px;
+            height: 400px;
+            background-color: red;
+        }
+        @keyframes amplify-and-shrink {
+            0% {
+                background-color: red;
+            }
+            10% {
+                background-color: rgb(111, 97, 255);
+            }
+            100% {
+                background-color: red;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="test-square"></div>
+</body>
+<script type="module" src="./script.ts"></script>
+</html>
