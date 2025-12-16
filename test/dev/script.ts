@@ -1,7 +1,7 @@
 import {
 	MultiPointer_PanZoom,
 	Pointeract,
-	SinglePointer_Pan,
+	SinglePointer_Drag,
 	SinglePointer_TrueClick,
 	Wheel_PanZoom,
 } from '@';
@@ -25,6 +25,8 @@ function pan(e: Event) {
 function zoom(e: Event) {
 	const detail = (e as CustomEvent<{ factor: number; origin: Coordinates }>).detail;
 	data.scale *= detail.factor;
+	data.x += detail.origin.x * (1 - detail.factor);
+	data.y += detail.origin.y * (1 - detail.factor);
 }
 function trueClick(e: Event) {
 	const detail = (e as CustomEvent<{ steak: number }>).detail;
@@ -35,12 +37,15 @@ function trueClick(e: Event) {
 	square.style.animation = 'amplify-and-shrink 0.4s';
 }
 
-const pointeract = new Pointeract(square, [
-	MultiPointer_PanZoom,
-	SinglePointer_Pan,
-	SinglePointer_TrueClick,
-	Wheel_PanZoom,
-], {preventDefault: true});
+const pointeract = new Pointeract(
+	square,
+	[MultiPointer_PanZoom, SinglePointer_Drag, SinglePointer_TrueClick, Wheel_PanZoom],
+	{ preventDefault: true },
+);
+new Pointeract(document.body, [], {
+	preventDefault: true,
+}).start();
+pointeract.addEventListener('drag', pan);
 pointeract.addEventListener('pan', pan);
 pointeract.addEventListener('zoom', zoom);
 pointeract.addEventListener('trueClick', trueClick);

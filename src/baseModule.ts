@@ -2,9 +2,11 @@ import type { Pointeract } from '@';
 import type { GeneralObject, Pointer, Pointers } from '@/declarations';
 
 export default class BaseModule {
-	main: Pointeract;
-	constructor(main: Pointeract) {
-		this.main = main;
+	utils: Pointeract['moduleUtils'];
+	mainOptions: Pointeract['mainOptions'];
+	constructor(utils: Pointeract['moduleUtils'], mainOptions: Pointeract['mainOptions']) {
+		this.utils = utils;
+		this.mainOptions = mainOptions;
 	}
 
 	options?: GeneralObject;

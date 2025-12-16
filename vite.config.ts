@@ -1,11 +1,10 @@
 /// <reference types="vitest/config" />
 
 import { resolve } from 'node:path';
-import { playwright } from '@vitest/browser-playwright';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	root: 'test',
+	root: 'test/dev',
 	resolve: {
 		alias: {
 			'@': resolve(__dirname, 'src/'),
@@ -26,12 +25,11 @@ export default defineConfig({
 		},
 	},
 	test: {
-		browser: {
-			enabled: true,
-			provider: playwright(),
-			// https://vitest.dev/config/browser/playwright
-			instances: [{ browser: 'chromium' }],
-			headless: true,
+		root: __dirname,
+		environment: 'happy-dom',
+		setupFiles: ['./test/setup.ts'],
+		coverage: {
+			include: ['src/**/*.ts'],
 		},
 	},
 });

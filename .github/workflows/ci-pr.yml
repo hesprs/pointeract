@@ -1,0 +1,54 @@
+name: CI for Pull Requests
+
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, ready_for_review]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true  # Cancel previous runs for same PR/branch
+
+jobs:
+  ci-pr:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0  # Required for diff checks
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4.2.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Detect relevant changes
+        id: changes
+        run: bash ./.github/scripts/detect_changes.sh
+        env:
+          GITHUB_EVENT_NAME: ${{ github.event_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_HEAD_REPO_FULL_NAME: ${{ github.event.pull_request.head.repo.full_name || '' }}
+          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
+          GITHUB_SHA: ${{ github.sha }}
+
+      - name: Run checks
+        run: pnpm check
+
+      - name: Run tests (src or test changes)
+        if: steps.changes.outputs.needs_test == 'true'
+        run: pnpm test
+
+      - name: Run build
+        run: pnpm build

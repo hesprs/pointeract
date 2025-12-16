@@ -1,6 +1,3 @@
-import type { Pointeract } from '@';
-import type BaseModule from '@/baseModule';
-
 // biome-ignore lint/suspicious/noExplicitAny: general type
 export type GeneralArguments = Array<any>;
 // biome-ignore lint/suspicious/noExplicitAny: General Type
@@ -21,4 +18,7 @@ export type Pointer = {
 	[key: Indexable]: any;
 };
 
-export type ModuleConstructor = new (main: Pointeract) => BaseModule;
+// biome-ignore lint/suspicious/noExplicitAny: general Type
+export type Constructor<C extends abstract new (...args: any) => any> = new (
+	...args: ConstructorParameters<C>
+) => InstanceType<C>;

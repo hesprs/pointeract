@@ -1,1 +1,2 @@
 - [x] transform to adapt modularity practice (main class maintains `pointers` map only, other imports share map and register hooks)
+- [ ] add rotate functionality to `multiPointer_zanZoom`.
