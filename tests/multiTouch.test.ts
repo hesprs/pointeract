@@ -1,5 +1,5 @@
 import { expect, test } from 'vitest';
-import { Drag, MultitouchPanZoom } from '@';
+import { MultitouchPanZoom } from '@';
 import setup from './testUtils';
 
 test('two touches 100px apart, zoom in and pan up', () => {

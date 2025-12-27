@@ -51,7 +51,7 @@ test('chaotic movements', () => {
 	p3.move({ x: 100, y: -100 }); // no effect
 	p3.up();
 	p1.up();
-	
+
 	p2.move({ x: 0, y: -600 }); // up 600
 	// p2: (100, -300);
 
@@ -64,7 +64,7 @@ test('chaotic movements', () => {
 	const pos = {
 		x: acc.pan.x + acc.drag.x,
 		y: acc.pan.y + acc.drag.y,
-	}
+	};
 	expect(pos).toEqual({ x: -100, y: -300 }); // result: left 100, up 300
 	expect(1.7 < acc.scale && acc.scale < 1.72).toBe(true);
 
