@@ -15,7 +15,7 @@ diff x > 0 => pan left => pan x < 0
 diff y < 0 => pan right => pan y > 0
 */
 
-export default class Wheel_PanZoom extends BaseModule {
+export default class wheelPanZoom extends BaseModule {
 	options = {
 		proControlSchema: false,
 		zoomFactor: 0.1,
@@ -23,7 +23,7 @@ export default class Wheel_PanZoom extends BaseModule {
 	};
 
 	onWheel = (e: WheelEvent) => {
-		const options = this.mainOptions;
+		const options = this.options;
 		if (
 			!options.proControlSchema &&
 			!options.lockControlSchema &&
@@ -46,7 +46,7 @@ export default class Wheel_PanZoom extends BaseModule {
 	};
 
 	#dispatchZoomEvent(factor: number, origin: Coordinates) {
-		this.utils.dispatch('zoom', { origin, factor });
+		this.utils.dispatch('zoom', { x: origin.x, y: origin.y, factor });
 	}
 
 	#dispatchPanEvent(diff: Coordinates) {

@@ -8,5 +8,5 @@
 		"outDir": "./dist/types"
 	},
 	"include": ["src/**/*"],
-	"exclude": ["test/**/*"]
+	"exclude": ["tests/**/*"]
 }

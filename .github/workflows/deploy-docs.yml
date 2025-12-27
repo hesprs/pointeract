@@ -1,0 +1,53 @@
+name: Deploy Documentation
+
+on:
+  repository_dispatch:
+    types: [deploy-docs]
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4.2.0
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: latest
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install
+
+      - name: Build
+        run: pnpm docs:build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5.0.0
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v4.0.0
+        with:
+          path: './docs/.vitepress/dist'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4.0.5

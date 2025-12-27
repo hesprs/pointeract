@@ -4,7 +4,7 @@ import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
 export default defineConfig({
-	root: 'test/dev',
+	root: 'tests/dev',
 	resolve: {
 		alias: {
 			'@': resolve(__dirname, 'src/'),
@@ -27,7 +27,7 @@ export default defineConfig({
 	test: {
 		root: __dirname,
 		environment: 'happy-dom',
-		setupFiles: ['./test/setup.ts'],
+		setupFiles: ['./tests/mockRect.ts'],
 		coverage: {
 			include: ['src/**/*.ts'],
 		},

@@ -21,6 +21,8 @@ coverage
 
 # cache
 .cache
+docs/.vitepress/cache
 
 # dist
 dist
+docs/.vitepress/dist

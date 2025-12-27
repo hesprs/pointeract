@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
-import { SinglePointer_Drag } from '@';
+import { Drag } from '@';
 import setup from './testUtils';
 
 test('drag', () => {
-	const { acc, dispose, Pointer } = setup([SinglePointer_Drag]);
+	const { acc, dispose, Pointer } = setup(Drag);
 	const p = new Pointer();
 	p.down();
 	p.move({ x: 100, y: 100 });

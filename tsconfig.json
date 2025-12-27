@@ -15,6 +15,6 @@
 			"@": ["./src"]
 		}
 	},
-	"include": ["src/**/*", "test/**/*", "omniTypes.ts"],
-	"exclude": ["node_modules", "./dist"]
+	"include": ["src/**/*", "tests/**/*", "docs/**/*"],
+	"exclude": ["node_modules", "dist"]
 }

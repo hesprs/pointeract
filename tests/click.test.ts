@@ -1,9 +1,9 @@
 import { expect, test } from 'vitest';
-import { SinglePointer_TrueClick } from '@';
+import { Click } from '@';
 import setup from './testUtils';
 
 test('trigger a trueClick', () => {
-	const { acc, dispose, Pointer } = setup([SinglePointer_TrueClick]);
+	const { acc, dispose, Pointer } = setup(Click);
 	const p = new Pointer();
 	for (let i = 0; i < 3; i++) {
 		p.down();
@@ -14,7 +14,7 @@ test('trigger a trueClick', () => {
 });
 
 test('trigger an shifted click that is not a trueClick', () => {
-	const { acc, dispose, Pointer } = setup([SinglePointer_TrueClick]);
+	const { acc, dispose, Pointer } = setup(Click);
 	const p = new Pointer();
 	p.down();
 	p.move({ x: 10, y: 10 });
@@ -24,7 +24,7 @@ test('trigger an shifted click that is not a trueClick', () => {
 });
 
 test('trigger an interrupted click that is not a trueClick', () => {
-	const { acc, dispose, Pointer } = setup([SinglePointer_TrueClick]);
+	const { acc, dispose, Pointer } = setup(Click);
 	const p1 = new Pointer();
 	const p2 = new Pointer();
 	p1.down();

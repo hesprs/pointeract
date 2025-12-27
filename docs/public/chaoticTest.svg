@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-300 -400 700 800" width="100%" height="100%">
+  <style>
+    circle {
+      transform-box: view-box;
+    }
+    
+    .p1 {
+      animation: pointer1 10s infinite linear;
+      fill: #ff5252;
+    }
+    
+    .p2 {
+      animation: pointer2 10s infinite linear;
+      fill: #4caf50;
+    }
+    
+    .p3 {
+      animation: pointer3 10s infinite linear;
+      fill: #2196f3;
+    }
+    
+    @keyframes pointer1 {
+      0%        { transform: translate(0, 0); opacity: 1; }
+      15%       { transform: translate(-100px, 0); }
+      30%       { transform: translate(-100px, 0); }
+      45%       { transform: translate(-200px, 300px); }
+      60%       { opacity: 1; }
+      61%       { transform: translate(-200px, 300px); opacity: 0; }
+      99%       { opacity: 0; transform: translate(0, 0); }
+    }
+    
+    @keyframes pointer2 {
+      0%        { opacity: 0; transform: translate(100px, 0); }
+      14%       { opacity: 0; }
+      15%       { opacity: 1; transform: translate(100px, 0); }
+      30%       { transform: translate(0, 0); }
+      45%       { transform: translate(100px, 300px); }
+      60%       { transform: translate(100px, 300px); }
+      75%       { transform: translate(100px, -300px); }
+      90%       { opacity: 1; transform: translate(100px, -300px); }
+      91%       { opacity: 0; transform: translate(100px, -300px); }
+      100%       { transform: translate(100px, 0); opacity: 0; }
+    }
+    
+    @keyframes pointer3 {
+      0%        { opacity: 0; }
+      44%       { opacity: 0; transform: translate(0, 0); }
+      45%       { opacity: 1; transform: translate(0, 0); }
+      60%       { transform: translate(100px, -100px); opacity: 1; }
+      61%       { transform: translate(100px, -100px); opacity: 0; }
+      74%       { transform: translate(200px, 0); opacity: 0; }
+      75%       { opacity: 1; transform: translate(200px, 0); }
+      90%       { transform: translate(300px, 0); opacity: 1; }
+      91%       { transform: translate(300px, 0); opacity: 0; }
+      100%      { opacity: 0; }
+    }
+    
+    /* Grid and axes for reference */
+    .grid line {
+      stroke: #444;
+      stroke-width: 0.5;
+      stroke-dasharray: 2 2;
+    }
+    .axes line {
+      stroke: #888;
+      stroke-width: 1.5;
+    }
+    .label {
+      font-family: Arial, sans-serif;
+      font-size: 12px;
+      fill: #888;
+    }
+  </style>
+  
+  <!-- Coordinate grid -->
+  <g class="grid">
+    <!-- Vertical lines -->
+    <line x1="-300" y1="-400" x2="-300" y2="400" />
+    <line x1="-200" y1="-400" x2="-200" y2="400" />
+    <line x1="-100" y1="-400" x2="-100" y2="400" />
+    <line x1="0" y1="-400" x2="0" y2="400" />
+    <line x1="100" y1="-400" x2="100" y2="400" />
+    <line x1="200" y1="-400" x2="200" y2="400" />
+    <line x1="300" y1="-400" x2="300" y2="400" />
+    <line x1="400" y1="-400" x2="400" y2="400" />
+    
+    <!-- Horizontal lines -->
+    <line x1="-300" y1="-400" x2="400" y2="-400" />
+    <line x1="-300" y1="-300" x2="400" y2="-300" />
+    <line x1="-300" y1="-200" x2="400" y2="-200" />
+    <line x1="-300" y1="-100" x2="400" y2="-100" />
+    <line x1="-300" y1="0" x2="400" y2="0" />
+    <line x1="-300" y1="100" x2="400" y2="100" />
+    <line x1="-300" y1="200" x2="400" y2="200" />
+    <line x1="-300" y1="300" x2="400" y2="300" />
+    <line x1="-300" y1="400" x2="400" y2="400" />
+  </g>
+  
+  <!-- Axes -->
+  <g class="axes">
+    <line x1="-300" y1="0" x2="400" y2="0" />
+    <line x1="0" y1="-400" x2="0" y2="400" />
+    <text class="label" x="385" y="15">x</text>
+    <text class="label" x="10" y="-385">y</text>
+  </g>
+  
+  <!-- Touch pointers -->
+  <circle class="p1" cx="0" cy="0" r="30" />
+  <circle class="p2" cx="0" cy="0" r="30" />
+  <circle class="p3" cx="0" cy="0" r="30" />
+  
+  <!-- Legend -->
+  <g transform="translate(250, 300)">
+    <circle cx="0" cy="0" r="8" fill="#ff5252" />
+    <text x="15" y="5" class="label">Pointer 1</text>
+    <circle cx="0" cy="25" r="8" fill="#4caf50" />
+    <text x="15" y="30" class="label">Pointer 2</text>
+    <circle cx="0" cy="50" r="8" fill="#2196f3" />
+    <text x="15" y="55" class="label">Pointer 3</text>
+  </g>
+</svg>

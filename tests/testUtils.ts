@@ -1,6 +1,8 @@
 import { Window as HappyWindow } from 'happy-dom';
-import { type BaseModule, Pointeract } from '@';
-import type { Constructor, Coordinates, GeneralObject } from '@/declarations';
+import { type Click, type Drag, Pointeract, type WheelPanZoom } from '@';
+import type { Coordinates, ModuleInput, Options, StdEvents } from '@/declarations';
+
+type ModulePreset = [typeof WheelPanZoom, typeof Drag, typeof Click];
 
 class Accumulator {
 	pan = {
@@ -13,26 +15,26 @@ class Accumulator {
 	};
 	scale = 1;
 	clicks = 0;
-	private pointeract: Pointeract;
-	constructor(pointeract: Pointeract) {
+	private pointeract: Pointeract<ModulePreset>;
+	constructor(pointeract: Pointeract<ModulePreset>) {
 		this.pointeract = pointeract;
-		pointeract.addEventListener('pan', this.panner);
-		pointeract.addEventListener('drag', this.dragger);
-		pointeract.addEventListener('zoom', this.zoomer);
-		pointeract.addEventListener('trueClick', this.clicker);
+		pointeract.on('pan', this.panner);
+		pointeract.on('drag', this.dragger);
+		pointeract.on('zoom', this.zoomer);
+		pointeract.on('trueClick', this.clicker);
 	}
-	private panner = (e: Event) => {
-		const detail = (e as CustomEvent<Coordinates>).detail;
+	private panner = (e: StdEvents['pan']) => {
+		const detail = e.detail;
 		this.pan.x += detail.x;
 		this.pan.y += detail.y;
 	};
-	private dragger = (e: Event) => {
-		const detail = (e as CustomEvent<Coordinates>).detail;
+	private dragger = (e: StdEvents['drag']) => {
+		const detail = e.detail;
 		this.drag.x += detail.x;
 		this.drag.y += detail.y;
 	};
-	private zoomer = (e: Event) => {
-		const detail = (e as CustomEvent<{ factor: number; origin: Coordinates }>).detail;
+	private zoomer = (e: StdEvents['zoom']) => {
+		const detail = e.detail;
 		this.scale *= detail.factor;
 	};
 	private clicker = () => {
@@ -51,10 +53,10 @@ class Accumulator {
 		this.clicks = 0;
 	};
 	dispose = () => {
-		this.pointeract.removeEventListener('pan', this.panner);
-		this.pointeract.removeEventListener('drag', this.dragger);
-		this.pointeract.removeEventListener('zoom', this.zoomer);
-		this.pointeract.removeEventListener('trueClick', this.clicker);
+		this.pointeract.off('pan', this.panner);
+		this.pointeract.off('drag', this.dragger);
+		this.pointeract.off('zoom', this.zoomer);
+		this.pointeract.off('trueClick', this.clicker);
 	};
 }
 
@@ -74,10 +76,7 @@ class PointerManager {
 	};
 }
 
-export default function setup(
-	modules: Array<Constructor<typeof BaseModule>> = [],
-	options: GeneralObject = {},
-) {
+export default function setup<T extends ModuleInput>(modules: T, options: Options<T> = {}) {
 	const window = new HappyWindow({ url: 'https://localhost:8080' }) as unknown as Window;
 	const document = window.document;
 	document.body.innerHTML = '<div id="test-square"></div>';

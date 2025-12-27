@@ -1,7 +1,7 @@
 import BaseModule from '@/baseModule';
 import type { Coordinates, Pointer, Pointers } from '@/declarations';
 
-export default class MultiPointer_PanZoom extends BaseModule {
+export default class MultitouchPanZoom extends BaseModule {
 	#pinchZoomState = {
 		lastDistance: 0,
 		lastMidpoint: { x: 0, y: 0 },
@@ -48,7 +48,7 @@ export default class MultiPointer_PanZoom extends BaseModule {
 	};
 
 	#dispatchZoomEvent(factor: number, origin: Coordinates) {
-		this.utils.dispatch('zoom', { origin, factor });
+		this.utils.dispatch('zoom', { x: origin.x, y: origin.y, factor });
 	}
 
 	#dispatchPanEvent(diff: Coordinates) {

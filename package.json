@@ -1,44 +1,57 @@
 {
-	"name": "pointeract",
-	"version": "1.0.0",
-	"description": "Resolve pointer events to pan zoom instructions, modern, lightweight and robust alternative to Hammer.js and Interact.js.",
-	"main": "./dist/index.cjs",
-	"module": "./dist/index.js",
-	"types": "./dist/types/index.d.ts",
-	"type": "module",
-	"scripts": {
-		"build": "vite build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-		"test": "vitest run",
-		"lint": "biome check --write",
-		"test:coverage": "vitest run --coverage",
-		"check": "tsc && biome check",
-		"dev": "vite"
-	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/hesprs/pointeract.git"
-	},
-	"homepage": "https://github.com/hesprs/pointeract#readme",
-	"bugs": {
-		"url": "https://github.com/hesprs/pointeract/issues"
-	},
-	"files": ["dist"],
-	"keywords": ["frontend", "pointer-events", "interaction", "TypeScript"],
-	"author": {
-		"name": "Hēsperus",
-		"email": "hesprs@outlook.com"
-	},
-	"license": "MIT",
-	"packageManager": "pnpm@10.23.0",
-	"devDependencies": {
-		"@biomejs/biome": "^2.3.9",
-		"@types/node": "^25.0.2",
-		"@vitest/coverage-v8": "^4.0.15",
-		"happy-dom": "^20.0.11",
-		"terser": "^5.44.1",
-		"tsc-alias": "^1.8.16",
-		"typescript": "^5.9.3",
-		"vite": "^7.3.0",
-		"vitest": "^4.0.15"
-	}
+  "name": "pointeract",
+  "version": "1.0.0",
+  "description": "Modern, lightweight, robust and extensible user interaction resolver.",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/types/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "vite build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
+    "test": "vitest run",
+    "lint": "biome check --write",
+    "test:coverage": "vitest run --coverage",
+    "check": "tsc && biome check",
+    "dev": "vite",
+    "docs:dev": "vitepress dev docs",
+    "docs:build": "vitepress build docs",
+    "docs:preview": "vitepress preview docs"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hesprs/pointeract.git"
+  },
+  "homepage": "https://pointeract.consensia.cc",
+  "bugs": {
+    "url": "https://github.com/hesprs/pointeract/issues"
+  },
+  "files": [
+    "dist"
+  ],
+  "keywords": [
+    "frontend",
+    "pointer-events",
+    "interaction",
+    "TypeScript"
+  ],
+  "author": {
+    "name": "Hēsperus",
+    "email": "hesprs@outlook.com"
+  },
+  "license": "MIT",
+  "packageManager": "pnpm@10.23.0",
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.9",
+    "@types/node": "^25.0.2",
+    "@vitest/coverage-v8": "^4.0.15",
+    "happy-dom": "^20.0.11",
+    "terser": "^5.44.1",
+    "tsc-alias": "^1.8.16",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.0",
+    "vitepress": "2.0.0-alpha.15",
+    "vitepress-plugin-group-icons": "^1.6.5",
+    "vitest": "^4.0.15",
+    "vue": "^3.5.25"
+  }
 }
