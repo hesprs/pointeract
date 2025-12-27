@@ -6,17 +6,12 @@ import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-i
 export default defineConfig({
 	cleanUrls: true,
 	title: 'Pointeract',
-	description:
-		'Resolve pointer events to pan zoom instructions, modern, lightweight and robust alternative to Hammer.js and Interact.js.',
-	rewrites: {
-		'en/:rest*': ':rest*',
-	},
+	description: 'Modern, lightweight, robust and extensible user interaction resolver.',
+	rewrites: { 'en/:rest*': ':rest*' },
 	locales: {
 		root: { label: 'English', lang: 'en' },
 	},
-	sitemap: {
-		hostname: 'https://pointeract.consensia.cc',
-	},
+	sitemap: { hostname: 'https://pointeract.consensia.cc' },
 	themeConfig: {
 		// https://vitepress.dev/reference/default-theme-config
 		nav: [
@@ -77,19 +72,14 @@ export default defineConfig({
 			},
 		],
 
-		search: {
-			provider: 'local',
-		},
-
+		search: { provider: 'local' },
 		socialLinks: [{ icon: 'github', link: 'https://github.com/hesprs/pointeract' }],
 	},
 	markdown: {
 		config(md) {
 			md.use(groupIconMdPlugin);
 		},
-		image: {
-			lazyLoading: true,
-		},
+		image: { lazyLoading: true },
 	},
 	vite: {
 		plugins: [groupIconVitePlugin()],
