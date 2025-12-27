@@ -12,14 +12,12 @@ concurrency:
 jobs:
   ci-pr:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
 
     steps:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          fetch-depth: 0  # Required for diff checks
+          fetch-depth: 0
 
       - name: Set up pnpm
         uses: pnpm/action-setup@v4.2.0
@@ -33,26 +31,22 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Detect relevant changes
-        id: changes
-        run: bash ./.github/scripts/detect_changes.sh
-        env:
-          GITHUB_EVENT_NAME: ${{ github.event_name }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          GITHUB_HEAD_REPO_FULL_NAME: ${{ github.event.pull_request.head.repo.full_name || '' }}
-          GITHUB_EVENT_BEFORE: ${{ github.event.before }}
-          GITHUB_SHA: ${{ github.sha }}
+      - name: Detect changed roots
+        id: detect
+        run: ./.github/scripts/detect_changes.sh
 
       - name: Run checks
         run: pnpm check
 
+      - name: Run build
+        run: pnpm build
+
       - name: Run tests (src or test changes)
-        if: steps.changes.outputs.needs_test == 'true'
+        if: |
+          contains(steps.detect.outputs.changed_roots, 'src') ||
+          contains(steps.detect.outputs.changed_roots, 'test')
         run: pnpm test
 
       - name: Run docs build (docs changes)
-        if: steps.changes.outputs.needs_deploy_docs == 'true'
+        if: contains(steps.detect.outputs.changed_roots, 'docs')
         run: pnpm docs:build
-
-      - name: Run build
-        run: pnpm build
