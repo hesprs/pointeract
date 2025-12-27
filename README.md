@@ -1,5 +1,7 @@
 <h1 align="center">
-  <img src="./assets/logoText.svg" alt="Pointeract" width="280px">
+  <a href="https://pointeract.consensia.cc">
+    <img src="./assets/logoText.svg" alt="Pointeract" width="280px">
+  </a>
   <br>
 </h1>
 
@@ -26,9 +28,10 @@
   <a href="#whats-pointeract">Introduction</a> •
   <a href="#advantages">Advantages</a> •
   <a href="#get-started">Get Started</a> •
-  <a href="#currently-supported-interactions">Functionalities</a> •
+  <a href="#currently-supported-interactions">Features</a> •
   <a href="#how-pointeract-stands-out">Comparison</a> •
-  <a href="#get-involved">Get Involved</a>
+  <a href="#get-involved">Get Involved</a> •
+  <a href="#license">License</a>
 </p>
 
 <!--
@@ -43,7 +46,7 @@ Pointeract is a tiny utility library focusing on one thing - handling user inter
 
 It is build in an extensible architecture with base bundle size only **1KB** minified + gzipped, functionalities come from also byte-sized modules. So it's fully **tree-shakable**, the fewer modules you use, the smaller your bundle is.
 
-It does not modify the DOM, which gives full control of how your app should like. If you need ready to use DOM manipulation, consider [Dragula](https://bevacqua.github.io/dragula/) or [React Pan Zoom Pinch](https://github.com/prc5/react-zoom-pan-pinch).
+Access our documentation [here](https://pointeract.consensia.cc/).
 
 ## Advantages
 
@@ -120,3 +123,7 @@ This project welcomes anyone that have ideas to improve it.
 - [Open an issue](https://github.com/hesprs/pointeract/issues/new) if you find a bug.
 - [Start a new thread in Discussions](https://github.com/hesprs/pointeract/discussions/new) if you have feature requests or questions, please avoid posting them in Issues.
 - [Report a vulnerability](https://github.com/hesprs/pointeract/security/advisories/new) if you find one, please do not disclose it publicly.
+
+## License
+
+Pointeract is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).

@@ -38,3 +38,7 @@ There're already plenty of interaction libraries out there, most famous ones are
 | Features                                      | Pointer and Wheel Related                             | Pointer Related                                  | 👑 Pointer and Wheel Related + Comprehensive Utils  |
 | Robust? (See [Testing](/development/testing)) | ✅                                                    | ❌ Element Jerks                                 | ❌ Element Ignores the Second Touch                 |
 | Extensible?                                   | ✅                                                    | ❌                                               | ❌                                                  |
+
+## License
+
+Pointeract is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
