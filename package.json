@@ -25,7 +25,7 @@
 	"bugs": {
 		"url": "https://github.com/hesprs/pointeract/issues"
 	},
-	"files": ["dist"],
+	"files": ["dist", "assets"],
 	"keywords": ["frontend", "pointer-events", "interaction", "TypeScript"],
 	"author": {
 		"name": "Hēsperus",

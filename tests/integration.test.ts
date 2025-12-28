@@ -48,7 +48,7 @@ test('chaotic movements', () => {
 	// p1: (-200, 300); p2: (100, 300);
 
 	p3.down();
-	p3.move({ x: 100, y: -100 }); // no effect
+	p3.move({ x: 100, y: -100 }); // ignore the third pointer
 	p3.up();
 	p1.up();
 
@@ -56,7 +56,7 @@ test('chaotic movements', () => {
 	// p2: (100, -300);
 
 	p3.down({ x: 200, y: 0 });
-	p3.move({ x: 100, y: 0 }); // scale * $\sqrt{13}\over\sqrt{10}$ ~= 1.14, right 50
+	p3.move({ x: 100, y: 0 }); // scale * ~= 1.14, right 50
 	// p2: (100, -300); p3: (300, 0);
 	p2.up();
 	p3.up();

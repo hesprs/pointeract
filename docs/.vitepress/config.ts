@@ -5,12 +5,24 @@ import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-i
 // https://vitepress.dev/reference/site-config
 export default defineConfig({
 	cleanUrls: true,
+	lastUpdated: true,
 	title: 'Pointeract',
 	description: 'Modern, lightweight, robust and extensible user interaction resolver.',
 	rewrites: { 'en/:rest*': ':rest*' },
 	locales: {
 		root: { label: 'English', lang: 'en' },
 	},
+	head: [
+		['link', { rel: 'icon', href: '/logoFlat.svg' }],
+		['meta', { name: 'color-scheme', content: 'dark light' }],
+		[
+			'meta',
+			{
+				name: 'keywords',
+				content: 'user interaction,pan zoom,multitouch,custom modules,modern lightweight',
+			},
+		],
+	],
 	sitemap: { hostname: 'https://pointeract.consensia.cc' },
 	themeConfig: {
 		// https://vitepress.dev/reference/default-theme-config
@@ -74,6 +86,7 @@ export default defineConfig({
 
 		search: { provider: 'local' },
 		socialLinks: [{ icon: 'github', link: 'https://github.com/hesprs/pointeract' }],
+		editLink: { pattern: 'https://github.com/hesprs/pointeract/edit/main/docs/:path' },
 	},
 	markdown: {
 		config(md) {

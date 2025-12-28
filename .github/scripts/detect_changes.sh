@@ -49,4 +49,7 @@ printf "%s" "$changed_files" | awk -F/ '{
   echo "EOF"
 } >> "$GITHUB_OUTPUT"
 
+echo "Changes Detected:"
+cat /tmp/changed_roots
+
 rm -f /tmp/changed_roots
