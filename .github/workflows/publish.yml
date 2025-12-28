@@ -17,20 +17,21 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v6
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4.2.0
-
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
           node-version: latest
-          cache: 'pnpm'
+          registry-url: 'https://registry.npmjs.org'
+          cache: 'npm'
+
+      - name: Ensure npm 11.5.1 or later is installed
+        run: npm install -g npm@latest
 
       - name: Install dependencies
-        run: pnpm install
+        run: npm ci
 
       - name: Build
-        run: pnpm build
+        run: npm run build
 
       - name: Publish to npm
-        run: npm publish --access public --no-git-checks
+        run: npm publish

@@ -19,13 +19,17 @@
 	},
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/hesprs/pointeract.git"
+		"url": "git+https://github.com/hesprs/pointeract.git"
 	},
 	"homepage": "https://pointeract.consensia.cc",
 	"bugs": {
 		"url": "https://github.com/hesprs/pointeract/issues"
 	},
 	"files": ["dist"],
+	"publishConfig": {
+		"provenance": true,
+		"access": "public"
+	},
 	"keywords": ["frontend", "pointer-events", "interaction", "TypeScript"],
 	"author": {
 		"name": "Hēsperus",
