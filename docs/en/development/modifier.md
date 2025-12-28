@@ -2,7 +2,7 @@
 
 Since all tasks Pointeract does is to dispatch all kinds of events, once you've controlled the channel of events, you would own the absolute power of Pointeract.
 
-Modifiers are such a powerful tool that allows you to read, intercept, and modify all events before they are dispatched.
+Modifier is such a powerful tool that allows you to read, intercept, and modify all events before they are dispatched.
 
 ## Define a Modifier
 

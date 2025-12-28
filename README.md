@@ -20,8 +20,17 @@
   <a href="https://pointeract.consensia.cc">
     <img src="https://img.shields.io/badge/Documentation-Ready-333333?labelColor=5C73E7&logo=vitepress&logoColor=white" alt="Code Quality" />
   </a>
+  <a href="https://www.npmjs.com/package/pointeract">
+    <img src="https://img.shields.io/npm/v/pointeract?logo=npm&labelColor=red&logoColor=white&color=333333" alt="npm package" />
+  </a>
+  <a href="https://snyk.io/test/npm/pointeract">
+    <img src="https://img.shields.io/badge/Snyk%20Security-Monitored-333333?logo=snyk&style=flat&labelColor=8A2BE2&logoColor=white" alt="library security" />
+  </a>
+  <a href="https://bundlephobia.com/package/pointeract">
+    <img src="https://img.shields.io/bundlephobia/minzip/pointeract?style=flat&logo=webpack&labelColor=orange&logoColor=white&color=333333&label=Minified+Gzipped%20Size" alt="package size" />
+  </a>
   <img src="https://img.shields.io/badge/Types-Strict-333333?logo=typescript&labelColor=blue&logoColor=white" alt="Typescript" />
-  <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Human-333333?labelColor=red" alt="Made by Human" />
+  <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Human-333333?labelColor=25C260" alt="Made by Human" />
 </p>
 
 <p align="center">
@@ -34,12 +43,6 @@
   <a href="#license">License</a>
 </p>
 
-<!--
-[![npm](https://img.shields.io/npm/v/pointeract?logo=npm&labelColor=red&logoColor=white&color=333333)](https://www.npmjs.com/package/pointeract)
-[![publish size](https://img.shields.io/bundlephobia/min/pointeract?style=flat&logo=webpack&labelColor=orange&logoColor=white&color=333333&label=Minified%20Size)](https://bundlephobia.com/package/pointeract)
-[![Snyk Security](https://img.shields.io/badge/Snyk%20Security-Monitored-333333?logo=snyk&style=flat&labelColor=8A2BE2&logoColor=white)](https://snyk.io/test/npm/pointeract)
--->
-
 ## What's Pointeract?
 
 Pointeract is a tiny utility library focusing on one thing - handling user interactions with DOM elements. It is fully typed, small, and easy to use. You need to bind your DOM elements, load some modules, and it will start monitoring user interactions and dispatch events like `trueClick` and `pan` with data.
@@ -51,7 +54,7 @@ Access our documentation [here](https://pointeract.consensia.cc/).
 ## Advantages
 
 - **🐣 Tiny**: With base **1KB** minified and gzipped, **1-2KB** for normal usage.
-- **💪 Robust**: Excels at complex gestures where most interaction libraries fail, [Why?](https://pointeract.consensia.cc/development/testing)
+- **💪 Robust**: Excels at complex gestures where most interaction libraries fail, [Why?](https://pointeract.consensia.cc/development/testing#chaotic-testing)
 - **🧩 Extensible**: Extend Pointeract effortlessly via our module API.
 - **🔌 Flexible during Runtime**: Options are updated reactively. Stop/start any module during runtime.
 - **🛡️ Safe**: Not modifying the DOM (except the `PreventDefault` module). Meticulous clean up prevents memory leaks.
@@ -105,15 +108,15 @@ Missing your desired interaction? [Write your own module](https://pointeract.con
 
 There're already plenty of interaction libraries out there, most famous ones are `Interact.js` and `Hammer.js`, but Pointeract is different.
 
-| Criteria                                      | Pointeract                                            | [Hammer.js](https://hammerjs.github.io)          | [Interact.js](https://interactjs.io)                |
-|:----------------------------------------------|:-----------------------------------------------------:|:------------------------------------------------:|:---------------------------------------------------:|
-| Written in TypeScript?                        | ✅                                                    | ❌                                               | ✅                                                  |
-| Tree-shakeable?                               | [✅](https://bundlephobia.com/package/pointeract)     | [❌](https://bundlephobia.com/package/hammerjs)  | [❌](https://bundlephobia.com/package/interactjs)   |
-| Bundle Size (Minified + Gzipped)              | 👑 [2KB](https://bundlephobia.com/package/pointeract) | [7KB](https://bundlephobia.com/package/hammerjs) | [28KB](https://bundlephobia.com/package/interactjs) |
-| Last Updated                                  | 👑 Actively Maintained                                | 2015                                             | 2023                                                |
-| Features                                      | Pointer and Wheel Related                             | Pointer Related                                  | 👑 Pointer and Wheel Related + Comprehensive Utils  |
-| Robust? (See [Testing](https://pointeract.consensia.cc/development/testing)) | ✅                                                    | ❌ Element Jerks                                 | ❌ Element Ignores the Second Touch                 |
-| Extensible?                                   | ✅                                                    | ❌                                               | ❌                                                  |
+| Criteria                                                                                     | Pointeract                                            | [Hammer.js](https://hammerjs.github.io)          | [Interact.js](https://interactjs.io)                |
+|:---------------------------------------------------------------------------------------------|:-----------------------------------------------------:|:------------------------------------------------:|:---------------------------------------------------:|
+| Written in TypeScript?                                                                       | ✅                                                    | ❌                                               | ✅                                                  |
+| Tree-shakeable?                                                                              | [✅](https://bundlephobia.com/package/pointeract)     | [❌](https://bundlephobia.com/package/hammerjs)  | [❌](https://bundlephobia.com/package/interactjs)   |
+| Bundle Size (Minified + Gzipped)                                                             | 👑 [2KB](https://bundlephobia.com/package/pointeract) | [7KB](https://bundlephobia.com/package/hammerjs) | [28KB](https://bundlephobia.com/package/interactjs) |
+| Last Updated                                                                                 | 👑 Actively Maintained                                | 2015                                             | 2023                                                |
+| Features                                                                                     | Pointer and Wheel Related                             | Pointer Related                                  | 👑 Pointer and Wheel Related + Comprehensive Utils  |
+| Robust? (See [Testing](https://pointeract.consensia.cc/development/testing#chaotic-testing)) | ✅                                                    | ❌ Element Jerks                                 | ❌ Element Ignores the Second Touch                 |
+| Extensible?                                                                                  | ✅                                                    | ❌                                               | ❌                                                  |
 
 ## Get Involved
 
