@@ -27,9 +27,6 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
           cache: 'pnpm'
 
-      - name: Ensure npm 11.5.1 or later is installed
-        run: pnpm install -g npm@latest
-
       - name: Install dependencies
         run: pnpm install
 
@@ -37,4 +34,4 @@ jobs:
         run: pnpm build
 
       - name: Publish to npm
-        run: npm publish
+        run: pnpm publish --no-git-checks

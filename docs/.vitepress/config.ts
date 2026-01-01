@@ -85,7 +85,10 @@ export default defineConfig({
 		],
 
 		search: { provider: 'local' },
-		socialLinks: [{ icon: 'github', link: 'https://github.com/hesprs/pointeract' }],
+		socialLinks: [
+			{ icon: 'npm', link: 'https://www.npmjs.com/package/pointeract' },
+			{ icon: 'github', link: 'https://github.com/hesprs/pointeract' },
+		],
 		editLink: { pattern: 'https://github.com/hesprs/pointeract/edit/main/docs/:path' },
 	},
 	markdown: {

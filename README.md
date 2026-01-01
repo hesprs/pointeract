@@ -18,7 +18,7 @@
     <img src="https://img.shields.io/codefactor/grade/github/hesprs/pointeract?style=flat&logo=codefactor&logoColor=white&label=Code%20Quality&labelColor=17b37a&color=333333" alt="Code Quality" />
   </a>
   <a href="https://pointeract.consensia.cc">
-    <img src="https://img.shields.io/badge/Documentation-Ready-333333?labelColor=5C73E7&logo=vitepress&logoColor=white" alt="Code Quality" />
+    <img src="https://img.shields.io/badge/Documentation-Ready-333333?labelColor=5C73E7&logo=vitepress&logoColor=white" alt="Documentation" />
   </a>
   <a href="https://www.npmjs.com/package/pointeract">
     <img src="https://img.shields.io/npm/v/pointeract?logo=npm&labelColor=red&logoColor=white&color=333333" alt="npm package" />
@@ -27,10 +27,10 @@
     <img src="https://img.shields.io/badge/Snyk%20Security-Monitored-333333?logo=snyk&style=flat&labelColor=8A2BE2&logoColor=white" alt="library security" />
   </a>
   <a href="https://bundlephobia.com/package/pointeract">
-    <img src="https://img.shields.io/bundlephobia/minzip/pointeract?style=flat&logo=webpack&labelColor=orange&logoColor=white&color=333333&label=Minified+Gzipped%20Size" alt="package size" />
+    <img src="https://img.shields.io/bundlephobia/minzip/pointeract?style=flat&logo=webpack&labelColor=orange&logoColor=white&color=333333&label=Minified%2bGzipped" alt="package size" />
   </a>
   <img src="https://img.shields.io/badge/Types-Strict-333333?logo=typescript&labelColor=blue&logoColor=white" alt="Typescript" />
-  <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Human-333333?labelColor=25C260" alt="Made by Human" />
+  <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Humans-333333?labelColor=25C260" alt="Made by Humans" />
 </p>
 
 <p align="center">
@@ -127,6 +127,6 @@ This project welcomes anyone that have ideas to improve it.
 - [Start a new thread in Discussions](https://github.com/hesprs/pointeract/discussions/new) if you have feature requests or questions, please avoid posting them in Issues.
 - [Report a vulnerability](https://github.com/hesprs/pointeract/security/advisories/new) if you find one, please do not disclose it publicly.
 
-## License
+## Copyright and License
 
-Pointeract is licensed under the [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html).
+Copyright ©️ 2025-2026 Hesprs (Hēsperus) | [Apache License 2.0](https://www.apache.org/licenses/LICENSE-2.0.html)
