@@ -17,12 +17,15 @@ import { Drag, PreventDefault } from 'pointeract';
 Then, you need a DOM element to attach to, below shows how to do that in Vanilla DOM:
 
 ::: code-group
+
 ```TypeScript [TypeScript]
 const app = document.getElementById('app') as HTMLDivElement;
 ```
+
 ```HTML [HTML]
 <div id="app"></div>
 ```
+
 :::
 
 Finally, you may want to define options, read elaboration in [Options](./options):
@@ -58,6 +61,7 @@ pointeract.start();
 const pointeract = new Pointeract(app, [Drag, PreventDefault]); // [!code --]
 const pointeract = new Pointeract(app, [Drag, PreventDefault]).start(); // [!code ++]
 ```
+
 :::
 
 ## Stop
@@ -76,6 +80,7 @@ pointeract.stop();
 // ... some logic here
 pointeract.start();
 ```
+
 :::
 
 ## Disposal

@@ -1,5 +1,6 @@
-import { Window as HappyWindow } from 'happy-dom';
 import { type Click, type Ctors, type Drag, Pointeract, type WheelPanZoom } from '@';
+import { Window as HappyWindow } from 'happy-dom';
+
 import type { Coordinates, ModuleInput, Options, StdEvents } from '@/declarations';
 
 type ModulePreset = Ctors<[WheelPanZoom, Drag, Click]>;

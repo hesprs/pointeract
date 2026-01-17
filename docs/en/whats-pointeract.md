@@ -29,15 +29,15 @@ Missing your desired interaction? [Write your own module](/development/custom-mo
 
 There're already plenty of interaction libraries out there, most famous ones are `Interact.js` and `Hammer.js`, but Pointeract is different.
 
-| Criteria                                                      | Pointeract                                            | [Hammer.js](https://hammerjs.github.io)          | [Interact.js](https://interactjs.io)                |
-|:--------------------------------------------------------------|:-----------------------------------------------------:|:------------------------------------------------:|:---------------------------------------------------:|
-| Written in TypeScript?                                        | ✅                                                    | ❌                                               | ✅                                                  |
-| Tree-shakeable?                                               | [✅](https://bundlephobia.com/package/pointeract)     | [❌](https://bundlephobia.com/package/hammerjs)  | [❌](https://bundlephobia.com/package/interactjs)   |
+| Criteria                                                      |                      Pointeract                       |     [Hammer.js](https://hammerjs.github.io)      |        [Interact.js](https://interactjs.io)         |
+| :------------------------------------------------------------ | :---------------------------------------------------: | :----------------------------------------------: | :-------------------------------------------------: |
+| Written in TypeScript?                                        |                          ✅                           |                        ❌                        |                         ✅                          |
+| Tree-shakeable?                                               |   [✅](https://bundlephobia.com/package/pointeract)   | [❌](https://bundlephobia.com/package/hammerjs)  |  [❌](https://bundlephobia.com/package/interactjs)  |
 | Bundle Size (Minified + Gzipped)                              | 👑 [2KB](https://bundlephobia.com/package/pointeract) | [7KB](https://bundlephobia.com/package/hammerjs) | [28KB](https://bundlephobia.com/package/interactjs) |
-| Last Updated                                                  | 👑 Actively Maintained                                | 2015                                             | 2023                                                |
-| Features                                                      | Pointer and Wheel Related                             | Pointer Related                                  | 👑 Pointer and Wheel Related + Comprehensive Utils  |
-| Robust? (See [Testing](/development/testing#chaotic-testing)) | ✅                                                    | ❌ Element Jerks                                 | ❌ Element Ignores the Second Touch                 |
-| Extensible?                                                   | ✅                                                    | ❌                                               | ❌                                                  |
+| Last Updated                                                  |                👑 Actively Maintained                 |                       2015                       |                        2023                         |
+| Features                                                      |               Pointer and Wheel Related               |                 Pointer Related                  | 👑 Pointer and Wheel Related + Comprehensive Utils  |
+| Robust? (See [Testing](/development/testing#chaotic-testing)) |                          ✅                           |                 ❌ Element Jerks                 |         ❌ Element Ignores the Second Touch         |
+| Extensible?                                                   |                          ✅                           |                        ❌                        |                         ❌                          |
 
 ## License
 

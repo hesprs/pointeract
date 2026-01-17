@@ -33,7 +33,7 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 		this.#monitoringElement = monitoringElement;
 		this.options = options;
 		this.#fillIn({ coordinateOutput: 'relative' });
-		modules.forEach(module => {
+		modules.forEach((module) => {
 			const instance = new module(
 				this.moduleUtils,
 				this.#window,
@@ -103,7 +103,7 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 	};
 
 	#runHooks(field: Hooks, ...args: GeneralArguments) {
-		Object.values(this.#modules).forEach(module => {
+		Object.values(this.#modules).forEach((module) => {
 			if (module[field]) module[field](...args);
 		});
 	}
@@ -152,7 +152,7 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 		};
 		if (!_toStop) stopPointeract();
 		else
-			toArray(_toStop).forEach(module => {
+			toArray(_toStop).forEach((module) => {
 				stopModule(module);
 			});
 		return this;
@@ -175,7 +175,7 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 		};
 		if (!_toStart) startPointeract();
 		else
-			toArray(_toStart).forEach(module => {
+			toArray(_toStart).forEach((module) => {
 				startModule(module);
 			});
 		return this;

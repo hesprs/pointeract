@@ -30,21 +30,21 @@ onMounted(() => {
 		Click,
 		Drag,
 	]).start();
-	pointeract.on('pan', e => {
+	pointeract.on('pan', (e) => {
 		data.x += e.detail.x;
 		data.y += e.detail.y;
 	});
-	pointeract.on('drag', e => {
+	pointeract.on('drag', (e) => {
 		data.x += e.detail.x;
 		data.y += e.detail.y;
 	});
-	pointeract.on('zoom', e => {
+	pointeract.on('zoom', (e) => {
 		const detail = e.detail;
 		data.scale *= detail.factor;
 		data.x += detail.x * (1 - detail.factor);
 		data.y += detail.y * (1 - detail.factor);
 	});
-	pointeract.on('trueClick', e => {
+	pointeract.on('trueClick', (e) => {
 		data.streak = e.detail.streak;
 		if (streakTimeout) clearTimeout(streakTimeout);
 		streakTimeout = setTimeout(() => {

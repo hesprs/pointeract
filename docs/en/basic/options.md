@@ -22,6 +22,7 @@ type options = {
 ```
 
 It defines how the coordinates are output across Pointeract, options are:
+
 - `absolute`: screen coordinates in pixels
 - `relative`(default): relative to the top-left corner of the element in pixels
 - `relativeFraction`: relative to the top-left corner of the element divided by the element's size

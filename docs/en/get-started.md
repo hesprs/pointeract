@@ -11,25 +11,30 @@
 Install Pointeract using your favorite package manager:
 
 ::: code-group
+
 ```sh [npm]
-$ npm add pointeract
+npm add pointeract
 ```
+
 ```sh [pnpm]
-$ pnpm add pointeract
+pnpm add pointeract
 ```
+
 ```sh [yarn]
-$ yarn add pointeract
+yarn add pointeract
 ```
+
 ```sh [bun]
-$ bun add pointeract
+bun add pointeract
 ```
+
 :::
 
 Or include the following lines directly in your HTML file:
 
 ```html
 <script type="module">
-    import { Pointeract } from 'https://unpkg.com/pointeract/dist/index.js';
+	import { Pointeract } from 'https://unpkg.com/pointeract/dist/index.js';
 </script>
 ```
 

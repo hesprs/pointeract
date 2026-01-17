@@ -1,18 +1,19 @@
-import { expect, test } from 'vitest';
 import { WheelPanZoom } from '@';
+import { expect, test } from 'vitest';
+
 import setup from './testUtils';
 
-test('normal wheel', () => {
+test('normal wheel', async () => {
 	const { acc, dispose, wheel } = setup(WheelPanZoom);
 	wheel({ x: 0, y: 200 });
 	const smallerScale = acc.scale;
 	expect(smallerScale < 0.9).toBe(true);
 	wheel({ x: 0, y: -200 });
 	expect(acc.scale > smallerScale).toBe(true);
-	dispose();
+	await dispose();
 });
 
-test('professional control schema', () => {
+test('professional control schema', async () => {
 	const options = { proControlSchema: false };
 	const { acc, dispose, wheel } = setup(WheelPanZoom, options);
 
@@ -46,5 +47,5 @@ test('professional control schema', () => {
 	expect(acc.scale > 1).toBe(true);
 	expect(options.proControlSchema).toBe(true);
 
-	dispose();
+	await dispose();
 });

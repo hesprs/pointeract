@@ -9,6 +9,7 @@ This module monitors wheel events, resolves them and emits pan/zoom events. It s
 **Normal Control Schema**: uses the mouse wheel to zoom.
 
 **Professional Control Schema**:
+
 - **Zoom**: mouse wheel + `ctrl` key
 - **Pan Horizontally**: mouse wheel + `shift` key
 - **Pan Vertically**: mouse wheel
@@ -30,7 +31,7 @@ const pointeract = new Pointeract(app, WheelPanZoom);
 type options = {
     proControlSchema: boolean;
     lockControlSchema: boolean;
-	zoomFactor: number;
+ zoomFactor: number;
 }
 ```
 

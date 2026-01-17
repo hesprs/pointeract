@@ -14,6 +14,7 @@ Above is the current test coverage.
 ## Standards
 
 Pointeract should obey the test requirements as follows:
+
 - When developing a new module, it is mandatory to write a unit test unless it's untestable.
 - The overall test coverage should be higher than 90%.
 

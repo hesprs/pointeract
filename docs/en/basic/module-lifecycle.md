@@ -25,6 +25,7 @@ pointeract.stop(PreventDefault); // no apparent change, but PreventDefault is di
 pointeract.start(); // only the base class and Drag are started
 pointeract.start(PreventDefault); // PreventDefault will not be restarted unless explicitly reenabled here
 ```
+
 :::
 
 ::: warning

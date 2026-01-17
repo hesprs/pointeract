@@ -1,52 +1,52 @@
 name: CI for Pull Requests
 
 on:
-  pull_request:
-    branches: [main]
-    types: [opened, synchronize, reopened, ready_for_review]
+    pull_request:
+        branches: [main]
+        types: [opened, synchronize, reopened, ready_for_review]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true  # Cancel previous runs for same PR/branch
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true # Cancel previous runs for same PR/branch
 
 jobs:
-  ci-pr:
-    runs-on: ubuntu-latest
+    ci-pr:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4.2.0
+            - name: Set up pnpm
+              uses: pnpm/action-setup@v4.2.0
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: latest
-          cache: 'pnpm'
+            - name: Set up Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: latest
+                  cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install
+            - name: Install dependencies
+              run: pnpm install
 
-      - name: Detect changed roots
-        id: detect
-        run: ./.github/scripts/detect_changes.sh
+            - name: Detect changed roots
+              id: detect
+              run: ./.github/scripts/detect_changes.sh
 
-      - name: Run checks
-        run: pnpm check
+            - name: Run checks
+              run: pnpm check
 
-      - name: Run build
-        run: pnpm build
+            - name: Run build
+              run: pnpm build
 
-      - name: Run tests (src or test changes)
-        if: |
-          contains(steps.detect.outputs.changed_roots, 'src') ||
-          contains(steps.detect.outputs.changed_roots, 'test')
-        run: pnpm test
+            - name: Run tests (src or test changes)
+              if: |
+                  contains(steps.detect.outputs.changed_roots, 'src') ||
+                  contains(steps.detect.outputs.changed_roots, 'test')
+              run: pnpm test
 
-      - name: Run docs build (docs changes)
-        if: contains(steps.detect.outputs.changed_roots, 'docs')
-        run: pnpm docs:build
+            - name: Run docs build (docs changes)
+              if: contains(steps.detect.outputs.changed_roots, 'docs')
+              run: pnpm docs:build

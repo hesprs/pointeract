@@ -1,6 +1,7 @@
 /// <reference types="vitest/config" />
 
 import { resolve } from 'node:path';
+
 import { defineConfig } from 'vite';
 
 export default defineConfig({
@@ -21,7 +22,7 @@ export default defineConfig({
 			},
 			name: 'Pointeract',
 			formats: ['es', 'cjs'],
-			fileName: format => `index.${format === 'cjs' ? 'cjs' : 'js'}`,
+			fileName: (format) => `index.${format === 'cjs' ? 'cjs' : 'js'}`,
 		},
 	},
 	test: {

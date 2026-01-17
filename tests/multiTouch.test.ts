@@ -1,8 +1,9 @@
-import { expect, test } from 'vitest';
 import { MultitouchPanZoom } from '@';
+import { expect, test } from 'vitest';
+
 import setup from './testUtils';
 
-test('two touches 100px apart, zoom in and pan up', () => {
+test('two touches 100px apart, zoom in and pan up', async () => {
 	const { acc, dispose, Pointer } = setup(MultitouchPanZoom);
 	const p1 = new Pointer();
 	const p2 = new Pointer();
@@ -20,5 +21,5 @@ test('two touches 100px apart, zoom in and pan up', () => {
 	expect(acc.scale).toEqual(2);
 	expect(acc.pan).toEqual({ x: 0, y: 100 });
 
-	dispose();
+	await dispose();
 });

@@ -1,4 +1,11 @@
-import type { Constrain, GeneralObject, ModifierReturn, Pointer, Pointers, StdEvents } from '@/declarations';
+import type {
+	Constrain,
+	GeneralObject,
+	ModifierReturn,
+	Pointer,
+	Pointers,
+	StdEvents,
+} from '@/declarations';
 import type Pointeract from '@/pointeract';
 
 type IsAny<T> = 0 extends 1 & T ? true : false;

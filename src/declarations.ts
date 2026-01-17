@@ -36,7 +36,9 @@ export type Options<T extends ModuleInput> = Partial<
 	UnionToIntersection<UndefinedToObject<AllModuleInstances<T>['options']>> & BaseOptions
 >;
 
-export type EventMap<T extends ModuleInput> = Constrain<UnionToIntersection<AllModuleInstances<T>['events']>>;
+export type EventMap<T extends ModuleInput> = Constrain<
+	UnionToIntersection<AllModuleInstances<T>['events']>
+>;
 
 export type Reloadable<T extends ModuleInput> = WrapInArray<T>[number];
 

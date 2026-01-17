@@ -1,82 +1,82 @@
 name: CI for Main
 
 on:
-  push:
-    branches: [main]
+    push:
+        branches: [main]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true  # Cancel previous runs for same PR/branch
+    group: ${{ github.workflow }}-${{ github.ref }}
+    cancel-in-progress: true # Cancel previous runs for same PR/branch
 
 permissions:
-  contents: read
-  pages: write
-  id-token: write
+    contents: read
+    pages: write
+    id-token: write
 
 jobs:
-  ci-main:
-    runs-on: ubuntu-latest
+    ci-main:
+        runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v6
-        with:
-          fetch-depth: 0
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v6
+              with:
+                  fetch-depth: 0
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4.2.0
+            - name: Set up pnpm
+              uses: pnpm/action-setup@v4.2.0
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: latest
-          cache: 'pnpm'
+            - name: Set up Node.js
+              uses: actions/setup-node@v6
+              with:
+                  node-version: latest
+                  cache: 'pnpm'
 
-      - name: Install dependencies
-        run: pnpm install
+            - name: Install dependencies
+              run: pnpm install
 
-      - name: Detect changed roots
-        id: detect
-        run: ./.github/scripts/detect_changes.sh
+            - name: Detect changed roots
+              id: detect
+              run: ./.github/scripts/detect_changes.sh
 
-      - name: Run checks
-        run: pnpm check
+            - name: Run checks
+              run: pnpm check
 
-      - name: Run build
-        run: pnpm build
+            - name: Run build
+              run: pnpm build
 
-      # region Test
-      - name: Run coverage tests (src or test changes)
-        if: |
-          contains(steps.detect.outputs.changed_roots, 'src') ||
-          contains(steps.detect.outputs.changed_roots, 'test')
-        run: pnpm test:coverage
+            # region Test
+            - name: Run coverage tests (src or test changes)
+              if: |
+                  contains(steps.detect.outputs.changed_roots, 'src') ||
+                  contains(steps.detect.outputs.changed_roots, 'test')
+              run: pnpm test:coverage
 
-      - name: Upload coverage reports to Codecov
-        if: |
-          contains(steps.detect.outputs.changed_roots, 'src') ||
-          contains(steps.detect.outputs.changed_roots, 'test')
-        uses: codecov/codecov-action@v5
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-      # endregion ========================================================================
+            - name: Upload coverage reports to Codecov
+              if: |
+                  contains(steps.detect.outputs.changed_roots, 'src') ||
+                  contains(steps.detect.outputs.changed_roots, 'test')
+              uses: codecov/codecov-action@v5
+              with:
+                  token: ${{ secrets.CODECOV_TOKEN }}
+            # endregion ========================================================================
 
-      # region Deploy Documentation
-      - name: Build
-        if: contains(steps.detect.outputs.changed_roots, 'docs')
-        run: pnpm docs:build
+            # region Deploy Documentation
+            - name: Build
+              if: contains(steps.detect.outputs.changed_roots, 'docs')
+              run: pnpm docs:build
 
-      - name: Setup Pages
-        if: contains(steps.detect.outputs.changed_roots, 'docs')
-        uses: actions/configure-pages@v5.0.0
+            - name: Setup Pages
+              if: contains(steps.detect.outputs.changed_roots, 'docs')
+              uses: actions/configure-pages@v5.0.0
 
-      - name: Upload artifact
-        if: contains(steps.detect.outputs.changed_roots, 'docs')
-        uses: actions/upload-pages-artifact@v4.0.0
-        with:
-          path: './docs/.vitepress/dist'
+            - name: Upload artifact
+              if: contains(steps.detect.outputs.changed_roots, 'docs')
+              uses: actions/upload-pages-artifact@v4.0.0
+              with:
+                  path: './docs/.vitepress/dist'
 
-      - name: Deploy to GitHub Pages
-        if: contains(steps.detect.outputs.changed_roots, 'docs')
-        uses: actions/deploy-pages@v4.0.5
-      # endregion ========================================================================
+            - name: Deploy to GitHub Pages
+              if: contains(steps.detect.outputs.changed_roots, 'docs')
+              uses: actions/deploy-pages@v4.0.5
+            # endregion ========================================================================

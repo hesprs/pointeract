@@ -1,8 +1,9 @@
-import { expect, test } from 'vitest';
 import { Click, Drag, MultitouchPanZoom, PreventDefault } from '@';
+import { expect, test } from 'vitest';
+
 import setup from './testUtils';
 
-test('hot stop / start a module', () => {
+test('hot stop / start a module', async () => {
 	const { acc, dispose, Pointer, pointeract } = setup([Click, PreventDefault], {
 		coordinateOutput: 'relativeFraction',
 	});
@@ -22,11 +23,11 @@ test('hot stop / start a module', () => {
 	}
 	expect(acc.clicks).toBe(3);
 
-	dispose();
+	await dispose();
 });
 
 // #region chaotic-test
-test('chaotic movements', () => {
+test('chaotic movements', async () => {
 	const { acc, dispose, Pointer } = setup([MultitouchPanZoom, Drag]);
 	const p1 = new Pointer();
 	const p2 = new Pointer();
@@ -68,6 +69,6 @@ test('chaotic movements', () => {
 	expect(pos).toEqual({ x: -100, y: -300 }); // result: left 100, up 300
 	expect(1.7 < acc.scale && acc.scale < 1.72).toBe(true);
 
-	dispose();
+	await dispose();
 });
 // #endregion

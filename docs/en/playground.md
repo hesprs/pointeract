@@ -6,8 +6,6 @@ Loaded modules: [`PreventDefault`](/modules/prevent-default) [`Drag`](/modules/d
 import Playground from '../components/playground.vue'
 </script>
 
-<ClientOnly>
-  <Playground />
-</ClientOnly>
+<ClientOnly><Playground /></ClientOnly>
 
 Try it out! drag, pan, zoom, pinch, click, etc.

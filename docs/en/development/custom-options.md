@@ -10,7 +10,7 @@ Simply use the `options` property to define options with their default values:
 import { BaseModule } from 'pointeract';
 
 class YourModule extends BaseModule {
-	options = {
+ options = {
         customModule: true,
     };
 }

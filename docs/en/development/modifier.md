@@ -34,7 +34,7 @@ class YourModule extends BaseModule {
 }
 ```
 
-The example above monitors the zoom event and logs the number of times it has been dispatched. It keeps all  events unchanged.
+The example above monitors the zoom event and logs the number of times it has been dispatched. It keeps all events unchanged.
 
 ::: info
 When multiple modifiers are used, the first modifier that does not return `true` will be the only one that is executed.

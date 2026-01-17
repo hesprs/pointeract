@@ -1,4 +1,12 @@
-import { Click, Drag, MultitouchPanZoom, Pointeract, PreventDefault, type StdEvents, WheelPanZoom } from '@';
+import {
+	Click,
+	Drag,
+	MultitouchPanZoom,
+	Pointeract,
+	PreventDefault,
+	type StdEvents,
+	WheelPanZoom,
+} from '@';
 
 const square = document.getElementById('test-square') as HTMLElement;
 const data = {

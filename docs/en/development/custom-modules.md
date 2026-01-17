@@ -15,7 +15,7 @@ class MyModule extends BaseModule {
 ```
 
 ::: tip
-In most cases, a Pointeract module does not need construction by yourself, which is done in  `BaseModule`.
+In most cases, a Pointeract module does not need construction by yourself, which is done in `BaseModule`.
 :::
 
 ## Properties
@@ -36,9 +36,9 @@ class BaseModule {
 }
 
 type Pointer = {
-	records: Array<{ x: number; y: number; timestamp: number }>; // pointer records, coordinates are absolute screen coords
-	target: EventTarget | null;
-	[key: Indexable]: any; // your can add your own properties into a pointer, the key can be a string, number or symbol
+ records: Array<{ x: number; y: number; timestamp: number }>; // pointer records, coordinates are absolute screen coords
+ target: EventTarget | null;
+ [key: Indexable]: any; // your can add your own properties into a pointer, the key can be a string, number or symbol
 };
 ```
 
@@ -46,22 +46,21 @@ type Pointer = {
 - `window`: The window context of the monitoring element. It's always better practice to use `this.window` instead of direct `window` in a module.
 - `pointers`: A hot-updated map of pointers, the key is the pointer ID, the value is a pointer object.
 - `utils`: A set of utilities for a module:
-  - `getNthValue`: Get the nth pointer value in the pointers map.
-  - `screenToTarget`: Convert screen coordinates to target coordinates that is configured by `coordinateOutput`, always use it if you are emitting events that involve coordinates.
-  - `dispatch`: Dispatch an event with a given name and detail.
-  - `getLast`: A pure functional utility: get the last element in an array.import { BaseModule } from 'pointeract';
-
+    - `getNthValue`: Get the nth pointer value in the pointers map.
+    - `screenToTarget`: Convert screen coordinates to target coordinates that is configured by `coordinateOutput`, always use it if you are emitting events that involve coordinates.
+    - `dispatch`: Dispatch an event with a given name and detail.
+    - `getLast`: A pure functional utility: get the last element in an array.import { BaseModule } from 'pointeract';
 
 ## Hooks
 
 ```TypeScript
 class BaseModule {
-	onPointerDown?: (...args: [PointerEvent, Pointer, Pointers]) => void;
-	onPointerMove?: (...args: [PointerEvent, Pointer, Pointers]) => void;
-	onPointerUp?: (...args: [PointerEvent, Pointer, Pointers]) => void;
-	onWheel?: (...args: [WheelEvent]) => void;
-	onStart?: () => void;
-	onStop?: () => void;
+ onPointerDown?: (...args: [PointerEvent, Pointer, Pointers]) => void;
+ onPointerMove?: (...args: [PointerEvent, Pointer, Pointers]) => void;
+ onPointerUp?: (...args: [PointerEvent, Pointer, Pointers]) => void;
+ onWheel?: (...args: [WheelEvent]) => void;
+ onStart?: () => void;
+ onStop?: () => void;
     modifier?: () => ModifierReturn;
     dispose?: () => void;
 }
@@ -83,6 +82,7 @@ Always remember to use arrow functions when defining these hooks, otherwise the 
 :::
 
 > **Reference to**:
+>
 > - [MDN PointerEvent](https://developer.mozilla.org/en-US/docs/Web/API/PointerEvent)
 > - [MDN WheelEvent](https://developer.mozilla.org/en-US/docs/Web/API/WheelEvent)
 

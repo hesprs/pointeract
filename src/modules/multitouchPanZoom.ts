@@ -28,7 +28,9 @@ export default class MultitouchPanZoom extends BaseModule {
 	onPointerDown = (_e: PointerEvent, _pointer: Pointer, pointers: Pointers) => {
 		if (pointers.size === 2) {
 			this.#pinchZoomState.lastDistance = this.#getPointerDistance();
-			this.#pinchZoomState.lastMidpoint = this.utils.screenToTarget(this.#getPointerMidpoint());
+			this.#pinchZoomState.lastMidpoint = this.utils.screenToTarget(
+				this.#getPointerMidpoint(),
+			);
 		}
 	};
 
