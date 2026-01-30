@@ -9,7 +9,7 @@
 
 <p align="center">
   <a href="https://github.com/hesprs/pointeract/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/hesprs/pointeract/ci-main.yml?style=flat&logo=github&logoColor=white&label=CI&labelColor=d4ab00&color=333333" alt="CI Status" />
+    <img src="https://img.shields.io/github/actions/workflow/status/hesprs/pointeract/ci-test.yml?style=flat&logo=github&logoColor=white&label=CI&labelColor=d4ab00&color=333333" alt="CI Status" />
   </a>
   <a href="https://codecov.io/github/hesprs/pointeract">
     <img src="https://img.shields.io/codecov/c/github/hesprs/pointeract/main?style=flat&logo=codecov&logoColor=white&label=Test%20Coverage&labelColor=ff0077&color=333333" alt="Test Coverage" />

@@ -4,9 +4,16 @@ on:
   pull_request:
     branches: [main]
     types: [opened, synchronize, reopened, ready_for_review]
+    paths:
+      - src/**
+      - test/**
+  push:
+    branches: [main]
+    paths:
+      - src/**
+      - test/**
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true # Cancel previous runs for same PR/branch
 
 jobs:
@@ -31,22 +38,16 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Detect changed roots
-        id: detect
-        run: ./.github/scripts/detect_changes.sh
-
-      - name: Run checks
-        run: pnpm check
-
-      - name: Run build
-        run: pnpm build
-
-      - name: Run tests (src or test changes)
-        if: |
-          contains(steps.detect.outputs.changed_roots, 'src') ||
-          contains(steps.detect.outputs.changed_roots, 'test')
+      - name: Run tests (pull requests)
+        if: github.event_name == 'pull_request'
         run: pnpm test
+      
+      - name: Run coverage tests (push to main)
+        if: github.event_name == 'push'
+        run: pnpm test:coverage
 
-      - name: Run docs build (docs changes)
-        if: contains(steps.detect.outputs.changed_roots, 'docs')
-        run: pnpm docs:build
+      - name: Upload coverage reports to Codecov (push to main)
+        if: github.event_name == 'push'
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}

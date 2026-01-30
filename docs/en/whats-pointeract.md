@@ -9,7 +9,7 @@ To use it, one only needs to bind a DOM element and load some modules, and it wi
 ## Advantages
 
 - **🐣 Tiny**: With base **1KB** minified and gzipped, **1-2KB** for normal usage.
-- **💪 Robust**: Excels at complex gestures where most interaction libraries fail, [Why?](/development/testing#monkey-test)
+- **🦾 Robust**: Excels at complex gestures where most interaction libraries fail, [Why?](/development/testing#monkey-test)
 - **🧩 Extensible**: Extend Pointeract effortlessly via our module API.
 - **🔌 Flexible during Runtime**: Options are updated reactively. Stop/start any module during runtime.
 - **🛡️ Safe**: Not modifying the DOM (except the `PreventDefault` module). Meticulous clean up prevents memory leaks.
