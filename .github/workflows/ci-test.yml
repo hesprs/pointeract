@@ -1,4 +1,4 @@
-name: CI for Pull Requests
+name: CI for Tests
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci-pr:
+  ci:
     runs-on: ubuntu-slim
 
     steps:
