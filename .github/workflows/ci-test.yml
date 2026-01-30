@@ -14,7 +14,8 @@ on:
       - test/**
 
 concurrency:
-  cancel-in-progress: true # Cancel previous runs for same PR/branch
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci-pr:
@@ -41,7 +42,7 @@ jobs:
       - name: Run tests (pull requests)
         if: github.event_name == 'pull_request'
         run: pnpm test
-      
+
       - name: Run coverage tests (push to main)
         if: github.event_name == 'push'
         run: pnpm test:coverage

@@ -8,7 +8,8 @@ on:
     branches: [main]
 
 concurrency:
-  cancel-in-progress: true # Cancel previous runs for same PR/branch
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   ci-pr:
