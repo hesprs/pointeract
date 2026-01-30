@@ -1,69 +1,67 @@
 import type BaseModule from '@/baseModule';
 import type {
+	Augmentation,
 	Coordinates,
-	EventMap,
-	GeneralArguments,
+	Events,
 	GeneralObject,
-	Hooks,
-	ModifierReturn,
 	ModuleCtor,
 	ModuleInput,
+	ModuleInputCtor,
 	Options,
 	Pointers,
 	Reloadable,
+	Constrain,
 } from '@/declarations';
 
-export default class Pointeract<T extends ModuleInput = []> extends EventTarget {
-	#monitoringElement: HTMLElement;
+import { HookKeys } from '@/baseModule';
+import { toArray } from '@/utils';
+
+export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
+	#element: HTMLElement;
 	#pointers: Pointers = new Map();
 	#modules: Record<string, BaseModule> = {};
 	#pausedModules: Record<string, BaseModule> = {};
 	#_window: Window | null;
-	options: GeneralObject;
+	options: Options<T>;
+	// oxlint-disable-next-line typescript/no-explicit-any
+	declare private _augmentSlot: any;
 
 	get #window() {
 		if (!this.#_window) throw new Error('[Pointeract] Window is not defined.');
 		return this.#_window;
 	}
 
-	constructor(monitoringElement: HTMLElement, _modules?: T, options: Options<T> = {}) {
+	constructor(options: Options<T>, _modules?: T) {
 		super();
 		const modules = toArray(_modules ? _modules : ([] as Array<ModuleCtor>));
-		this.#_window = monitoringElement.ownerDocument.defaultView;
-		this.#monitoringElement = monitoringElement;
+		this.#_window = options.element.ownerDocument.defaultView;
+		this.#element = options.element;
+		if (!options.coordinateOutput) options.coordinateOutput = 'relative';
 		this.options = options;
-		this.#fillIn({ coordinateOutput: 'relative' });
 		modules.forEach((module) => {
 			const instance = new module(
 				this.moduleUtils,
 				this.#window,
 				this.#pointers,
-				this.#monitoringElement,
+				this.#element,
+				this.options,
 			);
-			if (instance.options) this.#fillIn(instance.options);
 			Object.assign(instance, { options });
 			this.#modules[module.name] = instance;
 		});
 	}
 
-	#fillIn = (patch: GeneralObject) => {
-		for (const [k, v] of Object.entries(patch))
-			if (!(k in this.options)) (this.options as GeneralObject)[k] = v;
-	};
-
-	on = <K extends keyof EventMap<T>>(type: K, listener: (event: EventMap<T>[K]) => void) => {
+	on = <K extends keyof Events<T>>(type: K, listener: (event: Events<T>[K]) => void) => {
 		super.addEventListener(type as string, listener as EventListener);
 		return () => this.off(type, listener);
 	};
-	off<K extends keyof EventMap<T>>(type: K, listener: (event: EventMap<T>[K]) => void) {
+	off<K extends keyof Events<T>>(type: K, listener: (event: Events<T>[K]) => void) {
 		super.removeEventListener(type as string, listener as EventListener);
 	}
 
-	declare readonly events: EventMap<T>;
-
-	moduleUtils = {
-		getNthValue: (n: number) => {
-			const error = new Error('[Pointeract] Invalid pointer index');
+	private moduleUtils = {
+		getNthPointer: (n: number) => {
+			const error = new Error('[Pointeract] Invalid pointer index.');
 			if (n < 0 || n >= this.#pointers.size) throw error;
 			let i = 0;
 			for (const value of this.#pointers.values()) {
@@ -74,9 +72,9 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 		},
 
 		// Screen to Container
-		screenToTarget: (raw: Coordinates) => {
+		toTargetCoords: (raw: Coordinates) => {
 			if (this.options.coordinateOutput === 'absolute') return raw;
-			const rect = this.#monitoringElement.getBoundingClientRect();
+			const rect = this.#element.getBoundingClientRect();
 			raw.x -= rect.left;
 			raw.y -= rect.top;
 			if (this.options.coordinateOutput === 'relative') return raw;
@@ -85,26 +83,49 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 			return raw;
 		},
 
-		dispatch: <T>(name: string, detail?: T) => {
-			let lastResult: ModifierReturn = true;
+		dispatch: <N extends keyof Constrain<Events<T>>>(
+			name: N,
+			detail?: Events<T>[N]['detail'],
+		) => {
+			let lastResult: boolean | Events<T>[N]['detail'] = true;
 			for (const value of Object.values(this.#modules)) {
-				if (!value.modifier) continue;
-				lastResult = value.modifier(name, detail);
-				if (lastResult !== true) break;
+				if (!value.modifiers || !(name in value.modifiers)) continue;
+				lastResult = !detail
+					? (
+							value.modifiers[
+								name as keyof typeof value.modifiers
+							] as unknown as () => boolean
+						)()
+					: (
+							value.modifiers[name as keyof typeof value.modifiers] as unknown as (
+								detail?: Events<T>[N]['detail'],
+							) => boolean | Events<T>[N]['detail']
+						)(detail);
+				if (lastResult === false) return;
 			}
-			if (lastResult === false) return;
 			let event: CustomEvent;
-			if (lastResult === true) event = new CustomEvent<T>(name, { detail });
-			else event = new CustomEvent(lastResult.name, { detail: lastResult.detail });
+			if (lastResult === true)
+				event = detail
+					? new CustomEvent<N>(name as string, { detail })
+					: new CustomEvent(name as string);
+			else event = new CustomEvent<N>(name as string, { detail: lastResult });
 			this.dispatchEvent(event);
 		},
 
-		getLast: <T>(arr: Array<T>, num: number = 0) => arr[arr.length - 1 - num],
+		augment: (aug: GeneralObject) => {
+			Object.entries(aug).forEach(([key, value]) => {
+				this[key as '_augmentSlot'] = value;
+			});
+		},
 	};
 
-	#runHooks(field: Hooks, ...args: GeneralArguments) {
+	dispatch = this.moduleUtils.dispatch;
+
+	#runHooks<K extends HookKeys>(field: K, ...args: Parameters<Required<BaseModule>[K]>) {
 		Object.values(this.#modules).forEach((module) => {
-			if (module[field]) module[field](...args);
+			const hook = module[field];
+			// oxlint-disable-next-line typescript/no-explicit-any
+			if (hook) hook(...(args as any));
 		});
 	}
 
@@ -137,10 +158,10 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 
 	stop = (_toStop?: Reloadable<T>) => {
 		const stopPointeract = () => {
-			this.#monitoringElement.removeEventListener('pointerdown', this.#onPointerDown);
+			this.#element.removeEventListener('pointerdown', this.#onPointerDown);
 			this.#window.removeEventListener('pointermove', this.#onPointerMove);
 			this.#window.removeEventListener('pointerup', this.#onPointerUp);
-			this.#monitoringElement.removeEventListener('wheel', this.#onWheel);
+			this.#element.removeEventListener('wheel', this.#onWheel);
 			this.#runHooks('onStop');
 		};
 		const stopModule = (moduleCtor: ModuleCtor) => {
@@ -160,10 +181,10 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 
 	start = (_toStart?: Reloadable<T>) => {
 		const startPointeract = () => {
-			this.#monitoringElement.addEventListener('pointerdown', this.#onPointerDown);
+			this.#element.addEventListener('pointerdown', this.#onPointerDown);
 			this.#window.addEventListener('pointermove', this.#onPointerMove);
 			this.#window.addEventListener('pointerup', this.#onPointerUp);
-			this.#monitoringElement.addEventListener('wheel', this.#onWheel);
+			this.#element.addEventListener('wheel', this.#onWheel);
 			this.#runHooks('onStart');
 		};
 		const startModule = (moduleCtor: ModuleCtor) => {
@@ -188,4 +209,10 @@ export default class Pointeract<T extends ModuleInput = []> extends EventTarget 
 	};
 }
 
-const toArray = <T>(toTrans: T | Array<T>) => (Array.isArray(toTrans) ? toTrans : [toTrans]);
+type PointeractType = new <M extends ModuleInputCtor = []>(
+	...args: ConstructorParameters<typeof Pointeract<M>>
+) => Pointeract<M> & Augmentation<M>;
+
+export type PointeractInterface<M extends ModuleInput = []> = Pointeract<[]> & Augmentation<M>;
+
+export default Pointeract as PointeractType;

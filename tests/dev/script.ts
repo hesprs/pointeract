@@ -4,8 +4,12 @@ import {
 	MultitouchPanZoom,
 	Pointeract,
 	PreventDefault,
+	Lubricator,
 	type StdEvents,
 	WheelPanZoom,
+	panPreset,
+	zoomPreset,
+	dragPreset,
 } from '@';
 
 const square = document.getElementById('test-square') as HTMLElement;
@@ -16,8 +20,8 @@ const data = {
 };
 function pan(e: StdEvents['pan']) {
 	const detail = e.detail;
-	data.x += detail.x;
-	data.y += detail.y;
+	data.x += detail.deltaX;
+	data.y += detail.deltaY;
 }
 function zoom(e: StdEvents['zoom']) {
 	const detail = e.detail;
@@ -34,14 +38,18 @@ function trueClick(e: StdEvents['trueClick']) {
 	square.style.animation = 'amplify-and-shrink 0.4s';
 }
 
-const pointeract = new Pointeract(square, [
-	PreventDefault,
-	MultitouchPanZoom,
-	Drag,
-	Click,
-	WheelPanZoom,
-]).start();
-new Pointeract(document.body, PreventDefault).start();
+const pointeract = new Pointeract(
+	{
+		element: square,
+		lubricator: {
+			pan: panPreset,
+			drag: dragPreset,
+			zoom: zoomPreset,
+		},
+	},
+	[PreventDefault, MultitouchPanZoom, Drag, Click, WheelPanZoom, Lubricator],
+).start();
+new Pointeract({ element: document.body }, PreventDefault).start();
 pointeract.on('drag', pan);
 pointeract.on('pan', pan);
 pointeract.on('zoom', zoom);

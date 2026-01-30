@@ -24,11 +24,11 @@ This class provides the basic stuff for a module:
 
 ```TypeScript
 class BaseModule {
-    monitoringElement: HTMLElement;
+    element: HTMLElement;
     window: Window;
     pointers: Map<number, Pointer>;
     utils: {
-        getNthValue: (n: number) => Pointer;
+        getNthPointer: (n: number) => Pointer;
         screenToTarget: (raw: Coordinates) => Coordinates;
         dispatch: (name: string, detail?: unknown) => void;
         getLast: <T>(arr: T[], num?: number) => T;
@@ -42,14 +42,14 @@ type Pointer = {
 };
 ```
 
-- `monitoringElement`: The element to be monitored, the same as the first argument passed into the constructor.
+- `element`: The element to be monitored, the same as the first argument passed into the constructor.
 - `window`: The window context of the monitoring element. It's always better practice to use `this.window` instead of direct `window` in a module.
 - `pointers`: A hot-updated map of pointers, the key is the pointer ID, the value is a pointer object.
 - `utils`: A set of utilities for a module:
-    - `getNthValue`: Get the nth pointer value in the pointers map.
-    - `screenToTarget`: Convert screen coordinates to target coordinates that is configured by `coordinateOutput`, always use it if you are emitting events that involve coordinates.
-    - `dispatch`: Dispatch an event with a given name and detail.
-    - `getLast`: A pure functional utility: get the last element in an array.import { BaseModule } from 'pointeract';
+  - `getNthPointer`: Get the nth pointer value in the pointers map.
+  - `screenToTarget`: Convert screen coordinates to target coordinates that is configured by `coordinateOutput`, always use it if you are emitting events that involve coordinates.
+  - `dispatch`: Dispatch an event with a given name and detail.
+  - `getLast`: A pure functional utility: get the last element in an array.import { BaseModule } from 'pointeract';
 
 ## Hooks
 

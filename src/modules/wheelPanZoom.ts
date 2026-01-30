@@ -1,5 +1,7 @@
-import BaseModule from '@/baseModule';
-import type { Coordinates } from '@/declarations';
+import type { Coordinates, BaseOptions } from '@/declarations';
+
+import BaseModule, { BaseArgs } from '@/baseModule';
+import { fillIn } from '@/utils';
 
 /*
 to normal computer users:
@@ -15,15 +17,23 @@ diff x > 0 => pan left => pan x < 0
 diff y < 0 => pan right => pan y > 0
 */
 
-export default class wheelPanZoom extends BaseModule {
-	options = {
-		proControlSchema: false,
-		zoomFactor: 0.1,
-		lockControlSchema: false,
-	};
+interface Options extends BaseOptions {
+	proControlSchema?: boolean;
+	zoomFactor?: number;
+	lockControlSchema?: boolean;
+}
+
+export default class wheelPanZoom extends BaseModule<Options> {
+	constructor(...args: BaseArgs) {
+		super(...args);
+		fillIn(
+			{ proControlSchema: false, zoomFactor: 0.1, lockControlSchema: false },
+			this.options,
+		);
+	}
 
 	onWheel = (e: WheelEvent) => {
-		const options = this.options;
+		const options = this.options as Required<Options>;
 		if (
 			!options.proControlSchema &&
 			!options.lockControlSchema &&
@@ -33,23 +43,23 @@ export default class wheelPanZoom extends BaseModule {
 		if (options.proControlSchema) {
 			if (e.ctrlKey) {
 				const scaleFactor = e.deltaY > 0 ? 1 - options.zoomFactor : 1 + options.zoomFactor;
-				const origin = this.utils.screenToTarget({ x: e.clientX, y: e.clientY });
+				const origin = this.toTargetCoords({ x: e.clientX, y: e.clientY });
 				this.#dispatchZoomEvent(scaleFactor, origin);
 			} else if (e.shiftKey && Math.abs(e.deltaX) <= Math.abs(e.deltaY))
-				this.#dispatchPanEvent({ x: -e.deltaY, y: -e.deltaX });
-			else this.#dispatchPanEvent({ x: -e.deltaX, y: -e.deltaY });
+				this.#dispatchPanEvent({ deltaX: -e.deltaY, deltaY: -e.deltaX });
+			else this.#dispatchPanEvent({ deltaX: -e.deltaX, deltaY: -e.deltaY });
 		} else {
 			const scaleFactor = 1 - (options.zoomFactor / 50) * e.deltaY;
-			const origin = this.utils.screenToTarget({ x: e.clientX, y: e.clientY });
+			const origin = this.toTargetCoords({ x: e.clientX, y: e.clientY });
 			this.#dispatchZoomEvent(scaleFactor, origin);
 		}
 	};
 
 	#dispatchZoomEvent(factor: number, origin: Coordinates) {
-		this.utils.dispatch('zoom', { x: origin.x, y: origin.y, factor });
+		this.dispatch('zoom', { x: origin.x, y: origin.y, factor });
 	}
 
-	#dispatchPanEvent(diff: Coordinates) {
-		this.utils.dispatch('pan', diff);
+	#dispatchPanEvent(diff: { deltaX: number; deltaY: number }) {
+		this.dispatch('pan', diff);
 	}
 }

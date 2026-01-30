@@ -1,4 +1,13 @@
-import { Click, Drag, MultitouchPanZoom, PreventDefault } from '@';
+import {
+	BaseArgs,
+	BaseModule,
+	BaseOptions,
+	Click,
+	Drag,
+	MultitouchPanZoom,
+	PreventDefault,
+	StdEvents,
+} from '@';
 import { expect, test } from 'vitest';
 
 import setup from './testUtils';
@@ -26,8 +35,8 @@ test('hot stop / start a module', async () => {
 	await dispose();
 });
 
-// #region chaotic-test
-test('chaotic movements', async () => {
+// #region monkey-test
+test('monkey test', async () => {
 	const { acc, dispose, Pointer } = setup([MultitouchPanZoom, Drag]);
 	const p1 = new Pointer();
 	const p2 = new Pointer();
@@ -72,3 +81,25 @@ test('chaotic movements', async () => {
 	await dispose();
 });
 // #endregion
+
+test('augmentation', async () => {
+	type Augmentation = {
+		sample: Aug['sample'];
+	};
+
+	class Aug extends BaseModule<BaseOptions, StdEvents, Augmentation> {
+		constructor(...args: BaseArgs) {
+			super(...args);
+			this.augment({
+				sample: this.sample,
+			});
+		}
+
+		private sample = () => {};
+	}
+
+	const { pointeract, dispose } = setup(Aug);
+	expect(pointeract.sample).toBeDefined();
+
+	await dispose();
+});

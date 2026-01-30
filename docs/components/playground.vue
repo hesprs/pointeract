@@ -11,8 +11,20 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, useTemplateRef } from 'vue';
-import { Click, Drag, MultitouchPanZoom, Pointeract, PreventDefault, WheelPanZoom } from '@';
+import { onMounted, reactive, useTemplateRef, onBeforeUnmount } from 'vue';
+import {
+	Click,
+	Drag,
+	MultitouchPanZoom,
+	Pointeract,
+	PreventDefault,
+	WheelPanZoom,
+	PointeractInterface,
+	Lubricator,
+	dragPreset,
+	zoomPreset,
+	panPreset,
+} from '@';
 
 const square = useTemplateRef('square');
 const data = reactive({
@@ -22,21 +34,30 @@ const data = reactive({
 	streak: 0,
 });
 let streakTimeout: undefined | NodeJS.Timeout;
+let pointeract: PointeractInterface<
+	[Click, Drag, MultitouchPanZoom, PreventDefault, WheelPanZoom, Lubricator]
+>;
+
 onMounted(() => {
-	const pointeract = new Pointeract(square.value as HTMLElement, [
-		PreventDefault,
-		WheelPanZoom,
-		MultitouchPanZoom,
-		Click,
-		Drag,
-	]).start();
+	if (!square.value) return;
+	pointeract = new Pointeract(
+		{
+			element: square.value,
+			lubricator: {
+				drag: dragPreset,
+				pan: panPreset,
+				zoom: zoomPreset,
+			},
+		},
+		[PreventDefault, WheelPanZoom, MultitouchPanZoom, Click, Drag, Lubricator],
+	).start();
 	pointeract.on('pan', (e) => {
-		data.x += e.detail.x;
-		data.y += e.detail.y;
+		data.x += e.detail.deltaX;
+		data.y += e.detail.deltaY;
 	});
 	pointeract.on('drag', (e) => {
-		data.x += e.detail.x;
-		data.y += e.detail.y;
+		data.x += e.detail.deltaX;
+		data.y += e.detail.deltaY;
 	});
 	pointeract.on('zoom', (e) => {
 		const detail = e.detail;
@@ -49,8 +70,12 @@ onMounted(() => {
 		if (streakTimeout) clearTimeout(streakTimeout);
 		streakTimeout = setTimeout(() => {
 			data.streak = 0;
-		}, pointeract.options.clickPreserveTime);
+		}, 400);
 	});
+});
+
+onBeforeUnmount(() => {
+	pointeract.dispose();
 });
 </script>
 
@@ -75,6 +100,7 @@ onMounted(() => {
 	left: calc(50% - 150px);
 	width: 300px;
 	height: 300px;
+	color: white;
 	background-color: rgb(72, 130, 255);
 	border-radius: 16px;
 	transform-origin: 0 0;

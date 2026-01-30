@@ -1,2 +1,3 @@
-user-agent: *
-sitemap: https://pointeract.consensia.cc/sitemap.xml
+User-agent: *
+Allow: /
+Sitemap: https://pointeract.consensia.cc/sitemap.xml

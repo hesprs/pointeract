@@ -77,6 +77,8 @@
 		"typescript/no-extra-non-null-assertion": "warn",
 		"typescript/no-floating-promises": "warn",
 		"typescript/no-for-in-array": "warn",
+		"typescript/no-non-null-assertion": "warn",
+		"typescript/no-explicit-any": "warn",
 		"typescript/no-implied-eval": "warn",
 		"typescript/no-meaningless-void-operator": "warn",
 		"typescript/no-misused-new": "warn",
@@ -107,26 +109,6 @@
 		"unicorn/no-useless-spread": "warn",
 		"unicorn/prefer-set-size": "warn",
 		"unicorn/prefer-string-starts-ends-with": "warn"
-	},
-	"settings": {
-		"jsdoc": {
-			"ignorePrivate": false,
-			"ignoreInternal": false,
-			"ignoreReplacesDocs": true,
-			"overrideReplacesDocs": true,
-			"augmentsExtendsReplacesDocs": false,
-			"implementsReplacesDocs": false,
-			"exemptDestructuredRootsFromChecks": false,
-			"tagNamePreference": {}
-		},
-		"vitest": {
-			"typecheck": false
-		},
-		"plugins": ["typescript"],
-		"rules": {
-			"typescript/no-floating-promises": "error",
-			"typescript/no-unsafe-assignment": "warn"
-		}
 	},
 	"env": {
 		"builtin": true

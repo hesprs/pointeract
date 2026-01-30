@@ -20,7 +20,8 @@ export default defineConfig({
 			'meta',
 			{
 				name: 'keywords',
-				content: 'user interaction,pan zoom,multitouch,custom modules,modern lightweight',
+				content:
+					'user interaction,pan zoom,multitouch,custom modules,gestures,javascript,typescript,pointeract',
 			},
 		],
 	],

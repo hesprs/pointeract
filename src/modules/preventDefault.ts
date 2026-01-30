@@ -5,19 +5,19 @@ export default class PreventDefault extends BaseModule {
 	#preventDefaultFunction = (e: Event) => e.preventDefault();
 
 	onStart = () => {
-		this.monitoringElement.style.touchAction = 'none';
-		this.monitoringElement.addEventListener('gesturestart', this.#preventDefaultFunction, {
+		this.element.style.touchAction = 'none';
+		this.element.addEventListener('gesturestart', this.#preventDefaultFunction, {
 			passive: false,
 		});
-		this.monitoringElement.addEventListener('gesturechange', this.#preventDefaultFunction, {
+		this.element.addEventListener('gesturechange', this.#preventDefaultFunction, {
 			passive: false,
 		});
 	};
 
 	onStop = () => {
-		this.monitoringElement.style.touchAction = '';
-		this.monitoringElement.removeEventListener('gesturestart', this.#preventDefaultFunction);
-		this.monitoringElement.removeEventListener('gesturechange', this.#preventDefaultFunction);
+		this.element.style.touchAction = '';
+		this.element.removeEventListener('gesturestart', this.#preventDefaultFunction);
+		this.element.removeEventListener('gesturechange', this.#preventDefaultFunction);
 	};
 
 	dispose = this.onStop;

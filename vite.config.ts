@@ -28,7 +28,7 @@ export default defineConfig({
 	test: {
 		root: __dirname,
 		environment: 'happy-dom',
-		setupFiles: ['./tests/mockRect.ts'],
+		setupFiles: ['./tests/testUtils.ts'],
 		coverage: {
 			include: ['src/**/*.ts'],
 		},

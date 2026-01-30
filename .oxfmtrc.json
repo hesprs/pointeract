@@ -14,5 +14,13 @@
 			["sibling", "sibling-type"],
 			["index", "index-type"]
 		]
-	}
+	},
+	"overrides": [
+		{
+			"files": ["*.md", "*.yaml", "*.yml"],
+			"options": {
+				"tabWidth": 2
+			}
+		}
+	]
 }

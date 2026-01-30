@@ -18,14 +18,14 @@ Pointeract should obey the test requirements as follows:
 - When developing a new module, it is mandatory to write a unit test unless it's untestable.
 - The overall test coverage should be higher than 90%.
 
-## Chaotic Testing
+## Monkey Test
 
 One great feature of Pointeract that we are proud of is its robustness which exceeds most competitors. The following test is an example:
 
-<<< ../../../tests/integration.test.ts#chaotic-test
+<<< ../../../tests/integration.test.ts#monkey-test
 
 The interaction denoted by the code is visualized as follows:
 
-![Chaotic Testing](/chaoticTest.svg)
+![Monkey Test](/monkeyTest.svg)
 
 The aim of this test is to simulate chaotic multitouch drag, pan and zoom intends to ensure `drag` and `multitouchPanZoom` modules can survive extreme conditions. Pointeract coped it well. But when the similar test (manual human test) is conducted in other libraries like `Hammer.js` or `Interact.js`, [they failed](/whats-pointeract#how-pointeract-stands-out).

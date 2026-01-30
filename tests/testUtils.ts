@@ -1,9 +1,38 @@
-import { type Click, type Ctors, type Drag, Pointeract, type WheelPanZoom } from '@';
-import { Window as HappyWindow } from 'happy-dom';
+import { type Click, type Drag, PointeractInterface, type WheelPanZoom, Pointeract } from '@';
+import type { Coordinates, ModuleInputCtor, Options, StdEvents } from '@/declarations';
+import { Window as HappyWindow, PointerEvent, HTMLDivElement, WheelEvent } from 'happy-dom';
+import { beforeEach, vi } from 'vitest';
 
-import type { Coordinates, ModuleInput, Options, StdEvents } from '@/declarations';
+beforeEach(() => {
+	vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
+		function (this: HTMLElement) {
+			if (this.id === 'test-square') {
+				return {
+					width: 200,
+					height: 200,
+					left: 0,
+					top: 0,
+					right: 200,
+					bottom: 200,
+					x: 0,
+					y: 0,
+				} as DOMRect;
+			}
+			return {
+				width: 0,
+				height: 0,
+				left: 0,
+				top: 0,
+				right: 0,
+				bottom: 0,
+				x: 0,
+				y: 0,
+			} as DOMRect;
+		},
+	);
+});
 
-type ModulePreset = Ctors<[WheelPanZoom, Drag, Click]>;
+type ModulePreset = [WheelPanZoom, Drag, Click];
 
 class Accumulator {
 	pan = {
@@ -16,8 +45,8 @@ class Accumulator {
 	};
 	scale = 1;
 	clicks = 0;
-	private pointeract: Pointeract<ModulePreset>;
-	constructor(pointeract: Pointeract<ModulePreset>) {
+	private pointeract: PointeractInterface<ModulePreset>;
+	constructor(pointeract: PointeractInterface<ModulePreset>) {
 		this.pointeract = pointeract;
 		pointeract.on('pan', this.panner);
 		pointeract.on('drag', this.dragger);
@@ -26,13 +55,13 @@ class Accumulator {
 	}
 	private panner = (e: StdEvents['pan']) => {
 		const detail = e.detail;
-		this.pan.x += detail.x;
-		this.pan.y += detail.y;
+		this.pan.x += detail.deltaX;
+		this.pan.y += detail.deltaY;
 	};
 	private dragger = (e: StdEvents['drag']) => {
 		const detail = e.detail;
-		this.drag.x += detail.x;
-		this.drag.y += detail.y;
+		this.drag.x += detail.deltaX;
+		this.drag.y += detail.deltaY;
 	};
 	private zoomer = (e: StdEvents['zoom']) => {
 		const detail = e.detail;
@@ -77,19 +106,32 @@ class PointerManager {
 	};
 }
 
-export default function setup<T extends ModuleInput>(modules: T, options: Options<T> = {}) {
-	const window = new HappyWindow({ url: 'https://localhost:8080' }) as unknown as Window;
+export default function setup<T extends ModuleInputCtor>(
+	modules: T,
+	options?: Omit<Options<T>, 'element'>,
+) {
+	const window = new HappyWindow({ url: 'https://localhost:8080' });
 	const document = window.document;
+
+	const animationQueue: Array<FrameRequestCallback> = [];
+	const nextFrame = () => animationQueue.shift()?.(1);
+	vi.spyOn(global, 'requestAnimationFrame').mockImplementation((callback) =>
+		animationQueue.push(callback),
+	);
+
 	document.body.innerHTML = '<div id="test-square"></div>';
-	const square = document.getElementById('test-square') as unknown as HTMLDivElement;
-	const pointeract = new Pointeract(square, modules, options);
-	const acc = new Accumulator(pointeract);
+	const square = document.getElementById('test-square') as HTMLDivElement;
+	const pointeract = new Pointeract(
+		Object.assign(options ?? {}, { element: square }) as Options<T>,
+		modules,
+	);
+	const acc = new Accumulator(pointeract as PointeractInterface<ModulePreset>);
 	const pm = new PointerManager();
 
 	const dispose = async () => {
 		pointeract.dispose();
 		acc.dispose();
-		await (window as unknown as HappyWindow).happyDOM.abort();
+		await window.happyDOM.abort();
 		window.close();
 	};
 
@@ -108,12 +150,12 @@ export default function setup<T extends ModuleInput>(modules: T, options: Option
 		);
 		const event = Object.assign(
 			new WheelEvent('wheel', {
-				clientX: coords.x,
-				clientY: coords.y,
 				deltaX: diff.x,
 				deltaY: diff.y,
 			}),
 			{
+				clientY: coords.y,
+				clientX: coords.x,
 				shiftKey: keys.shift,
 				ctrlKey: keys.ctrl,
 				altKey: keys.alt,
@@ -184,5 +226,6 @@ export default function setup<T extends ModuleInput>(modules: T, options: Option
 		dispose,
 		Pointer,
 		wheel,
+		nextFrame,
 	};
 }
