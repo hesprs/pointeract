@@ -93,6 +93,20 @@ This link ships the latest ESM version by default, to access CJS version or earl
 
 The link above ships version 1.0.1 in CJS.
 
+Then simply grab the core class and a module:
+
+```TypeScript
+import { Pointeract, Drag } from 'pointeract';
+
+new Pointeract({ element: yourElement }, Drag)
+    .start()
+    .on('drag', e => console.log(e));
+```
+
+Congratulations! You can now press your mouse or finger to the element and move, the console will log events like a waterfall.
+
+**Read next**: dive into the usage of Pointeract in [Use Pointeract](https://pointeract/basic/use-pointeract).
+
 ## Currently Supported Features
 
 - **Click (Double Click, Triple Click, Quadruple Click, Any Click)**
