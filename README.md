@@ -105,7 +105,7 @@ new Pointeract({ element: yourElement }, Drag)
 
 Congratulations! You can now press your mouse or finger to the element and move, the console will log events like a waterfall.
 
-**Read next**: dive into the usage of Pointeract in [Use Pointeract](https://pointeract/basic/use-pointeract).
+**Read next**: dive into the usage of Pointeract in [Use Pointeract](https://pointeract.consensia.cc/basic/use-pointeract).
 
 ## Currently Supported Features
 
