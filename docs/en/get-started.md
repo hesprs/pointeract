@@ -37,10 +37,10 @@ Or include the following lines directly in your HTML file:
 This link ships the latest ESM version by default, to access CJS version or earlier versions, try using a different URL like:
 
 ```html
-<script src="https://unpkg.com/pointeract@1.0.0/dist/index.cjs"></script>
+<script src="https://unpkg.com/pointeract@1.0.1/dist/index.cjs"></script>
 ```
 
-The link above ships version 1.0.0 in CJS.
+The link above ships version 1.0.1 in CJS.
 
 ## Kickstart
 
@@ -49,8 +49,11 @@ Simply grab the core class and a module:
 ```TypeScript
 import { Pointeract, Drag } from 'pointeract';
 
-const poi = new Pointeract({ element: yourElement }, Drag).start();
-poi.on('drag', e => console.log(e.detail));
+new Pointeract({ element: yourElement }, Drag)
+    .start()
+    .on('drag', e => console.log(e));
 ```
 
 Congratulations! You can now press your mouse or finger to the element and move, the console will log events like a waterfall.
+
+**Read next**: dive into the usage of Pointeract in [Use Pointeract](/basic/use-pointeract).

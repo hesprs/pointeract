@@ -2,6 +2,7 @@
 
 import './style.css';
 import 'virtual:group-icons.css';
+import './style.css';
 
 import type { Theme } from 'vitepress';
 import DefaultTheme from 'vitepress/theme';

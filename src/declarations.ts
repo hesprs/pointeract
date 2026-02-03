@@ -32,9 +32,11 @@ export type ModuleInputCtor = ModuleCtor | Array<ModuleCtor>;
 type ProcessedModuleInput = Array<ModuleInstance> | Array<ModuleCtor>;
 
 type AllModuleInstances<T extends ModuleInput> = Instances<WrapInArray<T>>;
-export type Options<T extends ModuleInput> = Orchestratable<T, 'options'> & BaseOptions;
-export type Events<T extends ModuleInput> = Orchestratable<T, '_Events'> & StdEvents;
-export type Augmentation<T extends ModuleInput> = Orchestratable<T, '_Augmentation'>;
+export type Options<T extends ModuleInput = []> = Orchestratable<T, 'options'> & BaseOptions;
+export type Events<T extends ModuleInput = []> = Constrain<
+	Orchestratable<T, '_Events'> & StdEvents
+>;
+export type Augmentation<T extends ModuleInput = []> = Orchestratable<T, '_Augmentation'>;
 
 type ReloadableAtom<T extends ModuleInputCtor> = WrapInArray<T>[number];
 export type Reloadable<T extends ModuleInputCtor> = ReloadableAtom<T> | Array<ReloadableAtom<T>>;
@@ -55,11 +57,11 @@ export type Pointer = {
 };
 
 export interface StdEvents {
-	pan: CustomEvent<{ deltaX: number; deltaY: number }>;
-	drag: CustomEvent<{ deltaX: number; deltaY: number; x: number; y: number }>;
-	trueClick: CustomEvent<Coordinates & { target: EventTarget | null; streak: number }>;
-	zoom: CustomEvent<Coordinates & { factor: number }>;
-	[key: string]: CustomEvent;
+	pan: { deltaX: number; deltaY: number };
+	drag: { deltaX: number; deltaY: number; x: number; y: number };
+	trueClick: Coordinates & { target: EventTarget | null; streak: number };
+	zoom: Coordinates & { factor: number };
+	[key: string]: unknown;
 }
 
 export interface BaseOptions {

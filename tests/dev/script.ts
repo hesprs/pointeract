@@ -12,35 +12,45 @@ import {
 	dragPreset,
 } from '@';
 
+import { Coordinates } from '@/declarations';
+
 const square = document.getElementById('test-square') as HTMLElement;
+const squareRect = square.getBoundingClientRect();
+const bodyRect = document.body.getBoundingClientRect();
 const data = {
-	x: 0,
-	y: 0,
+	x: (bodyRect.width - squareRect.width) / 2,
+	y: (bodyRect.height - squareRect.height) / 2,
 	scale: 1,
 };
+
+function C2C(coords: Coordinates) {
+	return {
+		x: coords.x - data.x,
+		y: coords.y - data.y,
+	};
+}
+
 function pan(e: StdEvents['pan']) {
-	const detail = e.detail;
-	data.x += detail.deltaX;
-	data.y += detail.deltaY;
+	data.x += e.deltaX;
+	data.y += e.deltaY;
 }
 function zoom(e: StdEvents['zoom']) {
-	const detail = e.detail;
-	data.scale *= detail.factor;
-	data.x += detail.x * (1 - detail.factor);
-	data.y += detail.y * (1 - detail.factor);
+	data.scale *= e.factor;
+	const canvas = C2C(e);
+	data.x = e.x - canvas.x * e.factor;
+	data.y = e.y - canvas.y * e.factor;
 }
 function trueClick(e: StdEvents['trueClick']) {
-	const detail = e.detail;
-	console.log(detail.streak);
+	console.log(e.streak);
 	square.style.animation = 'none';
 	// Trigger a reflow to ensure the animation is reset
 	void square.offsetWidth;
 	square.style.animation = 'amplify-and-shrink 0.4s';
 }
 
-const pointeract = new Pointeract(
+new Pointeract(
 	{
-		element: square,
+		element: document.body,
 		lubricator: {
 			pan: panPreset,
 			drag: dragPreset,
@@ -48,12 +58,13 @@ const pointeract = new Pointeract(
 		},
 	},
 	[PreventDefault, MultitouchPanZoom, Drag, Click, WheelPanZoom, Lubricator],
-).start();
-new Pointeract({ element: document.body }, PreventDefault).start();
-pointeract.on('drag', pan);
-pointeract.on('pan', pan);
-pointeract.on('zoom', zoom);
-pointeract.on('trueClick', trueClick);
+)
+	.start()
+	.on('drag', pan)
+	.on('pan', pan)
+	.on('zoom', zoom)
+	.on('trueClick', trueClick);
+
 refresh();
 
 function refresh() {

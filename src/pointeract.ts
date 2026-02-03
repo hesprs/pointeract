@@ -10,21 +10,20 @@ import type {
 	Options,
 	Pointers,
 	Reloadable,
-	Constrain,
 } from '@/declarations';
 
 import { HookKeys } from '@/baseModule';
 import { toArray } from '@/utils';
 
-export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
+export class Pointeract<T extends ModuleInputCtor = []> {
 	#element: HTMLElement;
 	#pointers: Pointers = new Map();
 	#modules: Record<string, BaseModule> = {};
 	#pausedModules: Record<string, BaseModule> = {};
 	#_window: Window | null;
+	#subscribers: { [K in keyof Events<T>]?: Set<(event: Events<T>[K]) => void> } = {};
 	options: Options<T>;
-	// oxlint-disable-next-line typescript/no-explicit-any
-	declare private _augmentSlot: any;
+	declare private _augmentSlot: unknown;
 
 	get #window() {
 		if (!this.#_window) throw new Error('[Pointeract] Window is not defined.');
@@ -32,7 +31,6 @@ export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
 	}
 
 	constructor(options: Options<T>, _modules?: T) {
-		super();
 		const modules = toArray(_modules ? _modules : ([] as Array<ModuleCtor>));
 		this.#_window = options.element.ownerDocument.defaultView;
 		this.#element = options.element;
@@ -40,7 +38,7 @@ export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
 		this.options = options;
 		modules.forEach((module) => {
 			const instance = new module(
-				this.moduleUtils,
+				this.moduleUtils as PointeractInterface['moduleUtils'],
 				this.#window,
 				this.#pointers,
 				this.#element,
@@ -52,11 +50,13 @@ export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
 	}
 
 	on = <K extends keyof Events<T>>(type: K, listener: (event: Events<T>[K]) => void) => {
-		super.addEventListener(type as string, listener as EventListener);
-		return () => this.off(type, listener);
+		if (!this.#subscribers[type]) this.#subscribers[type] = new Set();
+		this.#subscribers[type]?.add(listener);
+		return this;
 	};
 	off<K extends keyof Events<T>>(type: K, listener: (event: Events<T>[K]) => void) {
-		super.removeEventListener(type as string, listener as EventListener);
+		this.#subscribers[type]?.delete(listener);
+		return this;
 	}
 
 	private moduleUtils = {
@@ -83,39 +83,32 @@ export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
 			return raw;
 		},
 
-		dispatch: <N extends keyof Constrain<Events<T>>>(
-			name: N,
-			detail?: Events<T>[N]['detail'],
+		dispatch: <N extends keyof Events<T>>(
+			...args: undefined extends Events<T>[N] ? [N] : [N, Events<T>[N]]
 		) => {
-			let lastResult: boolean | Events<T>[N]['detail'] = true;
+			const name = args[0];
+			const e = args[1];
+			let lastResult: boolean | Events<T>[N] = true;
 			for (const value of Object.values(this.#modules)) {
 				if (!value.modifiers || !(name in value.modifiers)) continue;
-				lastResult = !detail
-					? (
-							value.modifiers[
-								name as keyof typeof value.modifiers
-							] as unknown as () => boolean
-						)()
-					: (
-							value.modifiers[name as keyof typeof value.modifiers] as unknown as (
-								detail?: Events<T>[N]['detail'],
-							) => boolean | Events<T>[N]['detail']
-						)(detail);
+				lastResult =
+					e === undefined
+						? (value.modifiers[name] as () => boolean)()
+						: (
+								value.modifiers[name] as (
+									detail?: Events<T>[N],
+								) => boolean | Events<T>[N]
+							)(e);
 				if (lastResult === false) return;
 			}
-			let event: CustomEvent;
-			if (lastResult === true)
-				event = detail
-					? new CustomEvent<N>(name as string, { detail })
-					: new CustomEvent(name as string);
-			else event = new CustomEvent<N>(name as string, { detail: lastResult });
-			this.dispatchEvent(event);
+			let event: Events<T>[N];
+			if (lastResult === true) event = e as Events<T>[N];
+			else event = lastResult;
+			this.#subscribers[name]?.forEach((listener) => listener(event));
 		},
 
 		augment: (aug: GeneralObject) => {
-			Object.entries(aug).forEach(([key, value]) => {
-				this[key as '_augmentSlot'] = value;
-			});
+			Object.entries(aug).forEach(([key, value]) => (this[key as '_augmentSlot'] = value));
 		},
 	};
 
@@ -184,7 +177,7 @@ export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
 			this.#element.addEventListener('pointerdown', this.#onPointerDown);
 			this.#window.addEventListener('pointermove', this.#onPointerMove);
 			this.#window.addEventListener('pointerup', this.#onPointerUp);
-			this.#element.addEventListener('wheel', this.#onWheel);
+			this.#element.addEventListener('wheel', this.#onWheel, { passive: false });
 			this.#runHooks('onStart');
 		};
 		const startModule = (moduleCtor: ModuleCtor) => {
@@ -206,6 +199,7 @@ export class Pointeract<T extends ModuleInputCtor = []> extends EventTarget {
 		this.stop();
 		this.#_window = null;
 		this.#runHooks('dispose');
+		this.#subscribers = {};
 	};
 }
 
@@ -213,6 +207,6 @@ type PointeractType = new <M extends ModuleInputCtor = []>(
 	...args: ConstructorParameters<typeof Pointeract<M>>
 ) => Pointeract<M> & Augmentation<M>;
 
-export type PointeractInterface<M extends ModuleInput = []> = Pointeract<[]> & Augmentation<M>;
+export type PointeractInterface<M extends ModuleInput = []> = Pointeract<never> & Augmentation<M>;
 
 export default Pointeract as PointeractType;

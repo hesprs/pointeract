@@ -42,14 +42,14 @@ export default class wheelPanZoom extends BaseModule<Options> {
 			options.proControlSchema = true;
 		if (options.proControlSchema) {
 			if (e.ctrlKey) {
-				const scaleFactor = e.deltaY > 0 ? 1 - options.zoomFactor : 1 + options.zoomFactor;
+				const scaleFactor = 1 - options.zoomFactor * e.deltaY;
 				const origin = this.toTargetCoords({ x: e.clientX, y: e.clientY });
 				this.#dispatchZoomEvent(scaleFactor, origin);
 			} else if (e.shiftKey && Math.abs(e.deltaX) <= Math.abs(e.deltaY))
 				this.#dispatchPanEvent({ deltaX: -e.deltaY, deltaY: -e.deltaX });
 			else this.#dispatchPanEvent({ deltaX: -e.deltaX, deltaY: -e.deltaY });
 		} else {
-			const scaleFactor = 1 - (options.zoomFactor / 50) * e.deltaY;
+			const scaleFactor = 1 - (options.zoomFactor / 20) * e.deltaY;
 			const origin = this.toTargetCoords({ x: e.clientX, y: e.clientY });
 			this.#dispatchZoomEvent(scaleFactor, origin);
 		}

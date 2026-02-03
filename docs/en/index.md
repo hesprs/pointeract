@@ -3,15 +3,15 @@ layout: home
 
 hero:
   name: Pointeract
-  text: For multitouch and all other gestures
-  tagline: Just a much more elegant solution to Hammer.js.
+  text: extensible user gesture recognizer
+  tagline: Just a much more elegant solution than Hammer.js.
   actions:
     - theme: brand
-      text: What's Pointeract?
-      link: /whats-pointeract
-    - theme: alt
       text: Get Started
       link: /get-started
+    - theme: alt
+      text: What's Pointeract?
+      link: /whats-pointeract
     - theme: alt
       text: Playground
       link: /playground

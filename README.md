@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://pointeract.consensia.cc">
-    <img src="./assets/logoText.svg" alt="Pointeract" width="280px">
+    <img src="./assets/logo-text.svg" alt="Pointeract" width="280px">
   </a>
   <br>
 </h1>
@@ -27,29 +27,29 @@
     <img src="https://img.shields.io/badge/Snyk%20Security-Monitored-333333?logo=snyk&style=flat&labelColor=8A2BE2&logoColor=white" alt="library security" />
   </a>
   <a href="https://bundlephobia.com/package/pointeract">
-    <img src="https://img.shields.io/bundlephobia/minzip/pointeract?style=flat&logo=webpack&labelColor=orange&logoColor=white&color=333333&label=Minified%2bGzipped" alt="package size" />
+    <img src="https://img.shields.io/bundlejs/size/pointeract?format=minzip&style=flat&logo=webpack&logoColor=white&label=Minzipped%20Size&labelColor=orange&color=333333" alt="package size" />
   </a>
   <img src="https://img.shields.io/badge/Types-Strict-333333?logo=typescript&labelColor=blue&logoColor=white" alt="Typescript" />
   <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Humans-333333?labelColor=25C260" alt="Made by Humans" />
 </p>
 
 <p align="center">
-  <a href="#whats-pointeract">Introduction</a> •
-  <a href="#advantages">Advantages</a> •
-  <a href="#get-started">Get Started</a> •
-  <a href="#currently-supported-interactions">Features</a> •
-  <a href="#how-pointeract-stands-out">Comparison</a> •
-  <a href="#get-involved">Get Involved</a> •
-  <a href="#copyright-and-license">License</a>
+    <a href="https://pointeract.consensia.cc/playground">
+        <strong>Demo</strong>
+    </a> • 
+    <a href="https://pointeract.consensia.cc">
+        <strong>Documentation</strong>
+    </a> • 
+    <a href="https://www.npmjs.com/package/pointeract">
+        <strong>npm</strong>
+    </a>
 </p>
 
 ## What's Pointeract?
 
-Pointeract is a tiny utility library focusing on one thing - handling user interactions with DOM elements. It is fully typed, small, and easy to use. You need to bind your DOM elements, load some modules, and it will start monitoring user interactions and dispatch events like `trueClick` and `pan` with data.
+Pointeract is a tiny JavaScript/TypeScript utility library focusing on one thing - handling user interactions with DOM elements, e.g. multitouch and touchpad.
 
-It is built in an extensible architecture with base bundle size only **1KB** minified + gzipped, functionalities come from also byte-sized modules. It's fully **tree-shakable**, the fewer modules you use, the smaller your bundle is.
-
-Access our documentation [in the website](https://pointeract.consensia.cc/).
+With the unique strength of versatile typings in TypeScript and its dynamic nature, Pointeract have achieved a highly _modular, extendable and efficient_ architecture. Its core bundle size is only **1KB** minified + gzipped, functionalities come from also byte-sized modules. It's fully **tree-shakable**, the fewer modules you use, the smaller your bundle is.
 
 ## Advantages
 
@@ -88,17 +88,19 @@ Or include the following lines directly in your HTML file:
 This link ships the latest ESM version by default, to access CJS version or earlier versions, try using a different URL like:
 
 ```html
-<script src="https://unpkg.com/pointeract@1.0.0/dist/index.cjs"></script>
+<script src="https://unpkg.com/pointeract@1.0.1/dist/index.cjs"></script>
 ```
 
-The link above ships version 1.0.0 in CJS.
+The link above ships version 1.0.1 in CJS.
 
-## Currently Supported Interactions
+## Currently Supported Features
 
 - **Click (Double Click, Triple Click, Quadruple Click, Any Click)**
 - **Drag**
 - **Pan and Zoom via Mouse Wheel (`ctrl`/`shift` key binding, touchpad support)**
 - **Pan and Zoom via Multitouch (Pan, Pinch)**
+- **One-line Prevent Default**
+- **Smooth Everything (drag / pan / zoom / any interaction involving numbers)**
 
 Those interactions are shipped via modules, which can be composed from a single drag-and-drop to a canvas app.
 
@@ -112,7 +114,7 @@ There're already plenty of interaction libraries out there, most famous ones are
 | :--------------------------------------------------------------------------------------- | :---------------------------------------------------: | :----------------------------------------------: | :-------------------------------------------------: |
 | Written in TypeScript?                                                                   |                          ✅                           |                        ❌                        |                         ✅                          |
 | Tree-shakeable?                                                                          |   [✅](https://bundlephobia.com/package/pointeract)   | [❌](https://bundlephobia.com/package/hammerjs)  |  [❌](https://bundlephobia.com/package/interactjs)  |
-| Bundle Size (Minified + Gzipped)                                                         | 👑 [2KB](https://bundlephobia.com/package/pointeract) | [7KB](https://bundlephobia.com/package/hammerjs) | [28KB](https://bundlephobia.com/package/interactjs) |
+| Bundle Size (Minified + Gzipped)                                                         | 👑 [3KB](https://bundlephobia.com/package/pointeract) | [7KB](https://bundlephobia.com/package/hammerjs) | [28KB](https://bundlephobia.com/package/interactjs) |
 | Last Updated                                                                             |                👑 Actively Maintained                 |                       2015                       |                        2023                         |
 | Features                                                                                 |               Pointer and Wheel Related               |                 Pointer Related                  | 👑 Pointer and Wheel Related + Comprehensive Utils  |
 | Robust? (See [Testing](https://pointeract.consensia.cc/development/testing#monkey-test)) |                          ✅                           |                 ❌ Element Jerks                 |         ❌ Element Ignores the Second Touch         |

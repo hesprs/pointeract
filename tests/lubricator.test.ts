@@ -30,14 +30,14 @@ test('zoom', async () => {
 	const { acc, dispose, wheel, nextFrame } = setup([WheelPanZoom, Lubricator], {
 		lubricator: { zoom },
 	});
-	wheel({ x: 0, y: 200 });
+	wheel({ x: 0, y: 50 });
 	expect(acc.scale).toEqual(1);
 
 	nextFrame();
-	expect(acc.scale).toEqual(Math.pow(0.6, 0.25));
+	expect(acc.scale).toEqual(Math.pow(0.75, 0.25));
 
 	for (let i = 0; i < 20; i++) nextFrame();
-	expect(acc.scale).toEqual(0.6);
+	expect(acc.scale).toEqual(0.75);
 
 	await dispose();
 });

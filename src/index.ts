@@ -13,15 +13,7 @@
 // limitations under the License.
 
 export { default as BaseModule, type BaseArgs } from '@/baseModule';
-export type {
-	Options,
-	Augmentation,
-	Events,
-	Pointer,
-	Pointers,
-	StdEvents,
-	BaseOptions,
-} from '@/declarations';
+export type { Options, Events, Pointer, Pointers, StdEvents, BaseOptions } from '@/declarations';
 export { default as Click } from '@/modules/click';
 export { default as Drag } from '@/modules/drag';
 export { default as MultitouchPanZoom } from '@/modules/multitouchPanZoom';

@@ -21,7 +21,7 @@ To use it, one only needs to bind a DOM element and load some modules, and it wi
 - **Pan and Zoom via Mouse Wheel (`ctrl`/`shift` key binding, touchpad support)**
 - **Pan and Zoom via Multitouch (Pan, Pinch)**
 - **One-line Prevent Default**
-- **Inertial Interactions for Everything (drag / pan / zoom / any interaction involving numbers)**
+- **Smooth Everything (drag / pan / zoom / any interaction involving numbers)**
 
 Those interactions are shipped via modules, which can be composed from a single drag-and-drop to a canvas app.
 

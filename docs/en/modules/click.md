@@ -8,15 +8,15 @@ The click module in checks whether the mouse/touch has actually moved during dow
 
 ```TypeScript
 import { Click, Pointeract } from 'pointeract';
-const pointeract = new Pointeract(app, Click);
+const pointeract = new Pointeract({ element: app }, Click);
 ```
 
 ## Options
 
 ```TypeScript
-type options = {
-    clickPreserveTime: number;
-    moveThreshold: number;
+interface Options extends BaseOptions {
+    clickPreserveTime?: number;
+    moveThreshold?: number;
 }
 ```
 

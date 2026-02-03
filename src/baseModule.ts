@@ -6,11 +6,7 @@ import type {
 	StdEvents,
 	Constrain,
 } from '@/declarations';
-import type { Pointeract } from '@/pointeract';
-
-// TODO:
-// when dispatching an event without detail, modifier `detail` argument becomes `any`
-// `dispatch` cannot emit events without detail
+import type { Pointeract, PointeractInterface } from '@/pointeract';
 
 export type HookKeys =
 	| 'onPointerDown'
@@ -40,10 +36,12 @@ export default class BaseModule<
 	protected getNthPointer: Pointeract<[]>['moduleUtils']['getNthPointer'];
 	protected toTargetCoords: Pointeract<[]>['moduleUtils']['toTargetCoords'];
 	protected augment: (augmentation: A) => void;
-	protected dispatch: <K extends keyof Constrain<E>>(type: K, detail: E[K]['detail']) => void;
+	protected dispatch: <K extends keyof Constrain<E>>(
+		...arg: undefined extends E[K] ? [K] : [K, E[K]]
+	) => void;
 	options: O;
 	constructor(
-		utils: Pointeract<[]>['moduleUtils'],
+		utils: PointeractInterface['moduleUtils'],
 		protected window: Window,
 		protected pointers: Pointers,
 		protected element: HTMLElement,
@@ -52,7 +50,7 @@ export default class BaseModule<
 		this.getNthPointer = utils.getNthPointer;
 		this.toTargetCoords = utils.toTargetCoords;
 		this.augment = utils.augment;
-		this.dispatch = utils.dispatch;
+		this.dispatch = utils.dispatch as typeof this.dispatch;
 		this.options = options;
 	}
 
@@ -64,6 +62,6 @@ export default class BaseModule<
 	onStop?: () => void;
 	dispose?: () => void;
 	modifiers?: {
-		[K in keyof Constrain<E>]?: (detail: E[K]['detail']) => boolean | E[K]['detail'];
+		[K in keyof Constrain<E>]?: (event: E[K]) => boolean | E[K];
 	};
 }

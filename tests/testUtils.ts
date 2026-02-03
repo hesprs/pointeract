@@ -54,22 +54,15 @@ class Accumulator {
 		pointeract.on('trueClick', this.clicker);
 	}
 	private panner = (e: StdEvents['pan']) => {
-		const detail = e.detail;
-		this.pan.x += detail.deltaX;
-		this.pan.y += detail.deltaY;
+		this.pan.x += e.deltaX;
+		this.pan.y += e.deltaY;
 	};
 	private dragger = (e: StdEvents['drag']) => {
-		const detail = e.detail;
-		this.drag.x += detail.deltaX;
-		this.drag.y += detail.deltaY;
+		this.drag.x += e.deltaX;
+		this.drag.y += e.deltaY;
 	};
-	private zoomer = (e: StdEvents['zoom']) => {
-		const detail = e.detail;
-		this.scale *= detail.factor;
-	};
-	private clicker = () => {
-		this.clicks++;
-	};
+	private zoomer = (e: StdEvents['zoom']) => (this.scale *= e.factor);
+	private clicker = () => this.clicks++;
 	clear = () => {
 		this.pan = {
 			x: 0,

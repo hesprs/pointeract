@@ -1,5 +1,5 @@
 <template>
-	<div class="container">
+	<div class="container" ref="container">
 		<div
 			class="test-square"
 			ref="square"
@@ -25,24 +25,37 @@ import {
 	zoomPreset,
 	panPreset,
 } from '@';
+import { Coordinates } from '@/declarations';
+
+function C2C(coords: Coordinates) {
+	return {
+		x: coords.x - data.x,
+		y: coords.y - data.y,
+	};
+}
 
 const square = useTemplateRef('square');
+const container = useTemplateRef('container');
 const data = reactive({
 	x: 0,
 	y: 0,
 	scale: 1,
 	streak: 0,
 });
-let streakTimeout: undefined | NodeJS.Timeout;
+let streakTimeout: null | NodeJS.Timeout;
 let pointeract: PointeractInterface<
 	[Click, Drag, MultitouchPanZoom, PreventDefault, WheelPanZoom, Lubricator]
 >;
 
 onMounted(() => {
-	if (!square.value) return;
+	if (!container.value || !square.value) return;
+	const squareRect = square.value.getBoundingClientRect();
+	const bodyRect = container.value.getBoundingClientRect();
+	data.x = (bodyRect.width - squareRect.width) / 2;
+	data.y = (bodyRect.height - squareRect.height) / 2;
 	pointeract = new Pointeract(
 		{
-			element: square.value,
+			element: container.value,
 			lubricator: {
 				drag: dragPreset,
 				pan: panPreset,
@@ -50,32 +63,37 @@ onMounted(() => {
 			},
 		},
 		[PreventDefault, WheelPanZoom, MultitouchPanZoom, Click, Drag, Lubricator],
-	).start();
-	pointeract.on('pan', (e) => {
-		data.x += e.detail.deltaX;
-		data.y += e.detail.deltaY;
-	});
-	pointeract.on('drag', (e) => {
-		data.x += e.detail.deltaX;
-		data.y += e.detail.deltaY;
-	});
-	pointeract.on('zoom', (e) => {
-		const detail = e.detail;
-		data.scale *= detail.factor;
-		data.x += detail.x * (1 - detail.factor);
-		data.y += detail.y * (1 - detail.factor);
-	});
-	pointeract.on('trueClick', (e) => {
-		data.streak = e.detail.streak;
-		if (streakTimeout) clearTimeout(streakTimeout);
-		streakTimeout = setTimeout(() => {
-			data.streak = 0;
-		}, 400);
-	});
+	)
+		.start()
+		.on('pan', (e) => {
+			data.x += e.deltaX;
+			data.y += e.deltaY;
+		})
+		.on('drag', (e) => {
+			data.x += e.deltaX;
+			data.y += e.deltaY;
+		})
+		.on('zoom', (e) => {
+			data.scale *= e.factor;
+			const canvas = C2C(e);
+			data.x = e.x - canvas.x * e.factor;
+			data.y = e.y - canvas.y * e.factor;
+		})
+		.on('trueClick', (e) => {
+			data.streak = e.streak;
+			if (streakTimeout) clearTimeout(streakTimeout);
+			streakTimeout = setTimeout(() => {
+				data.streak = 0;
+			}, 400);
+		});
 });
 
 onBeforeUnmount(() => {
 	pointeract.dispose();
+	if (streakTimeout) {
+		clearTimeout(streakTimeout);
+		streakTimeout = null;
+	}
 });
 </script>
 
@@ -96,14 +114,12 @@ onBeforeUnmount(() => {
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	top: calc(50% - 150px);
-	left: calc(50% - 150px);
 	width: 300px;
 	height: 300px;
 	color: white;
 	background-color: rgb(72, 130, 255);
 	border-radius: 16px;
-	transform-origin: 0 0;
+	transform-origin: top left;
 	box-shadow: 0px 0px 16px rgba(0, 0, 0, 0.3);
 	font-size: 100px;
 	font-weight: bold;

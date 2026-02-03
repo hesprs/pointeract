@@ -5,10 +5,10 @@ import setup from './testUtils';
 
 test('normal wheel', async () => {
 	const { acc, dispose, wheel } = setup(WheelPanZoom);
-	wheel({ x: 0, y: 200 });
+	wheel({ x: 0, y: 50 });
 	const smallerScale = acc.scale;
 	expect(smallerScale < 0.9).toBe(true);
-	wheel({ x: 0, y: -200 });
+	wheel({ x: 0, y: -50 });
 	expect(acc.scale > smallerScale).toBe(true);
 	await dispose();
 });

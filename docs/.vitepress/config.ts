@@ -14,8 +14,16 @@ export default defineConfig({
 		root: { label: 'English', lang: 'en' },
 	},
 	head: [
-		['link', { rel: 'icon', href: '/logoFlat.svg' }],
+		['link', { rel: 'icon', href: '/favicon.ico' }],
 		['meta', { name: 'color-scheme', content: 'dark light' }],
+		[
+			'script',
+			{
+				differ: '',
+				src: 'https://analytics.consensia.cc/script.js',
+				'data-website-id': 'f4ddf973-093c-4660-bda7-65a511d5b26c',
+			},
+		],
 		[
 			'meta',
 			{
@@ -32,25 +40,22 @@ export default defineConfig({
 			{ text: 'Home', link: '/' },
 			{ text: 'Documentation', link: '/get-started' },
 		],
-		logo: { src: '/logoFlat.svg', alt: 'Pointeract logo' },
+		logo: { src: '/logo-small.svg', alt: 'Pointeract logo' },
 
 		sidebar: [
 			{
 				text: 'Introduction',
 				items: [
 					{ text: "What's Pointeract?", link: '/whats-pointeract' },
-					{ text: 'Get Started', link: '/get-started' },
 					{ text: 'Playground', link: '/playground' },
+					{ text: 'Get Started', link: '/get-started' },
 				],
 			},
 			{
 				text: 'Basic',
-				link: '/basic',
 				items: [
-					{ text: 'Lifecycle', link: '/basic/lifecycle' },
-					{ text: 'Module Lifecycle', link: '/basic/module-lifecycle' },
-					{ text: 'Options', link: '/basic/options' },
-					{ text: 'Subscribe/Unsubscribe', link: '/basic/subscribe-unsubscribe' },
+					{ text: 'Use Pointeract', link: '/basic/use-pointeract' },
+					{ text: 'Types', link: '/basic/types' },
 				],
 			},
 			{
@@ -62,6 +67,7 @@ export default defineConfig({
 					{ text: 'Drag', link: '/modules/drag' },
 					{ text: 'Wheel Pan Zoom', link: '/modules/wheel-pan-zoom' },
 					{ text: 'Multitouch Pan Zoom', link: '/modules/multitouch-pan-zoom' },
+					{ text: 'Lubricator', link: '/modules/lubricator' },
 				],
 			},
 			{
@@ -76,11 +82,9 @@ export default defineConfig({
 			},
 			{
 				text: 'Development',
+				collapsed: true,
 				items: [
 					{ text: 'Custom Modules', link: '/development/custom-modules' },
-					{ text: 'Custom Events', link: '/development/custom-events' },
-					{ text: 'Custom Options', link: '/development/custom-options' },
-					{ text: 'Modifier', link: '/development/modifier' },
 					{ text: 'Testing', link: '/development/testing' },
 				],
 			},
@@ -92,6 +96,7 @@ export default defineConfig({
 			{ icon: 'github', link: 'https://github.com/hesprs/pointeract' },
 		],
 		editLink: { pattern: 'https://github.com/hesprs/pointeract/edit/main/docs/:path' },
+		outline: 'deep',
 	},
 	markdown: {
 		config(md) {
@@ -101,6 +106,7 @@ export default defineConfig({
 	},
 	vite: {
 		plugins: [groupIconVitePlugin()],
+		publicDir: resolve(__dirname, '../public'),
 		resolve: {
 			alias: {
 				'@': resolve(__dirname, '..', '..', 'src/'),

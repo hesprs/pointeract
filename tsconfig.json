@@ -15,6 +15,6 @@
 			"@": ["./src"]
 		}
 	},
-	"include": ["src/**/*", "tests/**/*", "docs/**/*"],
+	"include": ["src/**/*", "tests/**/*", "docs/**/*", "docs/.vitepress/**/*"],
 	"exclude": ["node_modules", "dist"]
 }

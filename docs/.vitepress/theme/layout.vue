@@ -16,8 +16,6 @@ const setupToggleDark = (isDark: Ref<boolean>) => {
 			isDark.value = !isDark.value;
 			return;
 		}
-
-		console.log('toggle-appearance');
 		document.documentElement.style.setProperty('--darkX', x + 'px');
 		document.documentElement.style.setProperty('--darkY', y + 'px');
 

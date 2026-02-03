@@ -1,5 +1,5 @@
 import BaseModule, { BaseArgs } from '@/baseModule';
-import { BaseOptions, GeneralObject } from '@/declarations';
+import { BaseOptions, Events, GeneralObject } from '@/declarations';
 
 interface Options extends BaseOptions {
 	lubricator?: Record<string, PerEventOption>;
@@ -128,8 +128,7 @@ export default class Lubricator extends BaseModule<Options> {
 				detail[field] = delta;
 				needEmit = true;
 			}
-			// oxlint-disable-next-line typescript/no-explicit-any
-			if (needEmit) this.dispatch(event as any, detail);
+			if (needEmit) this.dispatch(event as keyof Events, detail as never);
 		});
 		this.#animationId = requestAnimationFrame(this.#perFrame);
 	};
