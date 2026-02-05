@@ -4,7 +4,7 @@
 
 - Supported Browsers: **All Modern Browsers (IE11+)**
 - Supported Frameworks: **All**
-- Supported Module Standards: **ESM**, **CJS**
+- Supported Module Standards: **ESM**
 
 ## Installation
 
@@ -30,19 +30,13 @@ Or include the following lines directly in your HTML file:
 
 ```html
 <script type="module">
-	import { Pointeract } from 'https://unpkg.com/pointeract/dist/index.js';
+	import { Pointeract } from 'https://unpkg.com/pointeract';
 </script>
 ```
 
-This link ships the latest ESM version by default, to access CJS version or earlier versions, try using a different URL like:
+This link ships the latest ESM version by default.
 
-```html
-<script src="https://unpkg.com/pointeract@1.0.1/dist/index.cjs"></script>
-```
-
-The link above ships version 1.0.1 in CJS.
-
-## Kickstart
+## Start
 
 Simply grab the core class and a module:
 

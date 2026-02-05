@@ -21,8 +21,8 @@ export default defineConfig({
 				index: resolve(__dirname, 'src'),
 			},
 			name: 'Pointeract',
-			formats: ['es', 'cjs'],
-			fileName: (format) => `index.${format === 'cjs' ? 'cjs' : 'js'}`,
+			formats: ['es'],
+			fileName: `index.js`,
 		},
 	},
 	test: {
