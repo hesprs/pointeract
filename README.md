@@ -8,29 +8,29 @@
 <h4 align="center"> modern, lightweight, robust and extensible user gesture recognizer </h4>
 
 <p align="center">
-  <a href="https://github.com/hesprs/pointeract/actions">
-    <img src="https://img.shields.io/github/actions/workflow/status/hesprs/pointeract/ci-test.yml?style=flat&logo=github&logoColor=white&label=CI&labelColor=d4ab00&color=333333" alt="CI Status" />
-  </a>
-  <a href="https://codecov.io/github/hesprs/pointeract">
-    <img src="https://img.shields.io/codecov/c/github/hesprs/pointeract/main?style=flat&logo=codecov&logoColor=white&label=Test%20Coverage&labelColor=ff0077&color=333333" alt="Test Coverage" />
-  </a>
-  <a href="https://www.codefactor.io/repository/github/hesprs/pointeract">
-    <img src="https://img.shields.io/codefactor/grade/github/hesprs/pointeract?style=flat&logo=codefactor&logoColor=white&label=Code%20Quality&labelColor=17b37a&color=333333" alt="Code Quality" />
-  </a>
-  <a href="https://pointeract.consensia.cc">
-    <img src="https://img.shields.io/badge/Documentation-Ready-333333?labelColor=5C73E7&logo=vitepress&logoColor=white" alt="Documentation" />
-  </a>
-  <a href="https://www.npmjs.com/package/pointeract">
-    <img src="https://img.shields.io/npm/v/pointeract?logo=npm&labelColor=red&logoColor=white&color=333333" alt="npm package" />
-  </a>
-  <a href="https://snyk.io/test/npm/pointeract">
-    <img src="https://img.shields.io/badge/Snyk%20Security-Monitored-333333?logo=snyk&style=flat&labelColor=8A2BE2&logoColor=white" alt="library security" />
-  </a>
-  <a href="https://bundlephobia.com/package/pointeract">
-    <img src="https://img.shields.io/bundlejs/size/pointeract?format=minzip&style=flat&logo=webpack&logoColor=white&label=Minzipped%20Size&labelColor=orange&color=333333" alt="package size" />
-  </a>
-  <img src="https://img.shields.io/badge/Types-Strict-333333?logo=typescript&labelColor=blue&logoColor=white" alt="Typescript" />
-  <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Humans-333333?labelColor=25C260" alt="Made by Humans" />
+    <a href="https://github.com/hesprs/pointeract/actions">
+        <img src="https://img.shields.io/github/actions/workflow/status/hesprs/pointeract/ci-test.yml?style=flat&logo=github&logoColor=white&label=CI&labelColor=d4ab00&color=333333" alt="CI Status" />
+    </a>
+    <a href="https://codecov.io/github/hesprs/pointeract">
+        <img src="https://img.shields.io/codecov/c/github/hesprs/pointeract/main?style=flat&logo=codecov&logoColor=white&label=Test%20Coverage&labelColor=ff0077&color=333333" alt="Test Coverage" />
+    </a>
+    <a href="https://www.codefactor.io/repository/github/hesprs/pointeract">
+        <img src="https://img.shields.io/codefactor/grade/github/hesprs/pointeract?style=flat&logo=codefactor&logoColor=white&label=Code%20Quality&labelColor=17b37a&color=333333" alt="Code Quality" />
+    </a>
+    <a href="https://pointeract.consensia.cc">
+        <img src="https://img.shields.io/badge/Documentation-Ready-333333?labelColor=5C73E7&logo=vitepress&logoColor=white" alt="Documentation" />
+    </a>
+    <a href="https://www.npmjs.com/package/pointeract">
+        <img src="https://img.shields.io/npm/v/pointeract?logo=npm&labelColor=red&logoColor=white&color=333333" alt="npm package" />
+    </a>
+    <a href="https://snyk.io/test/npm/pointeract">
+        <img src="https://img.shields.io/badge/Snyk%20Security-Monitored-333333?logo=snyk&style=flat&labelColor=8A2BE2&logoColor=white" alt="library security" />
+    </a>
+    <a href="https://bundlephobia.com/package/pointeract">
+        <img src="https://img.shields.io/bundlejs/size/pointeract?format=minzip&style=flat&logo=webpack&logoColor=white&label=Minzipped%20Size&labelColor=orange&color=333333" alt="package size" />
+    </a>
+    <img src="https://img.shields.io/badge/Types-Strict-333333?logo=typescript&labelColor=blue&logoColor=white" alt="Typescript" />
+    <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Humans-333333?labelColor=25C260" alt="Made by Humans" />
 </p>
 
 <p align="center">
@@ -49,7 +49,7 @@
 
 Pointeract is a tiny JavaScript/TypeScript utility library focusing on one thing - handling user interactions with DOM elements, e.g. multitouch and touchpad.
 
-With the unique strength of versatile typings in TypeScript and its dynamic nature, Pointeract have achieved a highly _modular, extendable and efficient_ architecture. Its core bundle size is only **1KB** minified + gzipped, functionalities come from also byte-sized modules. It's fully **tree-shakable**, the fewer modules you use, the smaller your bundle is.
+With the unique strength of versatile typings in TypeScript and its dynamic nature, Pointeract has achieved a highly _modular, extendable and efficient_ architecture. Its core bundle size is only **1KB** minified + gzipped, functionalities come from also byte-sized modules. It's fully **tree-shakable**, the fewer modules you use, the smaller your bundle is.
 
 ## Advantages
 
@@ -127,7 +127,7 @@ There're already plenty of interaction libraries out there, most famous ones are
 
 ## Get Involved
 
-This project welcomes anyone that have ideas to improve it.
+This project welcomes anyone that has ideas to improve it.
 
 - [Open a pull request](https://github.com/hesprs/pointeract/compare) for a new module, event standard, documentation update, and so on.
 - [Open an issue](https://github.com/hesprs/pointeract/issues/new) if you find a bug.
