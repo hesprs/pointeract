@@ -2,9 +2,10 @@ import { resolve } from 'node:path';
 
 import { defineConfig } from 'vitepress';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
+import { ThemeConfig } from 'vitepress-theme-trito';
 
 // https://vitepress.dev/reference/site-config
-export default defineConfig({
+export default defineConfig<ThemeConfig>({
 	cleanUrls: true,
 	lastUpdated: true,
 	title: 'Pointeract',
@@ -38,10 +39,11 @@ export default defineConfig({
 		// https://vitepress.dev/reference/default-theme-config
 		nav: [
 			{ text: 'Home', link: '/' },
-			{ text: 'Documentation', link: '/get-started' },
+			{ text: 'Documentation', link: '/get-started', activeMatch: '/.+' },
 		],
 		logo: { src: '/logo-small.svg', alt: 'Pointeract logo' },
-
+		logoLarge: { src: '/logo.svg', alt: 'Pointeract logo' },
+		aside: 'left',
 		sidebar: [
 			{
 				text: 'Introduction',
@@ -95,7 +97,7 @@ export default defineConfig({
 			{ icon: 'npm', link: 'https://www.npmjs.com/package/pointeract' },
 			{ icon: 'github', link: 'https://github.com/hesprs/pointeract' },
 		],
-		editLink: { pattern: 'https://github.com/hesprs/pointeract/edit/main/docs/:path' },
+		editLink: 'https://github.com/hesprs/pointeract/edit/main/docs/:path',
 		outline: 'deep',
 	},
 	markdown: {
@@ -111,6 +113,9 @@ export default defineConfig({
 			alias: {
 				'@': resolve(__dirname, '..', '..', 'src/'),
 			},
+		},
+		ssr: {
+			noExternal: ['vitepress-theme-trito'],
 		},
 	},
 });

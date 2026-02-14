@@ -5,7 +5,7 @@
   <br>
 </h1>
 
-<h4 align="center"> modern, lightweight, robust and extensible user gesture recognizer </h4>
+<h4 align="center"> modern, lightweight, robust and extensible human gesture recognizer </h4>
 
 <p align="center">
     <a href="https://github.com/hesprs/pointeract/actions">

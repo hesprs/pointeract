@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Pointeract
-  text: extensible user gesture recognizer
-  tagline: Just a much more elegant solution than Hammer.js.
+  text: human gesture recognizer
+  tagline: modular, composable, elegant
   actions:
     - theme: brand
       text: Get Started
@@ -15,9 +15,6 @@ hero:
     - theme: alt
       text: Playground
       link: /playground
-  image:
-    src: /logo.svg
-    alt: Pointeract Logo
 
 features:
   - title: Modern
