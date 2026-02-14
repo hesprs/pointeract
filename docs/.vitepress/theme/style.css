@@ -3,6 +3,11 @@
 	--vp-c-orange-2: #ff9626;
 	--vp-c-orange-1: #ff6f0f;
 	--vp-c-orange-soft: rgba(255, 191, 0, 0.16);
+
+	--vp-c-brand-1: var(--vp-c-orange-1) !important;
+	--vp-c-brand-2: var(--vp-c-orange-2) !important;
+	--vp-c-brand-3: var(--vp-c-orange-3) !important;
+	--vp-c-brand-soft: var(--vp-c-orange-soft) !important;
 }
 
 html.dark {
