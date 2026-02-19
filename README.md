@@ -78,7 +78,7 @@ Or include the following lines directly in your HTML file:
 
 ```html
 <script type="module">
-	import { Pointeract } from 'https://unpkg.com/pointeract';
+  import { Pointeract } from 'https://unpkg.com/pointeract';
 </script>
 ```
 

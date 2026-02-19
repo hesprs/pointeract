@@ -1,5 +1,4 @@
 import type { Coordinates, Pointer, Pointers } from '@/declarations';
-
 import BaseModule from '@/baseModule';
 import { getLast } from '@/utils';
 

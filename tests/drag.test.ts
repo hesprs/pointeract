@@ -1,6 +1,5 @@
 import { Drag } from '@';
 import { expect, test } from 'vitest';
-
 import setup from './testUtils';
 
 test('drag', async () => {

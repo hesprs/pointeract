@@ -1,6 +1,5 @@
 import { Click } from '@';
 import { expect, test } from 'vitest';
-
 import setup from './testUtils';
 
 test('trigger a trueClick', async () => {

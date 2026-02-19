@@ -1,6 +1,5 @@
 import { WheelPanZoom } from '@';
 import { expect, test } from 'vitest';
-
 import setup from './testUtils';
 
 test('normal wheel', async () => {

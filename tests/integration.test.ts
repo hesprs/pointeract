@@ -9,7 +9,6 @@ import {
 	StdEvents,
 } from '@';
 import { expect, test } from 'vitest';
-
 import setup from './testUtils';
 
 test('hot stop / start a module', async () => {

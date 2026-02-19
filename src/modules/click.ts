@@ -1,5 +1,4 @@
 import type { BaseOptions, Pointer, Pointers } from '@/declarations';
-
 import BaseModule from '@/baseModule';
 import { getLast } from '@/utils';
 

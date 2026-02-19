@@ -1,5 +1,4 @@
 import type { Coordinates, BaseOptions } from '@/declarations';
-
 import BaseModule, { BaseArgs } from '@/baseModule';
 import { fillIn } from '@/utils';
 
