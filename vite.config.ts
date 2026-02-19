@@ -21,7 +21,7 @@ export default defineConfig({
 			},
 			name: 'Pointeract',
 			formats: ['es'],
-			fileName: `index.js`,
+			fileName: `index`,
 		},
 	},
 	test: {
