@@ -6,5 +6,5 @@ This module disables all default browser behaviors related to touch / mouse / wh
 
 ```TypeScript
 import { PreventDefault, Pointeract } from 'pointeract';
-const pointeract = new Pointeract({ element: app }, PreventDefault);
+const pointeract = new Pointeract({ element: app }, [PreventDefault]);
 ```

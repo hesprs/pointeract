@@ -15,9 +15,9 @@ This architecture can create highly modular apps and nice DX. Here we provide yo
 :::tip
 All the types shown below are designed to be flexible, they accept:
 
-- a single constructor / instance
-- an array of either module constructors / instances
-- nothing
+- an array of module constructor types
+- an array of module instance types
+- nothing (which means no module loaded)
 
 as their type parameters
 

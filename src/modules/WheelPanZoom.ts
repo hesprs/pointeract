@@ -1,10 +1,8 @@
-import type { Coordinates, BaseOptions } from '@/declarations';
-import BaseModule, { BaseArgs } from '@/baseModule';
+import type { Coordinates, BaseOptions } from '@/types';
+import BaseModule, { BaseArgs } from '@/BaseModule';
 import { fillIn } from '@/utils';
 
 /*
-to normal computer users:
-
 # normal schema
 diff y > 0 => zooms in => zoom factor < 1
 diff y < 0 => zooms out => zoom factor > 1

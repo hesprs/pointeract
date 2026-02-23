@@ -17,14 +17,14 @@ test('hot stop / start a module', async () => {
 	});
 	const p = new Pointer();
 
-	pointeract.stop(Click);
+	pointeract.stop([Click]);
 	for (let i = 0; i < 3; i++) {
 		p.down();
 		p.up();
 	}
 	expect(acc.clicks).toBe(0);
 
-	pointeract.start(Click);
+	pointeract.start([Click]);
 	for (let i = 0; i < 3; i++) {
 		p.down();
 		p.up();
@@ -97,7 +97,7 @@ test('augmentation', async () => {
 		private sample = () => {};
 	}
 
-	const { pointeract, dispose } = setup(Aug);
+	const { pointeract, dispose } = setup([Aug]);
 	expect(pointeract.sample).toBeDefined();
 
 	await dispose();

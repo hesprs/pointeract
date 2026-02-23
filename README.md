@@ -5,7 +5,7 @@
   <br>
 </h1>
 
-<h4 align="center"> modern, lightweight, robust and extensible human gesture recognizer </h4>
+<h4 align="center"> 🖱️🤏 lightweight, robust and extensible human gesture detector </h4>
 
 <p align="center">
     <a href="https://github.com/hesprs/pointeract/actions">
@@ -89,7 +89,7 @@ Then simply grab the core class and a module:
 ```TypeScript
 import { Pointeract, Drag } from 'pointeract';
 
-new Pointeract({ element: yourElement }, Drag)
+new Pointeract({ element: yourElement }, [Drag])
     .start()
     .on('drag', e => console.log(e));
 ```

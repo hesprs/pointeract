@@ -1,11 +1,12 @@
 {
 	"name": "pointeract",
-	"version": "1.1.1",
-	"description": "Modern, lightweight, robust and extensible human gesture recognizer.",
+	"version": "1.1.2",
+	"description": "A 3KB, tree-shakable, TypeScript-native alternative to Hammer.js for robust pan/zoom gestures — runtime-flexible and extensible.",
 	"keywords": [
 		"frontend",
-		"interaction",
-		"pointer-events",
+		"gesture-detection",
+		"lightweight",
+		"pan-zoom",
 		"typescript"
 	],
 	"homepage": "https://pointeract.consensia.cc",
@@ -49,20 +50,20 @@
 	"devDependencies": {
 		"@types/node": "^25.3.0",
 		"@vitest/coverage-v8": "^4.0.18",
-		"happy-dom": "^20.6.3",
-		"oxfmt": "^0.33.0",
-		"oxlint": "^1.48.0",
-		"oxlint-tsgolint": "^0.14.0",
+		"happy-dom": "^20.7.0",
+		"oxfmt": "^0.35.0",
+		"oxlint": "^1.50.0",
+		"oxlint-tsgolint": "^0.14.2",
 		"terser": "^5.46.0",
 		"tsc-alias": "^1.8.16",
 		"typescript": "^5.9.3",
 		"vite": "^7.3.1",
 		"vitepress": "2.0.0-alpha.16",
 		"vitepress-plugin-group-icons": "^1.7.1",
-		"vitepress-theme-trito": "^1.0.5",
+		"vitepress-theme-trito": "^1.0.6",
 		"vitest": "^4.0.18",
 		"vue": "^3.5.28",
-		"vue-tsc": "^3.2.4"
+		"vue-tsc": "^3.2.5"
 	},
 	"packageManager": "pnpm@10.29.3"
 }

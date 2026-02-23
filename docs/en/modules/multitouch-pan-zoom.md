@@ -11,5 +11,5 @@ This module monitors touches on the screen.
 
 ```TypeScript
 import { MultitouchPanZoom, Pointeract } from 'pointeract';
-const pointeract = new Pointeract({ element: app }, MultitouchPanZoom);
+const pointeract = new Pointeract({ element: app }, [MultitouchPanZoom]);
 ```

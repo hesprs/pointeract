@@ -91,8 +91,8 @@ class BaseModule {
 - `onPointerMove`: Triggered when a pointer is moved (same to `pointermove` event).
 - `onPointerUp`: Triggered when a pointer is released (same to `pointerup` event).
 - `onWheel`: Triggered when a wheel event is triggered (same to `wheel` event).
-- `onStart`: Triggered when the module is started or after construction (`pointeract.start(MyModule)`).
-- `onStop`: Triggered when the module is stopped or before disposal (`pointeract.stop(MyModule)`).
+- `onStart`: Triggered when the module is started or after construction (`pointeract.start([MyModule])`).
+- `onStop`: Triggered when the module is stopped or before disposal (`pointeract.stop([MyModule])`).
 - `dispose`: Triggered when the module and the Pointeract instance is disposed (`pointeract.dispose()`).
 
 ::: tip
@@ -217,7 +217,7 @@ Then when you instantiate the `Pointeract` class with your module loaded, you ca
 import { Pointeract } from 'pointeract';
 import YourModule from './your-module';
 
-const instance = new Pointeract({ element: app }, YourModule);
+const instance = new Pointeract({ element: app }, [YourModule]);
 instance.log();
 
 // Result:

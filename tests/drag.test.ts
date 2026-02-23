@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import setup from './testUtils';
 
 test('drag', async () => {
-	const { acc, dispose, Pointer } = setup(Drag);
+	const { acc, dispose, Pointer } = setup([Drag]);
 	const p = new Pointer();
 	p.down();
 	p.move({ x: 100, y: 100 });

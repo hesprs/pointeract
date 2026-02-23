@@ -1,0 +1,21 @@
+{
+	"name": "pointeract",
+	"version": "1.1.2",
+	"description": "A 3KB, tree-shakable, TypeScript-native alternative to Hammer.js for robust pan/zoom gestures — runtime-flexible, extensible, and safe.",
+	"keywords": ["lightweight", "frontend", "gesture-detection", "pan-zoom", "typescript"],
+	"homepage": "https://pointeract.consensia.cc",
+	"bugs": {
+		"url": "https://github.com/hesprs/pointeract/issues"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Hēsperus",
+		"email": "hesprs@outlook.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hesprs/pointeract.git"
+	},
+	"exports": "./src/index.ts",
+	"sideEffects": false
+}

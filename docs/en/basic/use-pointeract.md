@@ -6,7 +6,7 @@ Everything Pointeract does is based on this class. It serves as an orchestrator 
 
 | Description                             | Method                                                       |
 | --------------------------------------- | ------------------------------------------------------------ |
-| [Instantiate the Class](#instantiation) | `new Pointeract(element, modules, options?)`                 |
+| [Instantiate the Class](#instantiation) | `new Pointeract(options, modules?)`                          |
 | [Start Base Class](#start-and-stop)     | `pointeract.start()`                                         |
 | [Stop Base Class](#start-and-stop)      | `pointeract.stop()`                                          |
 | [Start Modules](#modules)               | `pointeract.start(ModuleConstructor \| ModuleConstructor[])` |
@@ -63,7 +63,7 @@ const pointeract = new Pointeract(options, [Drag, PreventDefault]);
 ```
 
 ::: info
-Pointeract uses TypeScript generics to smartly infer the types of options, events, and class methods available by scanning every module passed into the constructor.
+Powered by [SynthKernel](https://hesprs.github.io/researches/synthkernel), Pointeract uses TypeScript generics to smartly infer the types of options, events, and class methods available by scanning every module passed into the constructor.
 :::
 
 ### Start and Stop
@@ -109,10 +109,9 @@ All modules are instantiated during the construction of `Pointeract` and dispose
 
 To turn on/off modules at runtime, also use `start()` and `stop()`. For these two methods, if you do not pass any arguments, they will start/stop the Pointeract instance; otherwise the specified modules. All modules passed in are enabled by default at Pointeract construction.
 
-You start/stop modules by passing in the **constructors** of modules, the methods accept a single module or an array of modules:
+You start/stop modules by passing in the **constructors** of modules, the methods accept an array of modules:
 
 ```TypeScript
-pointeract.start(PreventDefault); // single module
 pointeract.stop([PreventDefault, Drag]); // multiple modules
 ```
 
@@ -122,9 +121,9 @@ Note that the start/stop of modules are independent to the start/stop of the bas
 ```TypeScript
 // we have modules PreventDefault and Drag
 pointeract.stop(); // everything is paused
-pointeract.stop(PreventDefault); // no apparent change, but PreventDefault is disabled at module level
+pointeract.stop([PreventDefault]); // no apparent change, but PreventDefault is disabled at module level
 pointeract.start(); // only the base class and Drag are started
-pointeract.start(PreventDefault); // PreventDefault will not be restarted unless explicitly reenabled here
+pointeract.start([PreventDefault]); // PreventDefault will not be restarted unless explicitly reenabled here
 ```
 
 :::
@@ -166,9 +165,10 @@ Options are defined as an object and passed as the third argument of a Pointerac
 
 ```TypeScript
 const options = {
+    element: app,
     coordinateOutput: 'absolute',
 }
-const pointeract = new Pointeract(app, [Drag, PreventDefault], options);
+const pointeract = new Pointeract(options, [Drag, PreventDefault]);
 ```
 
 ### Base Options
@@ -198,10 +198,11 @@ Pointeract uses the same `options` reference passed in the constructor, you can 
 import { Pointeract, WheelPanZoom, Options } from 'pointeract';
 
 const options: Options<WheelPanZoom> = {
+    element: document.body
     coordinateOutput: 'absolute', // output absolute coordinates
 }
 
-const pointeract = new Pointeract(document.body, WheelPanZoom, options);
+const pointeract = new Pointeract(options, [WheelPanZoom]);
 
 options.coordinateOutput = 'relative'; // output format instantly changes to relative
 ```
@@ -238,7 +239,7 @@ pointeract.stop();
 pointeract.start();
 
 // Disable PreventDefault only
-pointeract.stop(PreventDefault);
+pointeract.stop([PreventDefault]);
 
 // Dispose
 pointeract.dispose();

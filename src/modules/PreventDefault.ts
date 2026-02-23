@@ -1,4 +1,4 @@
-import BaseModule from '@/baseModule';
+import BaseModule from '@/BaseModule';
 
 export default class PreventDefault extends BaseModule {
 	onWheel = (e: WheelEvent) => e.preventDefault();

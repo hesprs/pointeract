@@ -8,7 +8,7 @@ The click module in checks whether the mouse/touch has actually moved during dow
 
 ```TypeScript
 import { Click, Pointeract } from 'pointeract';
-const pointeract = new Pointeract({ element: app }, Click);
+const pointeract = new Pointeract({ element: app }, [Click]);
 ```
 
 ## Options

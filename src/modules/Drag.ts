@@ -1,5 +1,5 @@
-import type { Pointer, Pointers } from '@/declarations';
-import BaseModule from '@/baseModule';
+import type { Pointer, Pointers } from '@/types';
+import BaseModule from '@/BaseModule';
 import { getLast } from '@/utils';
 
 export default class Drag extends BaseModule {

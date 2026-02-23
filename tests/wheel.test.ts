@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import setup from './testUtils';
 
 test('normal wheel', async () => {
-	const { acc, dispose, wheel } = setup(WheelPanZoom);
+	const { acc, dispose, wheel } = setup([WheelPanZoom]);
 	wheel({ x: 0, y: 50 });
 	const smallerScale = acc.scale;
 	expect(smallerScale < 0.9).toBe(true);
@@ -14,7 +14,7 @@ test('normal wheel', async () => {
 
 test('professional control schema', async () => {
 	const options = { proControlSchema: false };
-	const { acc, dispose, wheel } = setup(WheelPanZoom, options);
+	const { acc, dispose, wheel } = setup([WheelPanZoom], options);
 
 	// normal schema
 	wheel({ x: 0, y: 200 });

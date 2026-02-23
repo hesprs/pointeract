@@ -1,5 +1,5 @@
-import BaseModule, { BaseArgs } from '@/baseModule';
-import { BaseOptions, Events, GeneralObject } from '@/declarations';
+import BaseModule, { BaseArgs, Events } from '@/BaseModule';
+import { BaseOptions, GeneralDictionary } from '@/types';
 
 interface Options extends BaseOptions {
 	lubricator?: Record<string, PerEventOption>;
@@ -11,7 +11,7 @@ type PerEventOption = {
 };
 
 type PerEventStates = {
-	sample: GeneralObject;
+	sample: GeneralDictionary;
 	fields: Record<
 		string,
 		{
@@ -64,7 +64,7 @@ export default class Lubricator extends BaseModule<Options> {
 	};
 
 	#makeLubricate =
-		(states: PerEventStates, options: PerEventOption) => (detail: GeneralObject) => {
+		(states: PerEventStates, options: PerEventOption) => (detail: GeneralDictionary) => {
 			if (detail.lubricated) return true;
 			states.sample = detail;
 			this.#accumulate(states.fields, options.fields, detail);
@@ -74,7 +74,7 @@ export default class Lubricator extends BaseModule<Options> {
 	#accumulate = (
 		stateFields: PerEventStates['fields'],
 		optionsFields: PerEventOption['fields'],
-		detail: GeneralObject,
+		detail: GeneralDictionary,
 	) => {
 		Object.entries(stateFields).forEach(([key, value]) => {
 			if (typeof detail[key] !== 'number') return;

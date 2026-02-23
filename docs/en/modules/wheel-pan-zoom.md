@@ -22,7 +22,7 @@ Most devices with touchpad interpret touchpad gestures as mouse wheel + key pres
 
 ```TypeScript
 import { WheelPanZoom, Pointeract } from 'pointeract';
-const pointeract = new Pointeract({ element: app }, WheelPanZoom);
+const pointeract = new Pointeract({ element: app }, [WheelPanZoom]);
 ```
 
 ## Options

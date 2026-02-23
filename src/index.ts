@@ -12,12 +12,12 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-export { default as BaseModule, type BaseArgs } from '@/baseModule';
-export type { Options, Events, Pointer, Pointers, StdEvents, BaseOptions } from '@/declarations';
-export { default as Click } from '@/modules/click';
-export { default as Drag } from '@/modules/drag';
-export { default as MultitouchPanZoom } from '@/modules/multitouchPanZoom';
-export { default as PreventDefault } from '@/modules/preventDefault';
-export { default as WheelPanZoom } from '@/modules/wheelPanZoom';
-export { default as Lubricator, panPreset, dragPreset, zoomPreset } from '@/modules/lubricator';
-export { default as Pointeract, type PointeractInterface } from '@/pointeract';
+export { default as BaseModule, type BaseArgs, type Options, type Events } from '@/BaseModule';
+export type { Pointer, Pointers, StdEvents, BaseOptions } from '@/types';
+export { default as Click } from '@/modules/Click';
+export { default as Drag } from '@/modules/Drag';
+export { default as MultitouchPanZoom } from '@/modules/MultitouchPanZoom';
+export { default as PreventDefault } from '@/modules/PreventDefault';
+export { default as WheelPanZoom } from '@/modules/WheelPanZoom';
+export { default as Lubricator, panPreset, dragPreset, zoomPreset } from '@/modules/Lubricator';
+export { default as Pointeract, type PointeractInterface } from '@/Pointeract';

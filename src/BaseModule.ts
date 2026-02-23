@@ -1,12 +1,14 @@
+import type { Pointeract, PointeractInterface } from '@/Pointeract';
 import type {
 	BaseOptions,
 	GeneralObject,
 	Pointer,
 	Pointers,
 	StdEvents,
-	Constrain,
-} from '@/declarations';
-import type { Pointeract, PointeractInterface } from '@/pointeract';
+	ModuleInput as MI,
+	Orchestratable,
+	General,
+} from '@/types';
 
 export type HookKeys =
 	| 'onPointerDown'
@@ -17,13 +19,14 @@ export type HookKeys =
 	| 'onStop'
 	| 'dispose';
 
-export type BaseArgs = [
-	Pointeract<[]>['moduleUtils'],
-	Window,
-	Pointers,
-	HTMLElement,
-	GeneralObject,
-];
+export type BaseArgs = ConstructorParameters<typeof BaseModule>;
+export type ModuleCtor = typeof BaseModule<General, General, General>;
+
+export type ModuleInput = MI<ModuleCtor>;
+export type ModuleInputCtor = ReadonlyArray<ModuleCtor>;
+export type Options<T extends ModuleInput = []> = Orchestratable<T, 'options'> & BaseOptions;
+export type Events<T extends ModuleInput = []> = Orchestratable<T, '_Events'> & StdEvents;
+export type Augmentation<T extends ModuleInput = []> = Orchestratable<T, '_Augmentation'>;
 
 export default class BaseModule<
 	O extends BaseOptions = BaseOptions,
@@ -36,7 +39,7 @@ export default class BaseModule<
 	protected getNthPointer: Pointeract<[]>['moduleUtils']['getNthPointer'];
 	protected toTargetCoords: Pointeract<[]>['moduleUtils']['toTargetCoords'];
 	protected augment: (augmentation: A) => void;
-	protected dispatch: <K extends keyof Constrain<E>>(
+	protected dispatch: <K extends keyof E>(
 		...arg: undefined extends E[K] ? [K] : [K, E[K]]
 	) => void;
 	options: O;
@@ -51,7 +54,7 @@ export default class BaseModule<
 		this.toTargetCoords = utils.toTargetCoords;
 		this.augment = utils.augment;
 		this.dispatch = utils.dispatch as typeof this.dispatch;
-		this.options = options;
+		this.options = options as O;
 	}
 
 	onPointerDown?: (...args: [event: PointerEvent, pointer: Pointer, pointers: Pointers]) => void;
@@ -62,6 +65,6 @@ export default class BaseModule<
 	onStop?: () => void;
 	dispose?: () => void;
 	modifiers?: {
-		[K in keyof Constrain<E>]?: (event: E[K]) => boolean | E[K];
+		[K in keyof E]?: (event: E[K]) => boolean | E[K];
 	};
 }

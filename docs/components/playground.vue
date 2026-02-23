@@ -25,7 +25,7 @@ import {
 	zoomPreset,
 	panPreset,
 } from '@';
-import { Coordinates } from '@/declarations';
+import { Coordinates } from '@/types';
 
 function C2C(coords: Coordinates) {
 	return {

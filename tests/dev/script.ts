@@ -11,7 +11,7 @@ import {
 	zoomPreset,
 	dragPreset,
 } from '@';
-import { Coordinates } from '@/declarations';
+import { Coordinates } from '@/types';
 
 const square = document.getElementById('test-square') as HTMLElement;
 const squareRect = square.getBoundingClientRect();

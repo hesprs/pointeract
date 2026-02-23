@@ -8,5 +8,5 @@ This module handles drag interactions, events are dispatched when a single touch
 
 ```TypeScript
 import { Drag, Pointeract } from 'pointeract';
-const pointeract = new Pointeract({ element: app }, Drag);
+const pointeract = new Pointeract({ element: app }, [Drag]);
 ```

@@ -1,5 +1,5 @@
-import type { BaseOptions, Pointer, Pointers } from '@/declarations';
-import BaseModule from '@/baseModule';
+import type { BaseOptions, Pointer, Pointers } from '@/types';
+import BaseModule from '@/BaseModule';
 import { getLast } from '@/utils';
 
 interface Options extends BaseOptions {

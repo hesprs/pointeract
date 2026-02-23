@@ -1,7 +1,8 @@
 import { type Click, type Drag, PointeractInterface, type WheelPanZoom, Pointeract } from '@';
 import { Window as HappyWindow, PointerEvent, HTMLDivElement, WheelEvent } from 'happy-dom';
 import { beforeEach, vi } from 'vitest';
-import type { Coordinates, ModuleInputCtor, Options, StdEvents } from '@/declarations';
+import type { Coordinates, StdEvents } from '@/types';
+import { ModuleInputCtor, Options } from '@/BaseModule';
 
 beforeEach(() => {
 	vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(

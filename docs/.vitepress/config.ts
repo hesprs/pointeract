@@ -98,6 +98,11 @@ export default defineConfig<ThemeConfig>({
 		],
 		editLink: 'https://github.com/hesprs/pointeract/edit/main/docs/:path',
 		outline: 'deep',
+		footer: {
+			message:
+				'Licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0.html">Apache License 2.0</a>.',
+			copyright: 'Copyright © 2025-2026 Hēsperus',
+		},
 	},
 	markdown: {
 		config(md) {

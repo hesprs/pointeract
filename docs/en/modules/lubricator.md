@@ -23,9 +23,11 @@ Lubricator requires a granular configuration of what and how to interpolate an e
 ```TypeScript
 interface Options extends BaseOptions {
     lubricator?: {
+        // this is the configuration for each event
         [Key: string]?: {
             decayFactor: number;
 	        fields: {
+                // this is the configuration for each field in the emitted event
                 [Key: string]?: {
                     countType: 'sum' | 'product';
                     diminishBoundary: number;
@@ -42,7 +44,7 @@ In **per-event** configuration:
 
 `decayFactor`: controls how fast it interpolates, i.e., how the smoothified event lags behind the real-time interaction. The lower this value is, the more smooth interactions are.
 
-`fields`: the name of fields in the event to interpolate, the fields must be the type `number`, you can find the fields of events in the [event types](/basic/types#events). The values of the items in `fields` are configurations per-field.
+`fields`: the names of fields in the event to interpolate, the fields must be the type `number`, you can find the fields of events in the [event types](/basic/types#events). The values of the items in `fields` are configurations per-field.
 
 In **per-field** configuration:
 
@@ -53,7 +55,7 @@ In **per-field** configuration:
 
 `diminishBoundary`: defines the threshold for the final dispatch.
 
-- interpolation is infinite if you don't manually define a boundary. If the difference between the real dispatch and raw is smaller than this boundary, the interpolation will stop and lubricator will dispatch a final event to make the aggregate interpolation equals the raw.
+- interpolation is infinite if you don't manually define a boundary. If the difference between the real dispatch and raw is smaller than this boundary, the interpolation will stop and lubricator will dispatch a final event to make the aggregate interpolation equal the raw.
 
 In the following example, we will smoothify `zoom` event:
 
@@ -76,7 +78,7 @@ new Pointeract({
 }, [WheelPanZoom, Lubricator])
 ```
 
-In this example, we've configured Lubricator to intercept event `zoom`, interpolate the `factor` field in it with product goal and stops when the aggregate interpolation is less than 1% from total product.
+In this example, we've configured Lubricator to intercept event `zoom`, interpolate the `factor` field in it with product goal and stops when the leftover zoom factor is less than 0.01.
 
 ## Presets
 

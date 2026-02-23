@@ -3,7 +3,7 @@ import { expect, test } from 'vitest';
 import setup from './testUtils';
 
 test('two touches 100px apart, zoom in and pan up', async () => {
-	const { acc, dispose, Pointer } = setup(MultitouchPanZoom);
+	const { acc, dispose, Pointer } = setup([MultitouchPanZoom]);
 	const p1 = new Pointer();
 	const p2 = new Pointer();
 

@@ -17,16 +17,21 @@ hero:
       link: /playground
 
 features:
-  - title: Modern
+  - title: Powered by SynthKernel
     icon: 🧪
-    details: Written in TypeScript, succinct in size, wide compatibility.
+    details: 100% modular with precise typing and excellent extensibility.
+    link: https://hesprs.github.io/researches/synthkernel
+    linkText: Learn more about SynthKernel
   - title: Scale from 1KB
     icon: 🐣
+    link: /modules
     details: Grab what you need via modules, the base class is only 1KB gzipped.
-  - title: Extensible
+  - title: Runtime-Flexible
     icon: 🧩
-    details: Write your own modules and plug into Pointeract via its module API.
+    details: Start/stop the detector and any module at any time, update options reactively.
   - title: Robust
     icon: 🦾
-    details: Full touchpad support, excels at complex gestures where most interaction libraries fail.
+    details: Excels at complex gestures where most contenders fail.
+    link: /development/testing
+    linkText: See testing
 ---

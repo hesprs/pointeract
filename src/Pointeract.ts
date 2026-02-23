@@ -1,18 +1,16 @@
-import type BaseModule from '@/baseModule';
+import type BaseModule from '@/BaseModule';
 import type {
 	Augmentation,
-	Coordinates,
 	Events,
-	GeneralObject,
-	ModuleCtor,
-	ModuleInput,
-	ModuleInputCtor,
 	Options,
-	Pointers,
-	Reloadable,
-} from '@/declarations';
-import { HookKeys } from '@/baseModule';
-import { toArray } from '@/utils';
+	ModuleCtor,
+	ModuleInputCtor,
+	ModuleInput,
+} from '@/BaseModule';
+import type { Coordinates, GeneralObject, Pointers } from '@/types';
+import { HookKeys } from '@/BaseModule';
+
+type Reloadable<T extends ModuleInputCtor> = Array<T[number]>;
 
 export class Pointeract<T extends ModuleInputCtor = []> {
 	#element: HTMLElement;
@@ -30,7 +28,7 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 	}
 
 	constructor(options: Options<T>, _modules?: T) {
-		const modules = toArray(_modules ? _modules : ([] as Array<ModuleCtor>));
+		const modules = _modules ? _modules : [];
 		this.#_window = options.element.ownerDocument.defaultView;
 		this.#element = options.element;
 		if (!options.coordinateOutput) options.coordinateOutput = 'relative';
@@ -148,7 +146,7 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 
 	#onWheel = (e: WheelEvent) => this.#runHooks('onWheel', e);
 
-	stop = (_toStop?: Reloadable<T>) => {
+	stop = (toStop?: Reloadable<T>) => {
 		const stopPointeract = () => {
 			this.#element.removeEventListener('pointerdown', this.#onPointerDown);
 			this.#window.removeEventListener('pointermove', this.#onPointerMove);
@@ -163,15 +161,15 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 			this.#pausedModules[moduleCtor.name] = module;
 			delete this.#modules[moduleCtor.name];
 		};
-		if (!_toStop) stopPointeract();
+		if (!toStop) stopPointeract();
 		else
-			toArray(_toStop).forEach((module) => {
+			toStop.forEach((module) => {
 				stopModule(module);
 			});
 		return this;
 	};
 
-	start = (_toStart?: Reloadable<T>) => {
+	start = (toStart?: Reloadable<T>) => {
 		const startPointeract = () => {
 			this.#element.addEventListener('pointerdown', this.#onPointerDown);
 			this.#window.addEventListener('pointermove', this.#onPointerMove);
@@ -186,9 +184,9 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 			this.#modules[moduleCtor.name] = module;
 			delete this.#pausedModules[moduleCtor.name];
 		};
-		if (!_toStart) startPointeract();
+		if (!toStart) startPointeract();
 		else
-			toArray(_toStart).forEach((module) => {
+			toStart.forEach((module) => {
 				startModule(module);
 			});
 		return this;
