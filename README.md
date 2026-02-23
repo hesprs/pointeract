@@ -34,6 +34,12 @@
 </p>
 
 <p align="center">
+    <a href="https://github.com/hesprs/synthkernel">
+        <img src="https://github.com/hesprs/synthkernel/raw/refs/heads/main/assets/powered-by-synthkernel.svg" width="200px"></img>
+    </a>
+</p>
+
+<p align="center">
     <a href="https://pointeract.consensia.cc/playground">
         <strong>Demo</strong>
     </a> • 
