@@ -31,15 +31,15 @@ Missing your desired interaction? [Write your own module](/development/custom-mo
 
 There're already plenty of interaction libraries out there, most famous ones are `Interact.js` and `Hammer.js`, but Pointeract is different.
 
-| Criteria                                                  |                      Pointeract                       |     [Hammer.js](https://hammerjs.github.io)      |        [Interact.js](https://interactjs.io)         |
-| :-------------------------------------------------------- | :---------------------------------------------------: | :----------------------------------------------: | :-------------------------------------------------: |
-| Written in TypeScript?                                    |                          ✅                           |                        ❌                        |                         ✅                          |
-| Tree-shakeable?                                           |   [✅](https://bundlephobia.com/package/pointeract)   | [❌](https://bundlephobia.com/package/hammerjs)  |  [❌](https://bundlephobia.com/package/interactjs)  |
-| Total Bundle Size (Minified + Gzipped)                    | 👑 [3KB](https://bundlephobia.com/package/pointeract) | [7KB](https://bundlephobia.com/package/hammerjs) | [28KB](https://bundlephobia.com/package/interactjs) |
-| Last Updated                                              |                👑 Actively Maintained                 |                       2015                       |                        2023                         |
-| Features                                                  |        Pointer and Wheel Related + Some Utils         |                 Pointer Related                  | 👑 Pointer and Wheel Related + Comprehensive Utils  |
-| Robust? (See [Testing](/development/testing#monkey-test)) |                          ✅                           |                 ❌ Element Jerks                 |         ❌ Element Ignores the Second Touch         |
-| Extensible?                                               |                          ✅                           |                        ❌                        |                         ❌                          |
+| Criteria                                                  |                      Pointeract                       |     [Hammer.js](https://hammerjs.github.io)     |         [Interact.js](https://interactjs.io)         |
+| :-------------------------------------------------------- | :---------------------------------------------------: | :---------------------------------------------: | :--------------------------------------------------: |
+| Written in TypeScript?                                    |                          ✅                           |                       ❌                        |                          ✅                          |
+| Tree-shakeable?                                           |                          ✅                           |                       ❌                        |                          ❌                          |
+| Total Bundle Size (Minified + Gzipped)                    | 👑 [3KB](https://bundlejs.com/?q=pointeract%40latest) | [7KB](https://bundlejs.com/?q=hammerjs%402.0.8) | [28KB](https://bundlejs.com/?q=interactjs%401.10.27) |
+| Last Updated                                              |                👑 Actively Maintained                 |                      2015                       |                         2023                         |
+| Features                                                  |        Pointer and Wheel Related + Some Utils         |                 Pointer Related                 |  👑 Pointer and Wheel Related + Comprehensive Utils  |
+| Robust? (See [Testing](/development/testing#monkey-test)) |                          ✅                           |                ❌ Element Jerks                 |         ❌ Element Ignores the Second Touch          |
+| Extensible?                                               |                          ✅                           |                       ❌                        |                          ❌                          |
 
 ## License
 
