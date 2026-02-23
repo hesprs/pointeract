@@ -4,6 +4,7 @@ export type General = any;
 export type GeneralArray = ReadonlyArray<General>;
 export type GeneralObject = object;
 export type GeneralDictionary = Record<Indexable, General>;
+export type GeneralFunction = (...args: General[]) => General;
 export type GeneralConstructor = new (...args: General[]) => General;
 type Indexable = string | number | symbol;
 

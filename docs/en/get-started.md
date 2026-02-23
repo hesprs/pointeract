@@ -28,10 +28,6 @@ yarn add pointeract
 bun add pointeract
 ```
 
-```sh [deno]
-deno add jsr:@hesprs/pointeract
-```
-
 :::
 
 Or include the following lines directly in your HTML file:

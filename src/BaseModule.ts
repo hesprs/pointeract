@@ -1,13 +1,13 @@
-import type { Pointeract, PointeractInterface } from '@/Pointeract';
 import type {
 	BaseOptions,
-	GeneralObject,
 	Pointer,
 	Pointers,
 	StdEvents,
 	ModuleInput as MI,
 	Orchestratable,
 	General,
+	Coordinates,
+	GeneralFunction,
 } from '@/types';
 
 export type HookKeys =
@@ -36,25 +36,21 @@ export default class BaseModule<
 	declare private static readonly _BaseModuleBrand: unique symbol; // Nominal marker
 	declare readonly _Events: E;
 	declare readonly _Augmentation: A;
-	protected getNthPointer: Pointeract<[]>['moduleUtils']['getNthPointer'];
-	protected toTargetCoords: Pointeract<[]>['moduleUtils']['toTargetCoords'];
-	protected augment: (augmentation: A) => void;
 	protected dispatch: <K extends keyof E>(
 		...arg: undefined extends E[K] ? [K] : [K, E[K]]
 	) => void;
-	options: O;
+
 	constructor(
-		utils: PointeractInterface['moduleUtils'],
+		protected augment: (augmentation: A) => void,
+		dispatch: GeneralFunction,
+		protected getNthPointer: (n: number) => Pointer,
+		protected toTargetCoords: (raw: Coordinates) => Coordinates,
 		protected window: Window,
 		protected pointers: Pointers,
 		protected element: HTMLElement,
-		options: GeneralObject,
+		public options: O,
 	) {
-		this.getNthPointer = utils.getNthPointer;
-		this.toTargetCoords = utils.toTargetCoords;
-		this.augment = utils.augment;
-		this.dispatch = utils.dispatch as typeof this.dispatch;
-		this.options = options as O;
+		this.dispatch = dispatch;
 	}
 
 	onPointerDown?: (...args: [event: PointerEvent, pointer: Pointer, pointers: Pointers]) => void;

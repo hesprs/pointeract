@@ -35,7 +35,10 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 		this.options = options;
 		modules.forEach((module) => {
 			const instance = new module(
-				this.moduleUtils as PointeractInterface['moduleUtils'],
+				this.#augment,
+				this.dispatch,
+				this.#getNthPointer,
+				this.#toTargetCoords,
 				this.#window,
 				this.#pointers,
 				this.#element,
@@ -51,73 +54,69 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 		this.#subscribers[type]?.add(listener);
 		return this;
 	};
-	off<K extends keyof Events<T>>(type: K, listener: (event: Events<T>[K]) => void) {
+
+	off = <K extends keyof Events<T>>(type: K, listener: (event: Events<T>[K]) => void) => {
 		this.#subscribers[type]?.delete(listener);
 		return this;
-	}
-
-	private moduleUtils = {
-		getNthPointer: (n: number) => {
-			const error = new Error('[Pointeract] Invalid pointer index.');
-			if (n < 0 || n >= this.#pointers.size) throw error;
-			let i = 0;
-			for (const value of this.#pointers.values()) {
-				if (i === n) return value;
-				i++;
-			}
-			throw error;
-		},
-
-		// Screen to Container
-		toTargetCoords: (raw: Coordinates) => {
-			if (this.options.coordinateOutput === 'absolute') return raw;
-			const rect = this.#element.getBoundingClientRect();
-			raw.x -= rect.left;
-			raw.y -= rect.top;
-			if (this.options.coordinateOutput === 'relative') return raw;
-			raw.x /= rect.width;
-			raw.y /= rect.height;
-			return raw;
-		},
-
-		dispatch: <N extends keyof Events<T>>(
-			...args: undefined extends Events<T>[N] ? [N] : [N, Events<T>[N]]
-		) => {
-			const name = args[0];
-			const e = args[1];
-			let lastResult: boolean | Events<T>[N] = true;
-			for (const value of Object.values(this.#modules)) {
-				if (!value.modifiers || !(name in value.modifiers)) continue;
-				lastResult =
-					e === undefined
-						? (value.modifiers[name] as () => boolean)()
-						: (
-								value.modifiers[name] as (
-									detail?: Events<T>[N],
-								) => boolean | Events<T>[N]
-							)(e);
-				if (lastResult === false) return;
-			}
-			let event: Events<T>[N];
-			if (lastResult === true) event = e as Events<T>[N];
-			else event = lastResult;
-			this.#subscribers[name]?.forEach((listener) => listener(event));
-		},
-
-		augment: (aug: GeneralObject) => {
-			Object.entries(aug).forEach(([key, value]) => (this[key as '_augmentSlot'] = value));
-		},
 	};
 
-	dispatch = this.moduleUtils.dispatch;
+	#getNthPointer = (n: number) => {
+		const error = new Error('[Pointeract] Invalid pointer index.');
+		if (n < 0 || n >= this.#pointers.size) throw error;
+		let i = 0;
+		for (const value of this.#pointers.values()) {
+			if (i === n) return value;
+			i++;
+		}
+		throw error;
+	};
 
-	#runHooks<K extends HookKeys>(field: K, ...args: Parameters<Required<BaseModule>[K]>) {
+	// Screen to Container
+	#toTargetCoords = (raw: Coordinates) => {
+		if (this.options.coordinateOutput === 'absolute') return raw;
+		const rect = this.#element.getBoundingClientRect();
+		raw.x -= rect.left;
+		raw.y -= rect.top;
+		if (this.options.coordinateOutput === 'relative') return raw;
+		raw.x /= rect.width;
+		raw.y /= rect.height;
+		return raw;
+	};
+
+	dispatch = <N extends keyof Events<T>>(
+		...args: undefined extends Events<T>[N] ? [N] : [N, Events<T>[N]]
+	) => {
+		const name = args[0];
+		const e = args[1];
+		let lastResult: boolean | Events<T>[N] = true;
+		for (const value of Object.values(this.#modules)) {
+			if (!value.modifiers || !(name in value.modifiers)) continue;
+			lastResult =
+				e === undefined
+					? (value.modifiers[name] as () => boolean)()
+					: (value.modifiers[name] as (detail?: Events<T>[N]) => boolean | Events<T>[N])(
+							e,
+						);
+			if (lastResult === false) return;
+		}
+		let event: Events<T>[N];
+		if (lastResult === true) event = e as Events<T>[N];
+		else event = lastResult;
+		this.#subscribers[name]?.forEach((listener) => listener(event));
+	};
+
+	#augment = (aug: GeneralObject) => {
+		const descriptors = Object.getOwnPropertyDescriptors(aug);
+		Object.defineProperties(this, descriptors);
+	};
+
+	#runHooks = <K extends HookKeys>(field: K, ...args: Parameters<Required<BaseModule>[K]>) => {
 		Object.values(this.#modules).forEach((module) => {
 			const hook = module[field];
 			// oxlint-disable-next-line typescript/no-explicit-any
 			if (hook) hook(...(args as any));
 		});
-	}
+	};
 
 	#onPointerDown = (e: PointerEvent) => {
 		if (this.#pointers.size >= 2) return;

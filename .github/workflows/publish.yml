@@ -36,6 +36,3 @@ jobs:
 
       - name: Publish to npm
         run: pnpm publish --no-git-checks
-
-      - name: Publish to JSR
-        run: pnpx jsr publish
