@@ -24,6 +24,14 @@ pnpm add pointeract
 yarn add pointeract
 ```
 
+```sh [bun]
+bun add pointeract
+```
+
+```sh [deno]
+deno add jsr:@hesprs/pointeract
+```
+
 :::
 
 Or include the following lines directly in your HTML file:
@@ -43,7 +51,7 @@ Simply grab the core class and a module:
 ```TypeScript
 import { Pointeract, Drag } from 'pointeract';
 
-new Pointeract({ element: yourElement }, Drag)
+new Pointeract({ element: yourElement }, [Drag])
     .start()
     .on('drag', e => console.log(e));
 ```
