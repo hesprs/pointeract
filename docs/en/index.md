@@ -24,7 +24,6 @@ features:
     linkText: Learn more about SynthKernel
   - title: Scale from 1KB
     icon: 🐣
-    link: /modules
     details: Grab what you need via modules, the base class is only 1KB gzipped.
   - title: Runtime-Flexible
     icon: 🧩

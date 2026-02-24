@@ -13,7 +13,7 @@
 	"bugs": {
 		"url": "https://github.com/hesprs/pointeract/issues"
 	},
-	"license": "MIT",
+	"license": "Apache-2.0",
 	"author": {
 		"name": "Hēsperus",
 		"email": "hesprs@outlook.com"
