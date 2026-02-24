@@ -1,7 +1,7 @@
 {
 	"name": "pointeract",
 	"version": "1.1.2",
-	"description": "A 3KB, tree-shakable, TypeScript-native alternative to Hammer.js for robust pan/zoom gestures — runtime-flexible and extensible.",
+	"description": "A 3KB, tree-shakable, TypeScript-native human interaction library for robust tap/pan/zoom gestures — runtime-flexible and extensible.",
 	"keywords": [
 		"frontend",
 		"gesture-detection",

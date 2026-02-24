@@ -55,7 +55,7 @@
 
 Pointeract is a tiny JavaScript/TypeScript utility library focusing on one thing - handling user interactions with DOM elements, e.g. multitouch and touchpad.
 
-With the unique strength of versatile typings in TypeScript and its dynamic nature, Pointeract has achieved a highly _modular, extendable and efficient_ architecture. Its core bundle size is only **1KB** minified + gzipped, functionalities come from also byte-sized modules. It's fully **tree-shakable**, the fewer modules you use, the smaller your bundle is.
+Powered by [SynthKernel architecture](https://hesprs.github.io/researches/synthkernel), Pointeract has achieved a highly _modular, extensible and efficient_ architecture. Its core bundle size is only **1KB** minified + gzipped, functionalities come from also byte-sized modules. It's fully **tree-shakable**, the fewer modules you use, the smaller your bundle is.
 
 ## Advantages
 
@@ -122,25 +122,26 @@ Missing your desired interaction? [Write your own module](https://pointeract.con
 
 ## How Pointeract Stands Out?
 
-There're already plenty of interaction libraries out there, most famous ones are `Interact.js` and `Hammer.js`, but Pointeract is different.
+There're already plenty of interaction libraries out there, most famous ones are `d3-drag` + `d3-zoom`, `Interact.js` and `Hammer.js`, but Pointeract is different.
 
-| Criteria                                                                                 |                      Pointeract                       |     [Hammer.js](https://hammerjs.github.io)     |         [Interact.js](https://interactjs.io)         |
-| :--------------------------------------------------------------------------------------- | :---------------------------------------------------: | :---------------------------------------------: | :--------------------------------------------------: |
-| Written in TypeScript?                                                                   |                          ✅                           |                       ❌                        |                          ✅                          |
-| Tree-shakeable?                                                                          |                          ✅                           |                       ❌                        |                          ❌                          |
-| Total Bundle Size (Minified + Gzipped)                                                   | 👑 [3KB](https://bundlejs.com/?q=pointeract%40latest) | [7KB](https://bundlejs.com/?q=hammerjs%402.0.8) | [28KB](https://bundlejs.com/?q=interactjs%401.10.27) |
-| Last Updated                                                                             |                👑 Actively Maintained                 |                      2015                       |                         2023                         |
-| Features                                                                                 |        Pointer and Wheel Related + Some Utils         |                 Pointer Related                 |  👑 Pointer and Wheel Related + Comprehensive Utils  |
-| Robust? (See [Testing](https://pointeract.consensia.cc/development/testing#monkey-test)) |                          ✅                           |                ❌ Element Jerks                 |         ❌ Element Ignores the Second Touch          |
-| Extensible?                                                                              |                          ✅                           |                       ❌                        |                          ❌                          |
+| Criteria                                                                                       |                      Pointeract                       | [D3 Drag](https://github.com/d3/d3-drag) + [D3 Zoom](https://github.com/d3/d3-zoom) |     [Hammer.js](https://hammerjs.github.io)     |         [Interact.js](https://interactjs.io)         |
+| :--------------------------------------------------------------------------------------------- | :---------------------------------------------------: | :---------------------------------------------------------------------------------: | :---------------------------------------------: | :--------------------------------------------------: |
+| Written in TypeScript?                                                                         |                          ✅                           |                                         ❌                                          |                       ❌                        |                          ✅                          |
+| Tree-shakeable?                                                                                |                          ✅                           |                                         ❌                                          |                       ❌                        |                          ❌                          |
+| Total Bundle Size (Minified + Gzipped)                                                         | 👑 [3KB](https://bundlejs.com/?q=pointeract%40latest) |          [17KB](https://bundlejs.com/?q=d3-drag%403.0.0%2Cd3-zoom%403.0.0)          | [7KB](https://bundlejs.com/?q=hammerjs%402.0.8) | [28KB](https://bundlejs.com/?q=interactjs%401.10.27) |
+| Last Updated                                                                                   |                👑 Actively Maintained                 |                                        2021                                         |                      2015                       |                         2023                         |
+| Versatility                                                                                    |        Pointer and Wheel Related + Some Utils         |                      👑 Pointer and Wheel Related + Ecosystem                       |                 Pointer Related                 |        Pointer Related + Comprehensive Utils         |
+| Support                                                                                        |      👑 Mouse, Mouse Wheel, Touch, and Touchpad       |                               ⚠️ No Touchpad Support                                |      ⚠️ No Touchpad or Mouse Wheel Support      |        ⚠️ No Touchpad or Mouse Wheel Support         |
+| Robust (Passes [Monkey Test](https://pointeract.consensia.cc/development/testing#monkey-test)) |                          ✅                           |                                         ✅                                          |                ❌ Element Jerks                 |         ❌ Element Ignores the Second Touch          |
+| Extensible?                                                                                    |                          ✅                           |                                         ❌                                          |                       ❌                        |                          ❌                          |
 
 ## Get Involved
 
 This project welcomes anyone that has ideas to improve it.
 
 - [Open a pull request](https://github.com/hesprs/pointeract/compare) for a new module, event standard, documentation update, and so on.
-- [Open an issue](https://github.com/hesprs/pointeract/issues/new) if you find a bug.
-- [Start a new thread in Discussions](https://github.com/hesprs/pointeract/discussions/new) if you have feature requests or questions, please avoid posting them in Issues.
+- [Open an issue](https://github.com/hesprs/pointeract/issues/new) if you find a bug or have a feature request.
+- [Start a new thread in Discussions](https://github.com/hesprs/pointeract/discussions/new) if you have feature requests or questions want to discuss.
 - [Report a vulnerability](https://github.com/hesprs/pointeract/security/advisories/new) if you find one, please do not disclose it publicly.
 
 ## Copyright and License
