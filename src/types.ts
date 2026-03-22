@@ -46,6 +46,7 @@ export type Pointer = {
 export interface StdEvents {
 	pan: { deltaX: number; deltaY: number };
 	drag: { deltaX: number; deltaY: number; x: number; y: number };
+	swipe: { direction: 'left' | 'right' | 'up' | 'down'; velocity: number };
 	trueClick: Coordinates & { target: EventTarget | null; streak: number };
 	zoom: Coordinates & { factor: number };
 }

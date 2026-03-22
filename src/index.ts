@@ -16,6 +16,7 @@ export { default as BaseModule, type BaseArgs, type Options, type Events } from 
 export type { Pointer, Pointers, StdEvents, BaseOptions } from '@/types';
 export { default as Click } from '@/modules/Click';
 export { default as Drag } from '@/modules/Drag';
+export { default as Swipe } from '@/modules/Swipe';
 export { default as MultitouchPanZoom } from '@/modules/MultitouchPanZoom';
 export { default as PreventDefault } from '@/modules/PreventDefault';
 export { default as WheelPanZoom } from '@/modules/WheelPanZoom';
