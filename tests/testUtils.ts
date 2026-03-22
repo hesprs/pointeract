@@ -1,4 +1,11 @@
-import { type Click, type Drag, PointeractInterface, type WheelPanZoom, Pointeract } from '@';
+import {
+	type Click,
+	type Drag,
+	PointeractInterface,
+	type WheelPanZoom,
+	type Swipe,
+	Pointeract,
+} from '@';
 import { Window as HappyWindow, PointerEvent, HTMLDivElement, WheelEvent } from 'happy-dom';
 import { beforeEach, vi } from 'vitest';
 import type { Coordinates, StdEvents } from '@/types';
@@ -33,7 +40,7 @@ beforeEach(() => {
 	);
 });
 
-type ModulePreset = [WheelPanZoom, Drag, Click];
+type ModulePreset = [WheelPanZoom, Drag, Click, Swipe];
 
 class Accumulator {
 	pan = {
@@ -46,6 +53,7 @@ class Accumulator {
 	};
 	scale = 1;
 	clicks = 0;
+	swipes: StdEvents['swipe'][] = [];
 	private pointeract: PointeractInterface<ModulePreset>;
 	constructor(pointeract: PointeractInterface<ModulePreset>) {
 		this.pointeract = pointeract;
@@ -53,10 +61,14 @@ class Accumulator {
 		pointeract.on('drag', this.dragger);
 		pointeract.on('zoom', this.zoomer);
 		pointeract.on('trueClick', this.clicker);
+		pointeract.on('swipe', this.swiper);
 	}
 	private panner = (e: StdEvents['pan']) => {
 		this.pan.x += e.deltaX;
 		this.pan.y += e.deltaY;
+	};
+	private swiper = (e: StdEvents['swipe']) => {
+		this.swipes.push(e);
 	};
 	private dragger = (e: StdEvents['drag']) => {
 		this.drag.x += e.deltaX;
@@ -75,12 +87,14 @@ class Accumulator {
 		};
 		this.scale = 1;
 		this.clicks = 0;
+		this.swipes = [];
 	};
 	dispose = () => {
 		this.pointeract.off('pan', this.panner);
 		this.pointeract.off('drag', this.dragger);
 		this.pointeract.off('zoom', this.zoomer);
 		this.pointeract.off('trueClick', this.clicker);
+		this.pointeract.off('swipe', this.swiper);
 	};
 }
 
