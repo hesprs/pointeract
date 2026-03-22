@@ -111,6 +111,7 @@ Congratulations! You can now press your mouse or finger to the element and move,
 
 - **Click (Double Click, Triple Click, Quadruple Click, Any Click)**
 - **Drag**
+- **Swipe (All directions)**
 - **Pan and Zoom via Mouse Wheel (`ctrl`/`shift` key binding, touchpad support)**
 - **Pan and Zoom via Multitouch (Pan, Pinch)**
 - **One-line Prevent Default**
