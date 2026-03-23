@@ -9,6 +9,7 @@
 		"forceConsistentCasingInFileNames": true,
 		"noEmit": true,
 		"allowImportingTsExtensions": true,
+		"rootDir": ".",
 		"lib": ["ESNext", "DOM"],
 		"paths": {
 			"@/*": ["./src/*"],
