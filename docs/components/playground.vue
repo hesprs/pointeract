@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, reactive, useTemplateRef, onBeforeUnmount } from 'vue';
 import {
 	Click,
 	Drag,
@@ -25,6 +24,7 @@ import {
 	zoomPreset,
 	panPreset,
 } from '@';
+import { onMounted, reactive, useTemplateRef, onBeforeUnmount } from 'vue';
 import { Coordinates } from '@/types';
 
 function C2C(coords: Coordinates) {
@@ -33,6 +33,7 @@ function C2C(coords: Coordinates) {
 		y: coords.y - data.y,
 	};
 }
+
 
 const square = useTemplateRef('square');
 const container = useTemplateRef('container');
@@ -46,6 +47,7 @@ let streakTimeout: null | NodeJS.Timeout;
 let pointeract: PointeractInterface<
 	[Click, Drag, MultitouchPanZoom, PreventDefault, WheelPanZoom, Lubricator]
 >;
+
 
 onMounted(() => {
 	if (!container.value || !square.value) return;
@@ -87,6 +89,7 @@ onMounted(() => {
 			}, 400);
 		});
 });
+
 
 onBeforeUnmount(() => {
 	pointeract.dispose();

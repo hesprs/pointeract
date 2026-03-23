@@ -136,24 +136,22 @@ You cannot load a module that is not passed into the Pointeract constructor afte
 
 ### Subscribe
 
-Use `on()` to subscribe, the usage is similar to `addEventListener()`, but is fully typed and returns the corresponding unsubscribe function.
-
-Pointeract utilizes native [EventTarget](https://developer.mozilla.org/en-US/docs/Web/API/EventTarget) internally, the events are `CustomEvent`s and event data is stored in `e.detail`.
+Use `on()` to subscribe, the usage is similar to `addEventListener()`, but is fully typed and returns the pointeract instance for chaining.
 
 ```TypeScript
-const hook = (e: typeof pointeract.events.drag) => {
-    console.log(e.detail);
+import type { StdEvents } from 'pointeract';
+
+const hook = (e: StdEvents['drag']) => {
+    console.log(e);
 };
-const unsubscribe = pointeract.on('drag', hook);
+pointeract.on('drag', hook);
 ```
 
 ### Unsubscribe
 
-Use `off()` or returned unsubscribe functions to unsubscribe, also similar to `removeEventListener()`:
+Use `off()` to unsubscribe, also similar to `removeEventListener()`:
 
 ```TypeScript
-unsubscribe();
-// or:
 pointeract.off('drag', hook);
 ```
 

@@ -3,7 +3,8 @@ import { defineConfig } from 'vitepress';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 import { ThemeConfig } from 'vitepress-theme-trito';
 
-// https://vitepress.dev/reference/site-config
+const inDev = process.env.MODE === 'dev';
+
 export default defineConfig<ThemeConfig>({
 	cleanUrls: true,
 	lastUpdated: true,
@@ -20,7 +21,7 @@ export default defineConfig<ThemeConfig>({
 			'script',
 			{
 				defer: '',
-				src: 'https://analytics.consensia.cc/script.js',
+				src: inDev ? '' : 'https://analytics.consensia.cc/script.js',
 				'data-website-id': 'f4ddf973-093c-4660-bda7-65a511d5b26c',
 			},
 		],
