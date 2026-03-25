@@ -10,6 +10,9 @@ test('swipe right', async () => {
 	p.up();
 	expect(acc.swipes).toHaveLength(1);
 	expect(acc.swipes[0].direction).toBe('right');
+	expect(acc.swipes[0].pointerNumber).toBe(1);
+	expect(acc.swipes[0].displacement).toBeCloseTo(50);
+	expect(acc.swipes[0].duration).toBeGreaterThanOrEqual(0);
 	await dispose();
 });
 
@@ -21,6 +24,8 @@ test('swipe left', async () => {
 	p.up();
 	expect(acc.swipes).toHaveLength(1);
 	expect(acc.swipes[0].direction).toBe('left');
+	expect(acc.swipes[0].pointerNumber).toBe(1);
+	expect(acc.swipes[0].displacement).toBeCloseTo(50);
 	await dispose();
 });
 
@@ -32,6 +37,8 @@ test('swipe up', async () => {
 	p.up();
 	expect(acc.swipes).toHaveLength(1);
 	expect(acc.swipes[0].direction).toBe('up');
+	expect(acc.swipes[0].pointerNumber).toBe(1);
+	expect(acc.swipes[0].displacement).toBeCloseTo(50);
 	await dispose();
 });
 
@@ -43,6 +50,53 @@ test('swipe down', async () => {
 	p.up();
 	expect(acc.swipes).toHaveLength(1);
 	expect(acc.swipes[0].direction).toBe('down');
+	expect(acc.swipes[0].pointerNumber).toBe(1);
+	expect(acc.swipes[0].displacement).toBeCloseTo(50);
+	await dispose();
+});
+
+test('swipe up-right (diagonal)', async () => {
+	const { acc, dispose, Pointer } = setup([Swipe], { minVelocity: 0 });
+	const p = new Pointer();
+	p.down({ x: 0, y: 100 });
+	p.move({ x: 50, y: -50 });
+	p.up();
+	expect(acc.swipes).toHaveLength(1);
+	expect(acc.swipes[0].direction).toBe('up-right');
+	expect(acc.swipes[0].pointerNumber).toBe(1);
+	await dispose();
+});
+
+test('swipe up-left (diagonal)', async () => {
+	const { acc, dispose, Pointer } = setup([Swipe], { minVelocity: 0 });
+	const p = new Pointer();
+	p.down({ x: 100, y: 100 });
+	p.move({ x: -50, y: -50 });
+	p.up();
+	expect(acc.swipes).toHaveLength(1);
+	expect(acc.swipes[0].direction).toBe('up-left');
+	await dispose();
+});
+
+test('swipe down-right (diagonal)', async () => {
+	const { acc, dispose, Pointer } = setup([Swipe], { minVelocity: 0 });
+	const p = new Pointer();
+	p.down();
+	p.move({ x: 50, y: 50 });
+	p.up();
+	expect(acc.swipes).toHaveLength(1);
+	expect(acc.swipes[0].direction).toBe('down-right');
+	await dispose();
+});
+
+test('swipe down-left (diagonal)', async () => {
+	const { acc, dispose, Pointer } = setup([Swipe], { minVelocity: 0 });
+	const p = new Pointer();
+	p.down({ x: 100, y: 0 });
+	p.move({ x: -50, y: 50 });
+	p.up();
+	expect(acc.swipes).toHaveLength(1);
+	expect(acc.swipes[0].direction).toBe('down-left');
 	await dispose();
 });
 
@@ -83,11 +137,13 @@ test('velocity is computed correctly', async () => {
 	p.up();
 	expect(acc.swipes).toHaveLength(1);
 	expect(acc.swipes[0].velocity).toBeCloseTo(1, 1); // 100px / 100ms = 1 px/ms
+	expect(acc.swipes[0].duration).toBe(100);
+	expect(acc.swipes[0].displacement).toBeCloseTo(100);
 	dateSpy.mockRestore();
 	await dispose();
 });
 
-test('two-finger swipe fires', async () => {
+test('two-finger swipe emits per-pointer and combined events', async () => {
 	const { acc, dispose, Pointer } = setup([Swipe], { minVelocity: 0 });
 	const p1 = new Pointer();
 	const p2 = new Pointer();
@@ -97,12 +153,16 @@ test('two-finger swipe fires', async () => {
 	p2.move({ x: 50, y: 0 });
 	p1.up();
 	p2.up();
-	expect(acc.swipes).toHaveLength(1);
-	expect(acc.swipes[0].direction).toBe('right');
+	// p1 fires pointerNumber:1, p2 fires pointerNumber:1, then combined pointerNumber:2
+	expect(acc.swipes).toHaveLength(3);
+	expect(acc.swipes[0].pointerNumber).toBe(1);
+	expect(acc.swipes[1].pointerNumber).toBe(1);
+	expect(acc.swipes[2].pointerNumber).toBe(2);
+	expect(acc.swipes[2].direction).toBe('right');
 	await dispose();
 });
 
-test('two-finger swipe in opposite directions does not fire', async () => {
+test('two-finger swipe in opposite directions does not emit combined event', async () => {
 	const { acc, dispose, Pointer } = setup([Swipe], { minVelocity: 0 });
 	const p1 = new Pointer();
 	const p2 = new Pointer();
@@ -112,7 +172,9 @@ test('two-finger swipe in opposite directions does not fire', async () => {
 	p2.move({ x: -50, y: 0 });
 	p1.up();
 	p2.up();
-	expect(acc.swipes).toHaveLength(0);
+	// each pointer fires its own event; directions differ so no combined event
+	expect(acc.swipes).toHaveLength(2);
+	expect(acc.swipes.every((s) => s.pointerNumber === 1)).toBe(true);
 	await dispose();
 });
 
@@ -136,6 +198,8 @@ test('pointers option: two fingers fire when 2 required', async () => {
 	p2.move({ x: 50, y: 0 });
 	p1.up();
 	p2.up();
+	// only the combined event fires (per-pointer suppressed by pointers:2)
 	expect(acc.swipes).toHaveLength(1);
+	expect(acc.swipes[0].pointerNumber).toBe(2);
 	await dispose();
 });

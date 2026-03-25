@@ -7,15 +7,36 @@ interface Options extends BaseOptions {
 	minVelocity?: number;
 	velocityWindow?: number;
 	pointers?: number;
+	groupingWindow?: number;
 }
 
-type Direction = 'left' | 'right' | 'up' | 'down';
+type Direction =
+	| 'left'
+	| 'right'
+	| 'up'
+	| 'down'
+	| 'up-left'
+	| 'up-right'
+	| 'down-left'
+	| 'down-right';
+
+type ProcessedSwipe = {
+	direction: Direction;
+	velocity: number;
+	duration: number;
+	displacement: number;
+};
+
+type CompletedSwipe = ProcessedSwipe & { completedAt: number };
+
+// tan(22.5°) — boundary between cardinal and diagonal sectors
+const TAN_22_5 = Math.tan(Math.PI / 8);
 
 export default class Swipe extends BaseModule<Options> {
-	#gesturePointers: Array<Pointer['records']> = [];
+	#buffer: CompletedSwipe[] = [];
 
 	onPointerDown = (_e: PointerEvent, _pointer: Pointer, pointers: Pointers) => {
-		if (pointers.size === 1) this.#gesturePointers = [];
+		if (pointers.size === 1) this.#buffer = [];
 	};
 
 	#processPointer(
@@ -23,17 +44,36 @@ export default class Swipe extends BaseModule<Options> {
 		minDistance: number,
 		minVelocity: number,
 		velocityWindow: number,
-	): { direction: Direction; velocity: number } | null {
+	): ProcessedSwipe | null {
 		if (records.length < 2) return null;
 
 		const first = records[0];
 		const last = getLast(records);
 		const dx = last.x - first.x;
 		const dy = last.y - first.y;
-		if (Math.sqrt(dx * dx + dy * dy) < minDistance) return null;
+		const displacement = Math.sqrt(dx * dx + dy * dy);
+		if (displacement < minDistance) return null;
 
-		const direction: Direction =
-			Math.abs(dx) >= Math.abs(dy) ? (dx > 0 ? 'right' : 'left') : dy > 0 ? 'down' : 'up';
+		const absDx = Math.abs(dx);
+		const absDy = Math.abs(dy);
+
+		let direction: Direction;
+		if (absDy <= absDx * TAN_22_5) {
+			direction = dx > 0 ? 'right' : 'left';
+		} else if (absDx <= absDy * TAN_22_5) {
+			direction = dy > 0 ? 'down' : 'up';
+		} else {
+			direction =
+				dy > 0
+					? dx > 0
+						? 'down-right'
+						: 'down-left'
+					: dx > 0
+						? 'up-right'
+						: 'up-left';
+		}
+
+		const duration = last.timestamp - first.timestamp;
 
 		const windowRecords = records.filter((r) => r.timestamp >= last.timestamp - velocityWindow);
 		let velocity = 0;
@@ -47,35 +87,57 @@ export default class Swipe extends BaseModule<Options> {
 		}
 		if (velocity < minVelocity) return null;
 
-		return { direction, velocity };
+		return { direction, velocity, duration, displacement };
 	}
 
-	onPointerUp = (_e: PointerEvent, pointer: Pointer, pointers: Pointers) => {
-		this.#gesturePointers.push(pointer.records);
-
-		if (pointers.size > 0) return;
-		if (this.#gesturePointers.length < (this.options.pointers ?? 1)) return;
-
+	onPointerUp = (_e: PointerEvent, pointer: Pointer, _pointers: Pointers) => {
 		const minDistance = this.options.minDistance ?? 10;
 		const minVelocity = this.options.minVelocity ?? 0.1;
 		const velocityWindow = this.options.velocityWindow ?? 100;
+		const groupingWindow = this.options.groupingWindow ?? 100;
+		const requiredPtrs = this.options.pointers ?? 1;
 
-		let direction: Direction | null = null;
-		let totalVelocity = 0;
+		const result = this.#processPointer(pointer.records, minDistance, minVelocity, velocityWindow);
+		if (!result) return;
 
-		for (const records of this.#gesturePointers) {
-			const result = this.#processPointer(records, minDistance, minVelocity, velocityWindow);
-			if (!result) return;
-			if (direction === null) direction = result.direction;
-			else if (direction !== result.direction) return;
-			totalVelocity += result.velocity;
+		const now = Date.now();
+
+		// Purge stale entries from grouping buffer
+		this.#buffer = this.#buffer.filter((s) => now - s.completedAt <= groupingWindow);
+
+		// Find existing same-direction swipes before adding the current one
+		const similar = this.#buffer.filter((s) => s.direction === result.direction);
+
+		// Add current swipe to buffer for future grouping
+		this.#buffer.push({ ...result, completedAt: now });
+
+		// Emit per-pointer event
+		if (requiredPtrs <= 1) {
+			this.dispatch('swipe', {
+				direction: result.direction,
+				velocity: result.velocity,
+				pointerNumber: 1,
+				duration: result.duration,
+				displacement: result.displacement,
+			});
 		}
 
-		if (!direction) return;
+		// Emit combined event when similar concurrent swipes exist
+		if (similar.length > 0) {
+			const allSwipes = [...similar, result];
+			const pointerNumber = allSwipes.length;
+			if (pointerNumber >= requiredPtrs) {
+				const avg = (fn: (s: ProcessedSwipe) => number) =>
+					allSwipes.reduce((sum, s) => sum + fn(s), 0) / pointerNumber;
 
-		this.dispatch('swipe', {
-			direction,
-			velocity: totalVelocity / this.#gesturePointers.length,
-		});
+				this.dispatch('swipe', {
+					direction: result.direction,
+					velocity: avg((s) => s.velocity),
+					pointerNumber,
+					duration: avg((s) => s.duration),
+					displacement: avg((s) => s.displacement),
+				});
+			}
+		}
 	};
 }
