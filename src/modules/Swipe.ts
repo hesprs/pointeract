@@ -64,13 +64,7 @@ export default class Swipe extends BaseModule<Options> {
 			direction = dy > 0 ? 'down' : 'up';
 		} else {
 			direction =
-				dy > 0
-					? dx > 0
-						? 'down-right'
-						: 'down-left'
-					: dx > 0
-						? 'up-right'
-						: 'up-left';
+				dy > 0 ? (dx > 0 ? 'down-right' : 'down-left') : dx > 0 ? 'up-right' : 'up-left';
 		}
 
 		const duration = last.timestamp - first.timestamp;
@@ -97,7 +91,12 @@ export default class Swipe extends BaseModule<Options> {
 		const groupingWindow = this.options.groupingWindow ?? 100;
 		const requiredPtrs = this.options.pointers ?? 1;
 
-		const result = this.#processPointer(pointer.records, minDistance, minVelocity, velocityWindow);
+		const result = this.#processPointer(
+			pointer.records,
+			minDistance,
+			minVelocity,
+			velocityWindow,
+		);
 		if (!result) return;
 
 		const now = Date.now();
