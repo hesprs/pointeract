@@ -19,9 +19,9 @@ All the types shown below are designed to be flexible, they accept:
 - an array of module instance types
 - nothing (which means no module loaded)
 
-as their type parameters
+as their type parameters.
 
-for example:
+For example:
 
 ```TypeScript
 import { Drag, PreventDefault, type Options } from "pointeract";

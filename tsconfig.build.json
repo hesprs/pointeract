@@ -4,8 +4,8 @@
 		"noEmit": false,
 		"declaration": true,
 		"emitDeclarationOnly": true,
-		"declarationDir": "./dist/types",
-		"outDir": "./dist/types"
+		"rootDir": "./src",
+		"outDir": "./dist"
 	},
 	"include": ["src/**/*"],
 	"exclude": ["tests/**/*"]
