@@ -3,21 +3,25 @@
 import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
+function p(path: string) {
+	return resolve(__dirname, path);
+}
+
 export default defineConfig({
 	root: 'tests/dev',
 	resolve: {
 		alias: {
-			'@': resolve(__dirname, 'src/'),
+			'@': p('src/'),
 		},
 	},
 	build: {
-		outDir: resolve(__dirname, 'dist'),
+		outDir: p('dist'),
 		emptyOutDir: true,
 		minify: 'terser',
 		sourcemap: true,
 		lib: {
 			entry: {
-				index: resolve(__dirname, 'src'),
+				index: p('src'),
 			},
 			name: 'Pointeract',
 			formats: ['es'],

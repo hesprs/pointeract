@@ -114,7 +114,7 @@ export default defineConfig<ThemeConfig>({
 		image: { lazyLoading: true },
 	},
 	vite: {
-		plugins: [groupIconVitePlugin()],
+		plugins: [groupIconVitePlugin() as never], // legacy plugin cannot adapt vite 8
 		publicDir: resolve(__dirname, '../public'),
 		resolve: {
 			alias: {

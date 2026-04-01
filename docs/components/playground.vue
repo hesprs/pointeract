@@ -34,7 +34,6 @@ function C2C(coords: Coordinates) {
 	};
 }
 
-
 const square = useTemplateRef('square');
 const container = useTemplateRef('container');
 const data = reactive({
@@ -47,7 +46,6 @@ let streakTimeout: null | NodeJS.Timeout;
 let pointeract: PointeractInterface<
 	[Click, Drag, MultitouchPanZoom, PreventDefault, WheelPanZoom, Lubricator]
 >;
-
 
 onMounted(() => {
 	if (!container.value || !square.value) return;
@@ -85,7 +83,6 @@ onMounted(() => {
 		})
 		.start();
 });
-
 
 onBeforeUnmount(() => {
 	pointeract.dispose();
