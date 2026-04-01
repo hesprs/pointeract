@@ -1,11 +1,9 @@
 /// <reference types="vitest/config" />
 
-import { resolve } from 'node:path';
+import { createP } from '@repo/shared';
 import { defineConfig } from 'vite';
 
-function p(path: string) {
-	return resolve(__dirname, path);
-}
+const p = createP(import.meta.url);
 
 export default defineConfig({
 	root: 'tests/dev',
@@ -29,7 +27,7 @@ export default defineConfig({
 		},
 	},
 	test: {
-		root: __dirname,
+		root: p('.'),
 		environment: 'happy-dom',
 		setupFiles: ['./tests/testUtils.ts'],
 		coverage: {

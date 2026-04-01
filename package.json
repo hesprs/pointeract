@@ -1,51 +1,14 @@
 {
-	"name": "pointeract",
-	"version": "1.2.0",
-	"description": "A 3KB, tree-shakable, TypeScript-native human interaction library for robust tap/pan/zoom gestures — runtime-flexible and extensible.",
-	"keywords": [
-		"frontend",
-		"gesture-detection",
-		"lightweight",
-		"pan-zoom",
-		"typescript"
-	],
-	"homepage": "https://pointeract.consensia.cc",
-	"bugs": {
-		"url": "https://github.com/hesprs/pointeract/issues"
-	},
-	"license": "Apache-2.0",
-	"author": {
-		"name": "Hēsperus",
-		"email": "hesprs@outlook.com"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/hesprs/pointeract.git"
-	},
-	"files": [
-		"dist"
-	],
+	"name": "monorepo-pointeract",
+	"private": true,
 	"type": "module",
-	"sideEffects": false,
-	"main": "./dist/index.js",
-	"module": "./dist/index.js",
-	"types": "./dist/index.d.ts",
-	"unpkg": "./dist/index.js",
-	"jsdelivr": "./dist/index.js",
-	"publishConfig": {
-		"access": "public",
-		"provenance": true
-	},
 	"scripts": {
-		"build": "vite build && tsc -p tsconfig.build.json && tsc-alias -p tsconfig.build.json",
-		"test": "vitest run",
-		"lint": "oxlint --type-aware --fix && oxfmt",
-		"test:coverage": "vitest run --coverage",
-		"check": "vue-tsc && oxfmt --check && oxlint --type-aware",
-		"dev": "vite",
-		"docs:dev": "MODE=dev vitepress dev docs",
-		"docs:build": "MODE=prod vitepress build docs",
-		"docs:preview": "MODE=prod vitepress preview docs"
+		"build": "turbo run build",
+		"test": "turbo run test",
+		"lint": "turbo run lint",
+		"test:coverage": "turbo run test:coverage",
+		"check": "turbo run check",
+		"dev": "turbo run dev"
 	},
 	"devDependencies": {
 		"@types/node": "^25.5.0",
@@ -54,16 +17,11 @@
 		"oxfmt": "^0.43.0",
 		"oxlint": "^1.58.0",
 		"oxlint-tsgolint": "^0.19.0",
-		"terser": "^5.46.1",
-		"tsc-alias": "^1.8.16",
+		"tsdown": "^0.21.7",
+		"turbo": "^2.9.3",
 		"typescript": "^6.0.2",
 		"vite": "^8.0.3",
-		"vitepress": "2.0.0-alpha.17",
-		"vitepress-plugin-group-icons": "^1.7.3",
-		"vitepress-theme-trito": "^1.1.1",
-		"vitest": "^4.1.2",
-		"vue": "^3.5.31",
-		"vue-tsc": "^3.2.6"
+		"vitest": "^4.1.2"
 	},
 	"packageManager": "pnpm@10.29.3"
 }

@@ -1,9 +1,10 @@
-import { resolve } from 'node:path';
+import { createP } from '@repo/shared';
 import { defineConfig } from 'vitepress';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 import { ThemeConfig } from 'vitepress-theme-trito';
 
 const inDev = process.env.MODE === 'dev';
+const p = createP(import.meta.url);
 
 export default defineConfig<ThemeConfig>({
 	cleanUrls: true,
@@ -115,12 +116,7 @@ export default defineConfig<ThemeConfig>({
 	},
 	vite: {
 		plugins: [groupIconVitePlugin() as never], // legacy plugin cannot adapt vite 8
-		publicDir: resolve(__dirname, '../public'),
-		resolve: {
-			alias: {
-				'@': resolve(__dirname, '..', '..', 'src/'),
-			},
-		},
+		publicDir: p('../public'),
 		ssr: {
 			noExternal: ['vitepress-theme-trito'],
 		},

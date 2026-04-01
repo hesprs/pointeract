@@ -1,0 +1,25 @@
+{
+	"name": "docs",
+	"version": "0.0.1",
+	"private": true,
+	"type": "module",
+	"scripts": {
+		"lint": "oxlint --type-aware --fix && oxfmt",
+		"check": "vue-tsc && oxfmt --check && oxlint --type-aware",
+		"dev": "MODE=dev vitepress dev",
+		"build": "MODE=prod vitepress build",
+		"preview": "MODE=prod vitepress preview"
+	},
+	"dependencies": {
+		"pointeract": "workspace:*",
+		"vitepress": "2.0.0-alpha.17",
+		"vitepress-plugin-group-icons": "^1.7.3",
+		"vitepress-theme-trito": "^1.1.1",
+		"vue": "^3.5.31"
+	},
+	"devDependencies": {
+		"@repo/shared": "workspace:*",
+		"vue-tsc": "^3.2.6"
+	},
+	"packageManager": "pnpm@10.29.3"
+}

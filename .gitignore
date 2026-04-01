@@ -1,8 +1,6 @@
 node_modules
 
 # dot files
-.cursor
-.continue
 .vscode
 
 # generated files
@@ -20,6 +18,7 @@ coverage
 
 # cache
 .cache
+.turbo
 docs/.vitepress/cache
 
 # dist

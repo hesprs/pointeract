@@ -1,0 +1,17 @@
+{
+	"name": "@repo/shared",
+	"version": "0.0.1",
+	"private": true,
+	"files": [
+		"./index.ts"
+	],
+	"type": "module",
+	"sideEffects": false,
+	"main": "./index.ts",
+	"module": "./index.ts",
+	"types": "./index.ts",
+	"scripts": {
+		"lint": "oxlint --type-aware --fix && oxfmt",
+		"check": "tsc && oxfmt --check && oxlint --type-aware"
+	}
+}

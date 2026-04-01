@@ -16,9 +16,9 @@ Pointeract obeys the test requirements as follows:
 
 ## Monkey Test
 
-One great feature of Pointeract that we are proud of is its robustness which exceeds most competitors. The following test is an example:
+Here's the proof why Pointeract claims itself robust:
 
-<<< ../../../tests/integration.test.ts#monkey-test
+<<< ../../../packages/core/tests/integration.test.ts#monkey-test
 
 The interaction denoted by the code is visualized as follows:
 

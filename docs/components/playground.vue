@@ -23,9 +23,13 @@ import {
 	lubricatorDragPreset as drag,
 	lubricatorPanPreset as pan,
 	lubricatorZoomPreset as zoom,
-} from '@';
+} from 'pointeract';
 import { onMounted, reactive, useTemplateRef, onBeforeUnmount } from 'vue';
-import { Coordinates } from '@/types';
+
+type Coordinates = {
+	x: number;
+	y: number;
+};
 
 function C2C(coords: Coordinates) {
 	return {

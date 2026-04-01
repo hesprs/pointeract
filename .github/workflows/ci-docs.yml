@@ -42,7 +42,7 @@ jobs:
         run: pnpm install
 
       - name: Build Docs
-        run: pnpm docs:build
+        run: pnpm build -F docs
 
       - name: Deploy (push to main)
         uses: JamesIves/github-pages-deploy-action@v4
