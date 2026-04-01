@@ -1,4 +1,10 @@
-import { Drag, WheelPanZoom, Lubricator, dragPreset as drag, zoomPreset as zoom } from '@';
+import {
+	Drag,
+	WheelPanZoom,
+	Lubricator,
+	lubricatorDragPreset as drag,
+	lubricatorZoomPreset as zoom,
+} from '@';
 import { expect, test } from 'vitest';
 import setup from './testUtils';
 

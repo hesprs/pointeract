@@ -15,10 +15,10 @@ const pointeract = new Pointeract({ element: app }, [Click]);
 
 ```TypeScript
 interface Options extends BaseOptions {
-    clickPreserveTime?: number;
-    moveThreshold?: number;
+    clickStreakWindow?: number;
+    clickMoveThreshold?: number;
 }
 ```
 
-- `clickPreserveTime`: The interval in milliseconds between which two click event are considered in a streak. Defaults to **400**.
-- `moveThreshold`: The upper limit in pixels for pointer movement to be considered a click. Defaults to **5**.
+- `clickStreakWindow`: The interval in milliseconds between which two click event are considered in a streak. Defaults to **400**.
+- `clickMoveThreshold`: The upper limit in pixels for pointer movement to be considered a click. Defaults to **5**.

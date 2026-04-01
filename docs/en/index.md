@@ -27,7 +27,7 @@ features:
     details: Grab what you need via modules, the base class is only 1KB gzipped.
   - title: Runtime-Flexible
     icon: 🧩
-    details: Start/stop the detector and any module at any time, update options reactively.
+    details: Start / stop the detector and any module at any time, update options reactively.
   - title: Robust
     icon: 🦾
     details: Excels at complex gestures where most contenders fail.

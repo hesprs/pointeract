@@ -2,7 +2,7 @@
 
 > **Why don't use the built-in `click` event?**
 >
-> The built-in `click` event is dispatched when the mouse or touch is released on the same element it is pressed. In cases where the element is huge or moves with the pointer, the click event is always dispatched, although the user may not have intended to click.
+> The built-in `click` event is dispatched when the mouse or touch is released on the same element it is pressed. In cases where the element is huge or moves with the pointer, the click event is always dispatched, although the user may not have intended to click. True click event tracks the movement of the pointer and only fires when the pointer movement is below a threshold.
 
 - **Event Name**: `trueClick`
 - **Access Type**: `Events['trueClick']`

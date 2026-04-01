@@ -27,32 +27,32 @@ export default class MultitouchPanZoom extends BaseModule {
 	}
 
 	onPointerDown = (_e: PointerEvent, _pointer: Pointer, pointers: Pointers) => {
-		if (pointers.size === 2) {
-			this.#pinchZoomState.lastDistance = this.#getPointerDistance();
-			this.#pinchZoomState.lastMidpoint = this.toTargetCoords(this.#getPointerMidpoint());
-		}
+		if (pointers.size !== 2) return;
+		this.#pinchZoomState.lastDistance = this.#getPointerDistance();
+		this.#pinchZoomState.lastMidpoint = this.toTargetCoords(this.#getPointerMidpoint());
 	};
 
 	onPointerMove = (_e: PointerEvent, _pointer: Pointer, pointers: Pointers) => {
-		if (pointers.size === 2) {
-			const newDistance = this.#getPointerDistance();
-			const newMidpointOnScreen = this.#getPointerMidpoint();
-			const zoomFactor = newDistance / this.#pinchZoomState.lastDistance;
-			this.#pinchZoomState.lastDistance = newDistance;
-			const newMidpoint = this.toTargetCoords(newMidpointOnScreen);
-			const dx = newMidpoint.x - this.#pinchZoomState.lastMidpoint.x;
-			const dy = newMidpoint.y - this.#pinchZoomState.lastMidpoint.y;
-			this.#pinchZoomState.lastMidpoint = newMidpoint;
-			this.#dispatchPanEvent({ deltaX: dx, deltaY: dy });
-			this.#dispatchZoomEvent(zoomFactor, newMidpoint);
-		}
+		if (pointers.size !== 2) return;
+		const newDistance = this.#getPointerDistance();
+		const newMidpointOnScreen = this.#getPointerMidpoint();
+		const zoomFactor = newDistance / this.#pinchZoomState.lastDistance;
+		this.#pinchZoomState.lastDistance = newDistance;
+		const newMidpoint = this.toTargetCoords(newMidpointOnScreen);
+		const dx = newMidpoint.x - this.#pinchZoomState.lastMidpoint.x;
+		const dy = newMidpoint.y - this.#pinchZoomState.lastMidpoint.y;
+		this.#pinchZoomState.lastMidpoint = newMidpoint;
+		this.#dispatchPanEvent({ deltaX: dx, deltaY: dy });
+		this.#dispatchZoomEvent(zoomFactor, newMidpoint);
 	};
 
 	#dispatchZoomEvent(factor: number, origin: Coordinates) {
+		if (factor === 1) return;
 		this.dispatch('zoom', { x: origin.x, y: origin.y, factor });
 	}
 
 	#dispatchPanEvent(diff: { deltaX: number; deltaY: number }) {
+		if (diff.deltaX === 0 && diff.deltaY === 0) return;
 		this.dispatch('pan', diff);
 	}
 }

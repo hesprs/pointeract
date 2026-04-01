@@ -3,8 +3,8 @@ import BaseModule from '@/BaseModule';
 import { getLast } from '@/utils';
 
 interface Options extends BaseOptions {
-	clickPreserveTime?: number;
-	moveThreshold?: number;
+	clickStreakWindow?: number;
+	clickMoveThreshold?: number;
 }
 
 export default class Click extends BaseModule<Options> {
@@ -24,14 +24,14 @@ export default class Click extends BaseModule<Options> {
 
 	onPointerUp = (e: PointerEvent, pointer: Pointer) => {
 		if (pointer.interrupted) return;
-		const threshold = this.options.moveThreshold ?? 5;
+		const threshold = this.options.clickMoveThreshold ?? 5;
 		if (
 			Math.abs(pointer.records[0].x - e.clientX) >= threshold ||
 			Math.abs(pointer.records[0].y - e.clientY) >= threshold
 		)
 			return;
 		const newLast = getLast(pointer.records).timestamp;
-		const time = this.options.clickPreserveTime ?? 400;
+		const time = this.options.clickStreakWindow ?? 400;
 		if (newLast - this.#lastClickTime <= time) this.#clickSteak++;
 		else this.#clickSteak = 1;
 		this.#lastClickTime = newLast;

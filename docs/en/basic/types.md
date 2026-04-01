@@ -1,6 +1,6 @@
 # Access Types <Badge type="tip" text="TypeScript Only" />
 
-Pointeract implements advanced type orchestration engine, which serves as a key component of its modularity and flexibility.
+Pointeract implements the [SynthKernel Architecture](https://github.com/hesprs/synthkernel), which serves as the key of its modularity and flexibility.
 
 ## Key Concepts
 
@@ -28,12 +28,10 @@ import { Drag, PreventDefault, type Options } from "pointeract";
 
 type MyOptions1 = Options<[Drag, PreventDefault]>;
 type MyOptions2 = Options<[typeof Drag, typeof PreventDefault]>;
-type MyOptions3 = Options<PreventDefault>;
-type MyOptions3 = Options<typeof PreventDefault>;
-type MyOptions4 = Options;
+type MyOptions3 = Options;
 ```
 
-In the example above, `MyOptions1` and `MyOptions2`, `MyOptions3` and `MyOptions4` are equivalent, `MyOptions4` is the base options.
+In the example above, `MyOptions1` and `MyOptions2` are equivalent, `MyOptions3` is the base options.
 :::
 
 ## Options

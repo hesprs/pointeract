@@ -7,7 +7,7 @@ import type {
 	ModuleInputCtor,
 	ModuleInput,
 } from '@/BaseModule';
-import type { Coordinates, GeneralObject, Pointers } from '@/types';
+import type { Coordinates, GeneralObject, Pointer, Pointers } from '@/types';
 import { HookKeys } from '@/BaseModule';
 
 type Reloadable<T extends ModuleInputCtor> = Array<T[number]>;
@@ -119,11 +119,11 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 	};
 
 	#onPointerDown = (e: PointerEvent) => {
-		if (this.#pointers.size >= 2) return;
 		if (e.isPrimary) this.#pointers.clear();
-		const pointer = {
+		const pointer: Pointer = {
 			records: [{ x: e.clientX, y: e.clientY, timestamp: Date.now() }],
 			target: e.target,
+			index: this.#pointers.size,
 		};
 		this.#pointers.set(e.pointerId, pointer);
 		this.#runHooks('onPointerDown', e, pointer, this.#pointers);

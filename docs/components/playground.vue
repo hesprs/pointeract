@@ -20,9 +20,9 @@ import {
 	WheelPanZoom,
 	PointeractInterface,
 	Lubricator,
-	dragPreset,
-	zoomPreset,
-	panPreset,
+	lubricatorDragPreset as drag,
+	lubricatorPanPreset as pan,
+	lubricatorZoomPreset as zoom,
 } from '@';
 import { onMounted, reactive, useTemplateRef, onBeforeUnmount } from 'vue';
 import { Coordinates } from '@/types';
@@ -33,6 +33,7 @@ function C2C(coords: Coordinates) {
 		y: coords.y - data.y,
 	};
 }
+
 
 const square = useTemplateRef('square');
 const container = useTemplateRef('container');
@@ -47,6 +48,7 @@ let pointeract: PointeractInterface<
 	[Click, Drag, MultitouchPanZoom, PreventDefault, WheelPanZoom, Lubricator]
 >;
 
+
 onMounted(() => {
 	if (!container.value || !square.value) return;
 	const squareRect = square.value.getBoundingClientRect();
@@ -56,15 +58,10 @@ onMounted(() => {
 	pointeract = new Pointeract(
 		{
 			element: container.value,
-			lubricator: {
-				drag: dragPreset,
-				pan: panPreset,
-				zoom: zoomPreset,
-			},
+			lubricator: { drag, pan, zoom },
 		},
 		[PreventDefault, WheelPanZoom, MultitouchPanZoom, Click, Drag, Lubricator],
 	)
-		.start()
 		.on('pan', (e) => {
 			data.x += e.deltaX;
 			data.y += e.deltaY;
@@ -85,8 +82,10 @@ onMounted(() => {
 			streakTimeout = setTimeout(() => {
 				data.streak = 0;
 			}, 400);
-		});
+		})
+		.start();
 });
+
 
 onBeforeUnmount(() => {
 	pointeract.dispose();

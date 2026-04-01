@@ -40,6 +40,7 @@ export type Pointers = Map<number, Pointer>;
 export type Pointer = {
 	records: Array<{ x: number; y: number; timestamp: number }>;
 	target: EventTarget | null;
+	index: number;
 	[key: Indexable]: General;
 };
 
@@ -47,17 +48,10 @@ export interface StdEvents {
 	pan: { deltaX: number; deltaY: number };
 	drag: { deltaX: number; deltaY: number; x: number; y: number };
 	swipe: {
-		direction:
-			| 'left'
-			| 'right'
-			| 'up'
-			| 'down'
-			| 'up-left'
-			| 'up-right'
-			| 'down-left'
-			| 'down-right';
+		direction: string;
 		velocity: number;
-		pointerNumber: number;
+		streak: number;
+		angle: number;
 		duration: number;
 		displacement: number;
 	};

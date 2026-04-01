@@ -4,16 +4,16 @@ Everything Pointeract does is based on this class. It serves as an orchestrator 
 
 ## CheatSheet
 
-| Description                             | Method                                                       |
-| --------------------------------------- | ------------------------------------------------------------ |
-| [Instantiate the Class](#instantiation) | `new Pointeract(options, modules?)`                          |
-| [Start Base Class](#start-and-stop)     | `pointeract.start()`                                         |
-| [Stop Base Class](#start-and-stop)      | `pointeract.stop()`                                          |
-| [Start Modules](#modules)               | `pointeract.start(ModuleConstructor \| ModuleConstructor[])` |
-| [Stop Modules](#modules)                | `pointeract.stop(ModuleConstructor \| ModuleConstructor[])`  |
-| [Subscribe](#subscribe)                 | `pointeract.on(eventName, callback)`                         |
-| [Unsubscribe](#unsubscribe)             | `pointeract.off(eventName, callback)`                        |
-| [Dispose](#disposal)                    | `pointeract.dispose()`                                       |
+| Description                             | Method                                  |
+| --------------------------------------- | --------------------------------------- |
+| [Instantiate the Class](#instantiation) | `new Pointeract(options, modules?)`     |
+| [Start Base Class](#start-and-stop)     | `pointeract.start()`                    |
+| [Stop Base Class](#start-and-stop)      | `pointeract.stop()`                     |
+| [Start Modules](#modules)               | `pointeract.start(ModuleConstructor[])` |
+| [Stop Modules](#modules)                | `pointeract.stop(ModuleConstructor[])`  |
+| [Subscribe](#subscribe)                 | `pointeract.on(eventName, callback)`    |
+| [Unsubscribe](#unsubscribe)             | `pointeract.off(eventName, callback)`   |
+| [Dispose](#disposal)                    | `pointeract.dispose()`                  |
 
 ## Lifecycle
 

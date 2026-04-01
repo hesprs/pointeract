@@ -1,11 +1,11 @@
 import BaseModule, { BaseArgs, Events } from '@/BaseModule';
-import { BaseOptions, GeneralDictionary } from '@/types';
+import { BaseOptions, GeneralDictionary, GeneralFunction } from '@/types';
 
 interface Options extends BaseOptions {
 	lubricator?: Record<string, PerEventOption>;
 }
 
-type PerEventOption = {
+export type PerEventOption = {
 	decayFactor: number;
 	fields: Record<string, { countType: 'sum' | 'product'; diminishBoundary: number }>;
 };
@@ -116,7 +116,7 @@ export default class Lubricator extends BaseModule<Options> {
 					continue;
 				}
 
-				// more to interpolate
+				// to interpolate
 				let delta: number;
 				if (type === 'sum') {
 					delta = diff * options[event].decayFactor;
@@ -136,11 +136,10 @@ export default class Lubricator extends BaseModule<Options> {
 	// in: positive number; out: positive number > 1
 	#reciprocalAbs = (num: number) => (num > 1 ? num : 1 / num);
 
-	// oxlint-disable-next-line typescript/no-explicit-any
-	modifiers: Record<string, any> = {};
+	modifiers: Record<string, GeneralFunction> = {};
 }
 
-export const panPreset = {
+export const lubricatorPanPreset = {
 	decayFactor: 0.25,
 	fields: {
 		deltaX: {
@@ -154,9 +153,9 @@ export const panPreset = {
 	},
 } satisfies PerEventOption;
 
-export const dragPreset = panPreset;
+export const lubricatorDragPreset = lubricatorPanPreset;
 
-export const zoomPreset = {
+export const lubricatorZoomPreset = {
 	decayFactor: 0.25,
 	fields: {
 		factor: {

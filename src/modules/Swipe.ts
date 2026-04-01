@@ -3,37 +3,32 @@ import BaseModule from '@/BaseModule';
 import { getLast } from '@/utils';
 
 interface Options extends BaseOptions {
-	minDistance?: number;
-	minVelocity?: number;
-	velocityWindow?: number;
-	pointers?: number;
-	groupingWindow?: number;
+	swipeMinDistance?: number;
+	swipeMinVelocity?: number;
+	swipeVelocityWindow?: number;
+	swipeStreakWindow?: number;
+	swipeDirectionMap?: Record<string, number>;
 }
 
-type Direction =
-	| 'left'
-	| 'right'
-	| 'up'
-	| 'down'
-	| 'up-left'
-	| 'up-right'
-	| 'down-left'
-	| 'down-right';
-
 type ProcessedSwipe = {
-	direction: Direction;
+	direction: string;
 	velocity: number;
 	duration: number;
+	angle: number;
 	displacement: number;
 };
 
 type CompletedSwipe = ProcessedSwipe & { completedAt: number };
 
-// tan(22.5°) — boundary between cardinal and diagonal sectors
-const TAN_22_5 = Math.tan(Math.PI / 8);
+const defaultDirectionMap = {
+	left: -(Math.PI / 4) * 3, // -135 degrees
+	down: -Math.PI / 4, // -45 degrees
+	right: Math.PI / 4, // 45 degrees
+	up: (Math.PI / 4) * 3, // 135 degrees
+};
 
 export default class Swipe extends BaseModule<Options> {
-	#buffer: CompletedSwipe[] = [];
+	#buffer: Array<CompletedSwipe> = [];
 
 	onPointerDown = (_e: PointerEvent, _pointer: Pointer, pointers: Pointers) => {
 		if (pointers.size === 1) this.#buffer = [];
@@ -54,17 +49,15 @@ export default class Swipe extends BaseModule<Options> {
 		const displacement = Math.sqrt(dx * dx + dy * dy);
 		if (displacement < minDistance) return null;
 
-		const absDx = Math.abs(dx);
-		const absDy = Math.abs(dy);
+		const angle = Math.atan2(-dy, dx); // specially invert dy to for standard Cartesian displacements
 
-		let direction: Direction;
-		if (absDy <= absDx * TAN_22_5) {
-			direction = dx > 0 ? 'right' : 'left';
-		} else if (absDx <= absDy * TAN_22_5) {
-			direction = dy > 0 ? 'down' : 'up';
-		} else {
-			direction =
-				dy > 0 ? (dx > 0 ? 'down-right' : 'down-left') : dx > 0 ? 'up-right' : 'up-left';
+		const directionMap = this.options.swipeDirectionMap ?? defaultDirectionMap;
+		let direction = Object.keys(directionMap)[0];
+		for (const [key, value] of Object.entries(directionMap)) {
+			if (angle <= value) {
+				direction = key;
+				break;
+			}
 		}
 
 		const duration = last.timestamp - first.timestamp;
@@ -81,15 +74,14 @@ export default class Swipe extends BaseModule<Options> {
 		}
 		if (velocity < minVelocity) return null;
 
-		return { direction, velocity, duration, displacement };
+		return { direction, velocity, duration, displacement, angle };
 	}
 
 	onPointerUp = (_e: PointerEvent, pointer: Pointer, _pointers: Pointers) => {
-		const minDistance = this.options.minDistance ?? 10;
-		const minVelocity = this.options.minVelocity ?? 0.1;
-		const velocityWindow = this.options.velocityWindow ?? 100;
-		const groupingWindow = this.options.groupingWindow ?? 100;
-		const requiredPtrs = this.options.pointers ?? 1;
+		const minDistance = this.options.swipeMinDistance ?? 10;
+		const minVelocity = this.options.swipeMinVelocity ?? 0.1;
+		const velocityWindow = this.options.swipeVelocityWindow ?? 200;
+		const groupingWindow = this.options.swipeStreakWindow ?? 400;
 
 		const result = this.#processPointer(
 			pointer.records,
@@ -98,45 +90,45 @@ export default class Swipe extends BaseModule<Options> {
 			velocityWindow,
 		);
 		if (!result) return;
-
 		const now = Date.now();
 
-		// Purge stale entries from grouping buffer
 		this.#buffer = this.#buffer.filter((s) => now - s.completedAt <= groupingWindow);
-
-		// Find existing same-direction swipes before adding the current one
 		const similar = this.#buffer.filter((s) => s.direction === result.direction);
-
-		// Add current swipe to buffer for future grouping
 		this.#buffer.push({ ...result, completedAt: now });
 
-		// Emit per-pointer event
-		if (requiredPtrs <= 1) {
-			this.dispatch('swipe', {
-				direction: result.direction,
-				velocity: result.velocity,
-				pointerNumber: 1,
-				duration: result.duration,
-				displacement: result.displacement,
-			});
-		}
-
 		// Emit combined event when similar concurrent swipes exist
-		if (similar.length > 0) {
-			const allSwipes = [...similar, result];
-			const pointerNumber = allSwipes.length;
-			if (pointerNumber >= requiredPtrs) {
-				const avg = (fn: (s: ProcessedSwipe) => number) =>
-					allSwipes.reduce((sum, s) => sum + fn(s), 0) / pointerNumber;
+		const allSwipes = [...similar, result];
+		const streak = allSwipes.length;
+		const avg = (fn: (s: ProcessedSwipe) => number) => {
+			if (streak === 1) return fn(allSwipes[0]);
+			return allSwipes.reduce((sum, s) => sum + fn(s), 0) / streak;
+		};
 
-				this.dispatch('swipe', {
-					direction: result.direction,
-					velocity: avg((s) => s.velocity),
-					pointerNumber,
-					duration: avg((s) => s.duration),
-					displacement: avg((s) => s.displacement),
-				});
-			}
-		}
+		this.dispatch('swipe', {
+			direction: result.direction,
+			velocity: avg((s) => s.velocity),
+			streak,
+			angle: avg((s) => s.angle),
+			duration: avg((s) => s.duration),
+			displacement: avg((s) => s.displacement),
+		});
 	};
 }
+
+export const diagonalDirectionMap = {
+	'down-left': -Math.PI / 2, // -90 degrees
+	'down-right': 0, // 0 degrees
+	'up-right': Math.PI / 2, // 90 degrees
+	'up-left': Math.PI, // 180 degrees
+};
+
+export const eightDirectionMap = {
+	left: -(Math.PI / 8) * 7, // -157.5 degrees
+	'down-left': -(Math.PI / 8) * 5, // -112.5 degrees
+	down: -(Math.PI / 8) * 3, // -67.5 degrees
+	'down-right': -Math.PI / 8, // -25.5 degrees
+	right: Math.PI / 8, // 25.5 degrees
+	'up-right': (Math.PI / 8) * 3, // 67.5 degrees
+	up: (Math.PI / 8) * 5, // 112.5 degrees
+	'up-left': (Math.PI / 8) * 7, // 157.5 degrees
+};

@@ -22,7 +22,7 @@ One great feature of Pointeract that we are proud of is its robustness which exc
 
 The interaction denoted by the code is visualized as follows:
 
-![Monkey Test](/monkeyTest.svg)
+![Monkey Test](/monkey-test.svg)
 
 The aim of this test is to simulate chaotic multitouch drag, pan and zoom intends to ensure `drag` and `multitouchPanZoom` modules can survive extreme conditions. Pointeract handled it decently.
 

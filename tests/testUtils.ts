@@ -56,12 +56,12 @@ class Accumulator {
 	swipes: StdEvents['swipe'][] = [];
 	private pointeract: PointeractInterface<ModulePreset>;
 	constructor(pointeract: PointeractInterface<ModulePreset>) {
-		this.pointeract = pointeract;
-		pointeract.on('pan', this.panner);
-		pointeract.on('drag', this.dragger);
-		pointeract.on('zoom', this.zoomer);
-		pointeract.on('trueClick', this.clicker);
-		pointeract.on('swipe', this.swiper);
+		this.pointeract = pointeract
+			.on('pan', this.panner)
+			.on('drag', this.dragger)
+			.on('zoom', this.zoomer)
+			.on('trueClick', this.clicker)
+			.on('swipe', this.swiper);
 	}
 	private panner = (e: StdEvents['pan']) => {
 		this.pan.x += e.deltaX;
@@ -88,13 +88,6 @@ class Accumulator {
 		this.scale = 1;
 		this.clicks = 0;
 		this.swipes = [];
-	};
-	dispose = () => {
-		this.pointeract.off('pan', this.panner);
-		this.pointeract.off('drag', this.dragger);
-		this.pointeract.off('zoom', this.zoomer);
-		this.pointeract.off('trueClick', this.clicker);
-		this.pointeract.off('swipe', this.swiper);
 	};
 }
 
@@ -138,7 +131,6 @@ export default function setup<T extends ModuleInputCtor>(
 
 	const dispose = async () => {
 		pointeract.dispose();
-		acc.dispose();
 		await window.happyDOM.abort();
 		window.close();
 	};
