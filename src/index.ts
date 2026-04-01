@@ -25,6 +25,6 @@ export {
 	lubricatorPanPreset,
 	lubricatorDragPreset,
 	lubricatorZoomPreset,
-	PerEventOption as LubricatorPerEventOption,
+	type PerEventOption as LubricatorPerEventOption,
 } from '@/modules/Lubricator';
 export { default as Pointeract, type PointeractInterface } from '@/Pointeract';
