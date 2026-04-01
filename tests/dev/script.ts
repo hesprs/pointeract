@@ -7,9 +7,9 @@ import {
 	Lubricator,
 	type StdEvents,
 	WheelPanZoom,
-	panPreset,
-	zoomPreset,
-	dragPreset,
+	lubricatorPanPreset as pan,
+	lubricatorZoomPreset as zoom,
+	lubricatorDragPreset as drag,
 } from '@';
 import { Coordinates } from '@/types';
 
@@ -29,17 +29,17 @@ function C2C(coords: Coordinates) {
 	};
 }
 
-function pan(e: StdEvents['pan']) {
+function panFn(e: StdEvents['pan']) {
 	data.x += e.deltaX;
 	data.y += e.deltaY;
 }
-function zoom(e: StdEvents['zoom']) {
+function zoomFn(e: StdEvents['zoom']) {
 	data.scale *= e.factor;
 	const canvas = C2C(e);
 	data.x = e.x - canvas.x * e.factor;
 	data.y = e.y - canvas.y * e.factor;
 }
-function trueClick(e: StdEvents['trueClick']) {
+function trueClickFn(e: StdEvents['trueClick']) {
 	console.log(e.streak);
 	square.style.animation = 'none';
 	// Trigger a reflow to ensure the animation is reset
@@ -50,19 +50,15 @@ function trueClick(e: StdEvents['trueClick']) {
 new Pointeract(
 	{
 		element: document.body,
-		lubricator: {
-			pan: panPreset,
-			drag: dragPreset,
-			zoom: zoomPreset,
-		},
+		lubricator: { pan, drag, zoom },
 	},
 	[PreventDefault, MultitouchPanZoom, Drag, Click, WheelPanZoom, Lubricator],
 )
 	.start()
-	.on('drag', pan)
-	.on('pan', pan)
-	.on('zoom', zoom)
-	.on('trueClick', trueClick);
+	.on('drag', panFn)
+	.on('pan', panFn)
+	.on('zoom', zoomFn)
+	.on('trueClick', trueClickFn);
 
 refresh();
 

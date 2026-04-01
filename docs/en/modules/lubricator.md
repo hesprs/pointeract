@@ -46,6 +46,8 @@ In **per-event** configuration:
 
 `fields`: the names of fields in the event to interpolate, the fields must be the type `number`, you can find the fields of events in the [event types](/basic/types#events). The values of the items in `fields` are configurations per-field.
 
+The type of per-event configuration is exported as `LubricatorPerEventOption` in the package.
+
 In **per-field** configuration:
 
 `countType`: defines the interpolation goal:

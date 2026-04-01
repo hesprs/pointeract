@@ -75,6 +75,7 @@ export default defineConfig<ThemeConfig>({
 			},
 			{
 				text: 'Events',
+				link: '/events',
 				items: [
 					{ text: 'Pan', link: '/events/pan' },
 					{ text: 'True Click', link: '/events/true-click' },
