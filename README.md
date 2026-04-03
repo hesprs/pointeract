@@ -29,8 +29,11 @@
     <a href="https://bundlejs.com/?q=pointeract%40latest">
         <img src="https://img.shields.io/bundlejs/size/pointeract?format=minzip&style=flat&logo=webpack&logoColor=white&label=Minzipped%20Size&labelColor=orange&color=333333" alt="package size" />
     </a>
+    <a href="https://context7.com/hesprs/pointeract">
+        <img src="https://img.shields.io/badge/7%EF%B8%8F%E2%83%A3%20Context7-Available-333333?labelColor=059669" alt="LLM Optimization">
+    </a>
     <img src="https://img.shields.io/badge/Types-Strict-333333?logo=typescript&labelColor=blue&logoColor=white" alt="Typescript" />
-    <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Humans-333333?labelColor=25C260" alt="Made by Humans" />
+    <img src="https://img.shields.io/badge/%F0%9F%96%90%EF%B8%8F%20Made%20by-Humans-333333?labelColor=15C2C0" alt="Made by Humans" />
 </p>
 
 <p align="center">
@@ -121,9 +124,31 @@ Those interactions are shipped via modules, which can be composed from a single 
 
 Missing your desired interaction? [Write your own module](https://pointeract.consensia.cc/development/custom-modules)!
 
+## It's the Age of Agents
+
+Copy and paste the following prompt to OpenCode, Claude Code, Cursor or even a chat bot, replace the placeholder to your task, let it handle everything for you:
+
+```markdown
+I'm using `pointeract`, a library to detect user gestures, which can be considered as a modern alternative to Hammer.js. Read the documentation and help me with my requirements.
+
+**"Get Started" Page in Documentation Website**: https://pointeract.consensia.cc/get-started (fetch more internal links when needed)
+
+**Requirements**:
+
+<!-- your requirements here -->
+```
+
+JSON Canvas Viewer is also available on [Context7](https://context7.com/hesprs/pointeract) with an exceptionally high score of **94**. If you're using it, you can skip the above prompt and simply ask the agent:
+
+```markdown
+Query `pointeract` on Context7.
+```
+
+Or don't care about this at all, the agents are smart enough to search on Context7 themselves.
+
 ## How Pointeract Stands Out?
 
-There're already plenty of interaction libraries out there, most famous ones are `d3-drag` + `d3-zoom`, `Interact.js` and `Hammer.js`, but Pointeract is different.
+There're already plenty of interaction libraries out there, most famous ones are `D3 Drag` + `D3 Zoom`, `Interact.js` and `Hammer.js`, but Pointeract is different.
 
 | Criteria                                                                                       |                      Pointeract                       | [D3 Drag](https://github.com/d3/d3-drag) + [D3 Zoom](https://github.com/d3/d3-zoom) |     [Hammer.js](https://hammerjs.github.io)     |         [Interact.js](https://interactjs.io)         |
 | :--------------------------------------------------------------------------------------------- | :---------------------------------------------------: | :---------------------------------------------------------------------------------: | :---------------------------------------------: | :--------------------------------------------------: |
