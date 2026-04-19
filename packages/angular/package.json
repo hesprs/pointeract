@@ -1,0 +1,43 @@
+{
+    "name": "@pointeract/angular",
+    "version": "1.0.0",
+    "description": "Angular bindings for Pointeract, a 3KB, tree-shakable, TypeScript-native human interaction",
+    "keywords": [
+		"frontend",
+		"gesture-detection",
+		"lightweight",
+		"pan-zoom",
+		"typescript",
+        "angular",
+        "hammer",
+		"EventManager",
+		"EventManagerPlugin"
+	],
+    "homepage": "https://pointeract.consensia.cc",
+	"bugs": {
+		"url": "https://github.com/hesprs/pointeract/issues"
+	},
+	"license": "Apache-2.0",
+	"authors": [
+		{
+			"name": "Hēsperus",
+			"email": "hesprs@outlook.com"
+		},
+        {
+			"name": "Roman Babiak",
+			"email": "its.alfinity@gmail.com"
+		}
+	],
+    "repository": {
+		"type": "git",
+		"url": "git+https://github.com/hesprs/pointeract.git"
+	},
+	"type": "module",
+	"sideEffects": false,
+	"peerDependencies": {
+        "@angular/core": ">=16.0.0 || 22.0.0-next.8",
+        "@angular/platform-browser": ">=16.0.0 || 22.0.0-next.8",
+		"pointeract": ">=1.2.0"
+    },
+	"packageManager": "pnpm@10.29.3"
+}
