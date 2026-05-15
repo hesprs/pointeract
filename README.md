@@ -138,7 +138,7 @@ I'm using `pointeract`, a library to detect user gestures, which can be consider
 <!-- your requirements here -->
 ```
 
-JSON Canvas Viewer is also available on [Context7](https://context7.com/hesprs/pointeract) with an exceptionally high score of **94**. If you're using it, you can skip the above prompt and simply ask the agent:
+Pointeract is also available on [Context7](https://context7.com/hesprs/pointeract) with an exceptionally high score of **94**. If you're using it, you can skip the above prompt and simply ask the agent:
 
 ```markdown
 Query `pointeract` on Context7.
