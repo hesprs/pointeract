@@ -7,25 +7,7 @@ const p = createP(import.meta.url);
 
 export default defineConfig({
 	root: 'tests/dev',
-	resolve: {
-		alias: {
-			'@': p('src/'),
-		},
-	},
-	build: {
-		outDir: p('dist'),
-		emptyOutDir: true,
-		minify: 'terser',
-		sourcemap: true,
-		lib: {
-			entry: {
-				index: p('src'),
-			},
-			name: 'Pointeract',
-			formats: ['es'],
-			fileName: `index`,
-		},
-	},
+	resolve: { alias: { '@': p('src/') } },
 	test: {
 		root: p('.'),
 		environment: 'happy-dom',

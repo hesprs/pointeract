@@ -20,18 +20,18 @@ type ProcessedSwipe = {
 
 type CompletedSwipe = ProcessedSwipe & { completedAt: number };
 
-const defaultDirectionMap = {
-	left: -(Math.PI / 4) * 3, // -135 degrees
-	down: -Math.PI / 4, // -45 degrees
-	right: Math.PI / 4, // 45 degrees
-	up: (Math.PI / 4) * 3, // 135 degrees
-};
-
 export default class Swipe extends BaseModule<Options> {
 	#buffer: Array<CompletedSwipe> = [];
 
 	onPointerDown = (_e: PointerEvent, _pointer: Pointer, pointers: Pointers) => {
 		if (pointers.size === 1) this.#buffer = [];
+	};
+
+	readonly #defaultDirectionMap = {
+		left: -(Math.PI / 4) * 3, // -135 degrees
+		down: -Math.PI / 4, // -45 degrees
+		right: Math.PI / 4, // 45 degrees
+		up: (Math.PI / 4) * 3, // 135 degrees
 	};
 
 	#processPointer(
@@ -51,7 +51,7 @@ export default class Swipe extends BaseModule<Options> {
 
 		const angle = Math.atan2(-dy, dx); // specially invert dy to for standard Cartesian displacements
 
-		const directionMap = this.options.swipeDirectionMap ?? defaultDirectionMap;
+		const directionMap = this.options.swipeDirectionMap ?? this.#defaultDirectionMap;
 		let direction = Object.keys(directionMap)[0];
 		for (const [key, value] of Object.entries(directionMap)) {
 			if (angle <= value) {
