@@ -1,3 +1,5 @@
+// oxlint-disable vitest/require-hook
+import type { StdEvents } from '@';
 import {
 	Click,
 	Drag,
@@ -5,7 +7,6 @@ import {
 	Pointeract,
 	PreventDefault,
 	Lubricator,
-	type StdEvents,
 	WheelPanZoom,
 	lubricatorPanPreset as pan,
 	lubricatorZoomPreset as zoom,
@@ -17,9 +18,9 @@ const square = document.getElementById('test-square') as HTMLElement;
 const squareRect = square.getBoundingClientRect();
 const bodyRect = document.body.getBoundingClientRect();
 const data = {
+	scale: 1,
 	x: (bodyRect.width - squareRect.width) / 2,
 	y: (bodyRect.height - squareRect.height) / 2,
-	scale: 1,
 };
 
 function C2C(coords: Coordinates) {
@@ -50,7 +51,7 @@ function trueClickFn(e: StdEvents['trueClick']) {
 new Pointeract(
 	{
 		element: document.body,
-		lubricator: { pan, drag, zoom },
+		lubricator: { drag, pan, zoom },
 	},
 	[PreventDefault, MultitouchPanZoom, Drag, Click, WheelPanZoom, Lubricator],
 )

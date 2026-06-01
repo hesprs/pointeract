@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts" setup>
+// oxlint-disable vitest/require-hook
 import {
 	Click,
 	Drag,
@@ -41,12 +42,12 @@ function C2C(coords: Coordinates) {
 const square = useTemplateRef('square');
 const container = useTemplateRef('container');
 const data = reactive({
-	x: 0,
-	y: 0,
 	scale: 1,
 	streak: 0,
+	x: 0,
+	y: 0,
 });
-let streakTimeout: null | NodeJS.Timeout;
+let streakTimeout: number | undefined;
 let pointeract: PointeractInterface<
 	[Click, Drag, MultitouchPanZoom, PreventDefault, WheelPanZoom, Lubricator]
 >;
@@ -81,7 +82,7 @@ onMounted(() => {
 		.on('trueClick', (e) => {
 			data.streak = e.streak;
 			if (streakTimeout) clearTimeout(streakTimeout);
-			streakTimeout = setTimeout(() => {
+			streakTimeout = window.setTimeout(() => {
 				data.streak = 0;
 			}, 400);
 		})
@@ -92,7 +93,7 @@ onBeforeUnmount(() => {
 	pointeract.dispose();
 	if (streakTimeout) {
 		clearTimeout(streakTimeout);
-		streakTimeout = null;
+		streakTimeout = undefined;
 	}
 });
 </script>

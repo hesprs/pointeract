@@ -2,7 +2,7 @@ import BaseModule from '@/BaseModule';
 
 export default class PreventDefault extends BaseModule {
 	onWheel = (e: WheelEvent) => e.preventDefault();
-	#preventDefaultFunction = (e: Event) => e.preventDefault();
+	readonly #preventDefaultFunction = (e: Event) => e.preventDefault();
 
 	onStart = () => {
 		this.element.style.touchAction = 'none';

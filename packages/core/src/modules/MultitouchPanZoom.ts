@@ -3,7 +3,7 @@ import BaseModule from '@/BaseModule';
 import { getLast } from '@/utils';
 
 export default class MultitouchPanZoom extends BaseModule {
-	#pinchZoomState = {
+	readonly #pinchZoomState = {
 		lastDistance: 0,
 		lastMidpoint: { x: 0, y: 0 },
 	};
@@ -16,7 +16,7 @@ export default class MultitouchPanZoom extends BaseModule {
 		return Math.sqrt(dx * dx + dy * dy);
 	}
 
-	// output screen coords
+	// Output screen coords
 	#getPointerMidpoint() {
 		const pointer0Coords = getLast(this.getNthPointer(0).records);
 		const pointer1Coords = getLast(this.getNthPointer(1).records);
@@ -48,7 +48,7 @@ export default class MultitouchPanZoom extends BaseModule {
 
 	#dispatchZoomEvent(factor: number, origin: Coordinates) {
 		if (factor === 1) return;
-		this.dispatch('zoom', { x: origin.x, y: origin.y, factor });
+		this.dispatch('zoom', { factor, x: origin.x, y: origin.y });
 	}
 
 	#dispatchPanEvent(diff: { deltaX: number; deltaY: number }) {

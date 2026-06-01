@@ -1,7 +1,8 @@
 node_modules
 
 # dot files
-.vscode
+AGENTS.md
+.ignore
 
 # generated files
 *.js

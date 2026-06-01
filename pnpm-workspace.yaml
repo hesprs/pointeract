@@ -1,3 +1,7 @@
 packages:
   - 'packages/*'
   - 'docs'
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - synthkernel@0.0.2

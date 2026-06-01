@@ -1,9 +1,5 @@
 import BaseModule, { BaseArgs, Events } from '@/BaseModule';
-import { BaseOptions, GeneralDictionary, GeneralFunction } from '@/types';
-
-interface Options extends BaseOptions {
-	lubricator?: Record<string, PerEventOption>;
-}
+import { GeneralDictionary, GeneralFunction } from '@/types';
 
 export type PerEventOption = {
 	decayFactor: number;
@@ -21,19 +17,22 @@ type PerEventStates = {
 	>;
 };
 
-export default class Lubricator extends BaseModule<Options> {
+export default class Lubricator extends BaseModule {
 	#states: Record<string, PerEventStates> = {};
-	#animationId: number | null = null;
+	#animationId: number | undefined;
+	declare options: {
+		lubricator?: Record<string, PerEventOption>;
+	};
 
 	constructor(...args: BaseArgs) {
 		super(...args);
-		const lubricatee = this.options.lubricator;
-		if (!lubricatee) return;
-		Object.entries(lubricatee).forEach(([key, value]) => {
-			// per event scope
+		const toLubricate = this.options.lubricator;
+		if (!toLubricate) return;
+		Object.entries(toLubricate).forEach(([key, value]) => {
+			// Per event scope
 			const states = {
-				sample: {},
 				fields: {},
+				sample: {},
 			} as PerEventStates;
 			Object.keys(value.fields).forEach((field) => {
 				states.fields[field] = {
@@ -52,18 +51,18 @@ export default class Lubricator extends BaseModule<Options> {
 
 	onStop = () => {
 		if (this.#animationId) cancelAnimationFrame(this.#animationId);
-		this.#animationId = null;
+		this.#animationId = undefined;
 		Object.values(this.#states).forEach((value) => {
-			// per event scope
-			Object.values(value.fields).forEach((value) => {
-				// per field scope
-				value.release = 1;
-				value.catch = 1;
+			// Per event scope
+			Object.values(value.fields).forEach((fieldValue) => {
+				// Per field scope
+				fieldValue.release = 1;
+				fieldValue.catch = 1;
 			});
 		});
 	};
 
-	#makeLubricate =
+	readonly #makeLubricate =
 		(states: PerEventStates, options: PerEventOption) => (detail: GeneralDictionary) => {
 			if (detail.lubricated) return true;
 			states.sample = detail;
@@ -71,7 +70,7 @@ export default class Lubricator extends BaseModule<Options> {
 			return false;
 		};
 
-	#accumulate = (
+	readonly #accumulate = (
 		stateFields: PerEventStates['fields'],
 		optionsFields: PerEventOption['fields'],
 		detail: GeneralDictionary,
@@ -79,23 +78,22 @@ export default class Lubricator extends BaseModule<Options> {
 		Object.entries(stateFields).forEach(([key, value]) => {
 			if (typeof detail[key] !== 'number') return;
 			const config = optionsFields[key].countType;
-			if (config === 'sum') {
-				value.catch += detail[key];
-			} else if (config === 'product') value.catch *= detail[key];
+			if (config === 'sum') value.catch += detail[key];
+			else if (config === 'product') value.catch *= detail[key];
 		});
 	};
 
-	#perFrame = () => {
+	readonly #perFrame = () => {
 		const states = this.#states;
 		const options = this.options.lubricator;
 		if (!options) return;
 		Object.entries(states).forEach(([event, perEventStates]) => {
-			// per event scope
+			// Per event scope
 			const detail = perEventStates.sample;
 			detail.lubricated = true;
 			let needEmit = false;
 			for (const [field, value] of Object.entries(perEventStates.fields)) {
-				// per field scope
+				// Per field scope
 				if (value.catch === 1) continue;
 				const type = options[event].fields[field].countType;
 
@@ -116,13 +114,13 @@ export default class Lubricator extends BaseModule<Options> {
 					continue;
 				}
 
-				// to interpolate
+				// To interpolate
 				let delta: number;
 				if (type === 'sum') {
 					delta = diff * options[event].decayFactor;
 					value.release += delta;
 				} else {
-					delta = Math.pow(diff, options[event].decayFactor);
+					delta = diff ** options[event].decayFactor;
 					value.release *= delta;
 				}
 				detail[field] = delta;
@@ -133,8 +131,8 @@ export default class Lubricator extends BaseModule<Options> {
 		this.#animationId = requestAnimationFrame(this.#perFrame);
 	};
 
-	// in: positive number; out: positive number > 1
-	#reciprocalAbs = (num: number) => (num > 1 ? num : 1 / num);
+	// In: positive number; out: positive number > 1
+	readonly #reciprocalAbs = (num: number) => (num > 1 ? num : 1 / num);
 
 	modifiers: Record<string, GeneralFunction> = {};
 }

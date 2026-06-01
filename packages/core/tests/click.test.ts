@@ -1,6 +1,6 @@
 import { Click } from '@';
 import { expect, test } from 'vitest';
-import setup from './testUtils';
+import setup from './test-utils';
 
 test('trigger a trueClick', async () => {
 	const { acc, dispose, Pointer } = setup([Click]);
