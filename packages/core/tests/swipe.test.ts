@@ -1,6 +1,6 @@
 import { Swipe } from '@';
 import { expect, test, vi } from 'vitest';
-import setup from './testUtils';
+import setup from './test-utils';
 
 test('swipe right', async () => {
 	const { acc, dispose, Pointer } = setup([Swipe], { swipeMinVelocity: 0 });
@@ -56,7 +56,7 @@ test('swipe down', async () => {
 });
 
 test('does not fire when distance is below threshold', async () => {
-	const { acc, dispose, Pointer } = setup([Swipe], { swipeMinVelocity: 0, swipeMinDistance: 20 });
+	const { acc, dispose, Pointer } = setup([Swipe], { swipeMinDistance: 20, swipeMinVelocity: 0 });
 	const p = new Pointer();
 	p.down();
 	p.move({ x: 10, y: 0 });
@@ -66,12 +66,12 @@ test('does not fire when distance is below threshold', async () => {
 });
 
 test('does not fire when velocity is below threshold', async () => {
-	let time = 0;
-	const dateSpy = vi.spyOn(Date, 'now').mockImplementation(() => time);
+	const time = 0;
+	const dateSpy = vi.spyOn(Date, 'now').mockReturnValue(time);
 	const { acc, dispose, Pointer } = setup([Swipe], { swipeMinVelocity: 1 });
 	const p = new Pointer();
 	p.down();
-	// no time advances → all timestamps at 0 → wTime = 0 → velocity = 0
+	// No time advances → all timestamps at 0 → wTime = 0 → velocity = 0
 	p.move({ x: 50, y: 0 });
 	p.up();
 	expect(acc.swipes).toHaveLength(0);
@@ -84,11 +84,11 @@ test('velocity is computed correctly', async () => {
 	const dateSpy = vi.spyOn(Date, 'now').mockImplementation(() => time);
 	const { acc, dispose, Pointer } = setup([Swipe]);
 	const p = new Pointer();
-	p.down(); // t=0, x=0
+	p.down(); // T=0, x=0
 	time = 50;
-	p.move({ x: 50, y: 0 }); // t=50, x=50
+	p.move({ x: 50, y: 0 }); // T=50, x=50
 	time = 100;
-	p.move({ x: 50, y: 0 }); // t=100, x=100
+	p.move({ x: 50, y: 0 }); // T=100, x=100
 	p.up();
 	expect(acc.swipes).toHaveLength(1);
 	expect(acc.swipes[0].velocity).toBeCloseTo(1, 1); // 100px / 100ms = 1 px/ms
@@ -108,7 +108,7 @@ test('two-finger swipe emits per-pointer and combined events', async () => {
 	p2.move({ x: 50, y: 0 });
 	p1.up();
 	p2.up();
-	// p1 fires pointerNumber:1, p2 fires pointerNumber:1, then combined pointerNumber:2
+	// P1 fires pointerNumber:1, p2 fires pointerNumber:1, then combined pointerNumber:2
 	expect(acc.swipes).toHaveLength(2);
 	expect(acc.swipes[0].streak).toBe(1);
 	expect(acc.swipes[1].streak).toBe(2);
@@ -126,7 +126,7 @@ test('two-finger swipe in opposite directions does not emit combined event', asy
 	p2.move({ x: -50, y: 0 });
 	p1.up();
 	p2.up();
-	// each pointer fires its own event; directions differ so no combined event
+	// Each pointer fires its own event; directions differ so no combined event
 	expect(acc.swipes).toHaveLength(2);
 	expect(acc.swipes.every((s) => s.streak === 1)).toBe(true);
 	await dispose();

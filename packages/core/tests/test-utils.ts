@@ -1,11 +1,5 @@
-import {
-	type Click,
-	type Drag,
-	PointeractInterface,
-	type WheelPanZoom,
-	type Swipe,
-	Pointeract,
-} from '@';
+import type { Click, Drag, WheelPanZoom, Swipe } from '@';
+import { PointeractInterface, Pointeract } from '@';
 import { Window as HappyWindow, PointerEvent, HTMLDivElement, WheelEvent } from 'happy-dom';
 import { beforeEach, vi } from 'vitest';
 import type { Coordinates, StdEvents } from '@/types';
@@ -13,26 +7,26 @@ import { ModuleInputCtor, Options } from '@/BaseModule';
 
 beforeEach(() => {
 	vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockImplementation(
-		function (this: HTMLElement) {
-			if (this.id === 'test-square') {
+		function dummyRect(this: HTMLElement) {
+			if (this.id === 'test-square')
 				return {
-					width: 200,
+					bottom: 200,
 					height: 200,
 					left: 0,
-					top: 0,
 					right: 200,
-					bottom: 200,
+					top: 0,
+					width: 200,
 					x: 0,
 					y: 0,
 				} as DOMRect;
-			}
+
 			return {
-				width: 0,
+				bottom: 0,
 				height: 0,
 				left: 0,
-				top: 0,
 				right: 0,
-				bottom: 0,
+				top: 0,
+				width: 0,
 				x: 0,
 				y: 0,
 			} as DOMRect;
@@ -53,29 +47,28 @@ class Accumulator {
 	};
 	scale = 1;
 	clicks = 0;
-	swipes: StdEvents['swipe'][] = [];
-	private pointeract: PointeractInterface<ModulePreset>;
+	swipes: Array<StdEvents['swipe']> = [];
 	constructor(pointeract: PointeractInterface<ModulePreset>) {
-		this.pointeract = pointeract
+		pointeract
 			.on('pan', this.panner)
 			.on('drag', this.dragger)
 			.on('zoom', this.zoomer)
 			.on('trueClick', this.clicker)
 			.on('swipe', this.swiper);
 	}
-	private panner = (e: StdEvents['pan']) => {
+	private readonly panner = (e: StdEvents['pan']) => {
 		this.pan.x += e.deltaX;
 		this.pan.y += e.deltaY;
 	};
-	private swiper = (e: StdEvents['swipe']) => {
+	private readonly swiper = (e: StdEvents['swipe']) => {
 		this.swipes.push(e);
 	};
-	private dragger = (e: StdEvents['drag']) => {
+	private readonly dragger = (e: StdEvents['drag']) => {
 		this.drag.x += e.deltaX;
 		this.drag.y += e.deltaY;
 	};
-	private zoomer = (e: StdEvents['zoom']) => (this.scale *= e.factor);
-	private clicker = () => this.clicks++;
+	private readonly zoomer = (e: StdEvents['zoom']) => (this.scale *= e.factor);
+	private readonly clicker = () => this.clicks++;
 	clear = () => {
 		this.pan = {
 			x: 0,
@@ -140,25 +133,23 @@ export default function setup<T extends ModuleInputCtor>(
 		_keys?: { shift?: boolean; ctrl?: boolean; alt?: boolean },
 		coords: Coordinates = { x: 0, y: 0 },
 	) => {
-		const keys = Object.assign(
-			{
-				shift: false,
-				ctrl: false,
-				alt: false,
-			},
-			_keys,
-		);
+		const keys = {
+			alt: false,
+			ctrl: false,
+			shift: false,
+			..._keys,
+		};
 		const event = Object.assign(
 			new WheelEvent('wheel', {
 				deltaX: diff.x,
 				deltaY: diff.y,
 			}),
 			{
-				clientY: coords.y,
-				clientX: coords.x,
-				shiftKey: keys.shift,
-				ctrlKey: keys.ctrl,
 				altKey: keys.alt,
+				clientX: coords.x,
+				clientY: coords.y,
+				ctrlKey: keys.ctrl,
+				shiftKey: keys.shift,
 			},
 		);
 		square.dispatchEvent(event);
@@ -167,10 +158,10 @@ export default function setup<T extends ModuleInputCtor>(
 	class Pointer {
 		x = 0;
 		y = 0;
-		private data = {
-			onPress: false,
-			isPrimary: false,
+		private readonly data = {
 			id: 0,
+			isPrimary: false,
+			onPress: false,
 		};
 		down = (coords?: Coordinates) => {
 			if (this.data.onPress) return;
@@ -220,12 +211,12 @@ export default function setup<T extends ModuleInputCtor>(
 
 	pointeract.start();
 	return {
-		pointeract,
-		acc,
-		square,
-		dispose,
 		Pointer,
-		wheel,
+		acc,
+		dispose,
 		nextFrame,
+		pointeract,
+		square,
+		wheel,
 	};
 }

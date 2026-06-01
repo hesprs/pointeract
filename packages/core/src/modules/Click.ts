@@ -1,21 +1,20 @@
-import type { BaseOptions, Pointer, Pointers } from '@/types';
+import type { Pointer, Pointers } from '@/types';
 import BaseModule from '@/BaseModule';
 import { getLast } from '@/utils';
 
-interface Options extends BaseOptions {
-	clickStreakWindow?: number;
-	clickMoveThreshold?: number;
-}
-
-export default class Click extends BaseModule<Options> {
+export default class Click extends BaseModule {
 	#lastClickTime = -Infinity;
 	#clickSteak = 0;
+	declare options: {
+		clickStreakWindow?: number;
+		clickMoveThreshold?: number;
+	};
 
 	onPointerDown = (_e: PointerEvent, pointer: Pointer, pointers: Pointers) => {
 		if (pointers.size === 2) {
 			const pointer0 = this.getNthPointer(0);
 			/*
-            interrupted means that when a pointer is moving on the screen while another pointer is down, possibly for zooming, both pointers will be seen as "interrupted" so that they won't be used for triggering a real click.
+            Interrupted means that when a pointer is moving on the screen while another pointer is down, possibly for zooming, both pointers will be seen as "interrupted" so that they won't be used for triggering a real click.
             */
 			pointer0.interrupted = true;
 			pointer.interrupted = true;
@@ -38,8 +37,8 @@ export default class Click extends BaseModule<Options> {
 		const coords = this.toTargetCoords({ x: e.clientX, y: e.clientY });
 		this.dispatch('trueClick', {
 			...coords,
-			target: pointer.target,
 			streak: this.#clickSteak,
+			target: pointer.target,
 		});
 	};
 }

@@ -11,17 +11,17 @@
 		"dev": "turbo run dev"
 	},
 	"devDependencies": {
-		"@types/node": "^25.6.0",
-		"@vitest/coverage-v8": "^4.1.5",
+		"@types/node": "^25.9.1",
+		"@vitest/coverage-v8": "^4.1.7",
 		"happy-dom": "^20.9.0",
-		"oxfmt": "^0.47.0",
-		"oxlint": "^1.62.0",
-		"oxlint-tsgolint": "^0.22.1",
-		"tsdown": "^0.21.10",
-		"turbo": "^2.9.14",
+		"oxfmt": "^0.52.0",
+		"oxlint": "^1.67.0",
+		"oxlint-tsgolint": "^0.23.0",
+		"tsdown": "^0.22.1",
+		"turbo": "^2.9.16",
 		"typescript": "^6.0.3",
-		"vite": "^8.0.10",
-		"vitest": "^4.1.5"
+		"vite": "^8.0.14",
+		"vitest": "^4.1.7"
 	},
-	"packageManager": "pnpm@10.29.3"
+	"packageManager": "pnpm@11.1.3"
 }

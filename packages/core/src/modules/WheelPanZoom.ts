@@ -14,20 +14,22 @@ diff x > 0 => pan left => pan x < 0
 diff y < 0 => pan right => pan y > 0
 */
 
-interface Options extends BaseOptions {
+type Options = {
 	proControlSchema?: boolean;
 	zoomFactor?: number;
 	lockControlSchema?: boolean;
-}
+} & BaseOptions;
 
-export default class wheelPanZoom extends BaseModule<Options> {
+export default class wheelPanZoom extends BaseModule {
 	constructor(...args: BaseArgs) {
 		super(...args);
 		fillIn(
-			{ proControlSchema: false, zoomFactor: 0.1, lockControlSchema: false },
+			{ lockControlSchema: false, proControlSchema: false, zoomFactor: 0.1 },
 			this.options,
 		);
 	}
+
+	declare options: Options;
 
 	onWheel = (e: WheelEvent) => {
 		const options = this.options as Required<Options>;
@@ -37,7 +39,7 @@ export default class wheelPanZoom extends BaseModule<Options> {
 			(e.ctrlKey || e.shiftKey || Math.abs(e.deltaX) > Math.abs(e.deltaY))
 		)
 			options.proControlSchema = true;
-		if (options.proControlSchema) {
+		if (options.proControlSchema)
 			if (e.ctrlKey) {
 				const scaleFactor = 1 - options.zoomFactor * e.deltaY;
 				const origin = this.toTargetCoords({ x: e.clientX, y: e.clientY });
@@ -45,7 +47,7 @@ export default class wheelPanZoom extends BaseModule<Options> {
 			} else if (e.shiftKey && Math.abs(e.deltaX) <= Math.abs(e.deltaY))
 				this.#dispatchPanEvent({ deltaX: -e.deltaY, deltaY: -e.deltaX });
 			else this.#dispatchPanEvent({ deltaX: -e.deltaX, deltaY: -e.deltaY });
-		} else {
+		else {
 			const scaleFactor = 1 - (options.zoomFactor / 20) * e.deltaY;
 			const origin = this.toTargetCoords({ x: e.clientX, y: e.clientY });
 			this.#dispatchZoomEvent(scaleFactor, origin);
@@ -53,7 +55,7 @@ export default class wheelPanZoom extends BaseModule<Options> {
 	};
 
 	#dispatchZoomEvent(factor: number, origin: Coordinates) {
-		this.dispatch('zoom', { x: origin.x, y: origin.y, factor });
+		this.dispatch('zoom', { factor, x: origin.x, y: origin.y });
 	}
 
 	#dispatchPanEvent(diff: { deltaX: number; deltaY: number }) {

@@ -7,20 +7,20 @@ import type {
 	ModuleInputCtor,
 	ModuleInput,
 } from '@/BaseModule';
-import type { Coordinates, GeneralObject, Pointer, Pointers } from '@/types';
+import type { Coordinates, Pointer, Pointers } from '@/types';
 import { HookKeys } from '@/BaseModule';
 
 type Reloadable<T extends ModuleInputCtor> = Array<T[number]>;
 
 export class Pointeract<T extends ModuleInputCtor = []> {
-	#element: HTMLElement;
-	#pointers: Pointers = new Map();
+	readonly #element: HTMLElement;
+	readonly #pointers: Pointers = new Map();
 	#modules: Record<string, BaseModule> = {};
 	#pausedModules: Record<string, BaseModule> = {};
-	#_window: Window | null;
+	#_window: Window | undefined;
 	#subscribers: { [K in keyof Events<T>]?: Set<(event: Events<T>[K]) => void> } = {};
 	options: Options<T>;
-	declare private _augmentSlot: unknown;
+	declare private readonly _augmentSlot: unknown;
 
 	get #window() {
 		if (!this.#_window) throw new Error('[Pointeract] Window is not defined.');
@@ -28,14 +28,13 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 	}
 
 	constructor(options: Options<T>, _modules?: T) {
-		const modules = _modules ? _modules : [];
-		this.#_window = options.element.ownerDocument.defaultView;
+		const modules = _modules ?? [];
+		this.#_window = options.element.ownerDocument.defaultView ?? undefined;
 		this.#element = options.element;
 		if (!options.coordinateOutput) options.coordinateOutput = 'relative';
 		this.options = options;
 		modules.forEach((module) => {
 			const instance = new module(
-				this.#augment,
 				this.dispatch,
 				this.#getNthPointer,
 				this.#toTargetCoords,
@@ -44,8 +43,8 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 				this.#element,
 				this.options,
 			);
-			Object.assign(instance, { options });
 			this.#modules[module.name] = instance;
+			this.#augment(instance.augmentation);
 		});
 	}
 
@@ -60,7 +59,7 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 		return this;
 	};
 
-	#getNthPointer = (n: number) => {
+	readonly #getNthPointer = (n: number) => {
 		const error = new Error('[Pointeract] Invalid pointer index.');
 		if (n < 0 || n >= this.#pointers.size) throw error;
 		let i = 0;
@@ -72,7 +71,7 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 	};
 
 	// Screen to Container
-	#toTargetCoords = (raw: Coordinates) => {
+	readonly #toTargetCoords = (raw: Coordinates) => {
 		if (this.options.coordinateOutput === 'absolute') return raw;
 		const rect = this.#element.getBoundingClientRect();
 		raw.x -= rect.left;
@@ -99,51 +98,48 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 						);
 			if (lastResult === false) return;
 		}
-		let event: Events<T>[N];
-		if (lastResult === true) event = e as Events<T>[N];
-		else event = lastResult;
+		const event: Events<T>[N] = lastResult ? (e as Events<T>[N]) : lastResult;
 		this.#subscribers[name]?.forEach((listener) => listener(event));
 	};
 
-	#augment = (aug: GeneralObject) => {
+	readonly #augment = (aug: object) => {
 		const descriptors = Object.getOwnPropertyDescriptors(aug);
 		Object.defineProperties(this, descriptors);
 	};
 
-	#runHooks = <K extends HookKeys>(field: K, ...args: Parameters<Required<BaseModule>[K]>) => {
-		Object.values(this.#modules).forEach((module) => {
-			const hook = module[field];
-			// oxlint-disable-next-line typescript/no-explicit-any
-			if (hook) hook(...(args as any));
-		});
+	readonly #runHooks = <K extends HookKeys>(
+		field: K,
+		...args: Parameters<Required<BaseModule>[K]>
+	) => {
+		Object.values(this.#modules).forEach((module) => module[field](...(args as any)));
 	};
 
-	#onPointerDown = (e: PointerEvent) => {
+	readonly #onPointerDown = (e: PointerEvent) => {
 		if (e.isPrimary) this.#pointers.clear();
 		const pointer: Pointer = {
-			records: [{ x: e.clientX, y: e.clientY, timestamp: Date.now() }],
-			target: e.target,
 			index: this.#pointers.size,
+			records: [{ timestamp: Date.now(), x: e.clientX, y: e.clientY }],
+			target: e.target,
 		};
 		this.#pointers.set(e.pointerId, pointer);
 		this.#runHooks('onPointerDown', e, pointer, this.#pointers);
 	};
 
-	#onPointerMove = (e: PointerEvent) => {
+	readonly #onPointerMove = (e: PointerEvent) => {
 		const pointer = this.#pointers.get(e.pointerId);
 		if (!pointer) return;
-		pointer.records.push({ x: e.clientX, y: e.clientY, timestamp: Date.now() });
+		pointer.records.push({ timestamp: Date.now(), x: e.clientX, y: e.clientY });
 		this.#runHooks('onPointerMove', e, pointer, this.#pointers);
 	};
 
-	#onPointerUp = (e: PointerEvent) => {
+	readonly #onPointerUp = (e: PointerEvent) => {
 		const pointer = this.#pointers.get(e.pointerId);
 		if (!pointer) return;
 		this.#pointers.delete(e.pointerId);
 		this.#runHooks('onPointerUp', e, pointer, this.#pointers);
 	};
 
-	#onWheel = (e: WheelEvent) => this.#runHooks('onWheel', e);
+	readonly #onWheel = (e: WheelEvent) => this.#runHooks('onWheel', e);
 
 	stop = (toStop?: Reloadable<T>) => {
 		const stopPointeract = () => {
@@ -193,7 +189,7 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 
 	dispose = () => {
 		this.stop();
-		this.#_window = null;
+		this.#_window = undefined;
 		this.#runHooks('dispose');
 		this.#subscribers = {};
 	};

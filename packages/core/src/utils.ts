@@ -1,6 +1,6 @@
 import { GeneralDictionary } from '@/types';
 
-export function getLast<T>(arr: Array<T>, num: number = 0) {
+export function getLast<T>(arr: Array<T>, num = 0) {
 	return arr[arr.length - 1 - num];
 }
 

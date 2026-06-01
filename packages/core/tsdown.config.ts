@@ -1,15 +1,15 @@
 import { defineConfig } from 'tsdown';
 
 export default defineConfig({
-	entry: 'src/index.ts',
 	dts: {
 		eager: true,
 	},
+	entry: 'src/index.ts',
 	minify: true,
+	outExtensions: () => ({
+		dts: '.d.ts',
+		js: '.js',
+	}),
 	sourcemap: true,
 	unbundle: true,
-	outExtensions: () => ({
-		js: '.js',
-		dts: '.d.ts',
-	}),
 });
