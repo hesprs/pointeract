@@ -11,7 +11,5 @@
 		"allowImportingTsExtensions": true,
 		"rootDir": ".",
 		"lib": ["ESNext", "DOM"],
-	},
-	"include": ["src/**/*", "packages/core/tests/**/*", "docs/**/*", "docs/.vitepress/**/*"],
-	"exclude": ["node_modules", "dist"]
+	}
 }
