@@ -12,14 +12,14 @@
 	},
 	"dependencies": {
 		"pointeract": "workspace:*",
-		"vitepress": "2.0.0-alpha.17",
+		"vitepress": "2.0.0-alpha.18",
 		"vitepress-plugin-group-icons": "^1.7.5",
-		"vitepress-theme-trito": "^1.1.1",
-		"vue": "^3.5.33"
+		"vitepress-theme-trito": "^1.2.2",
+		"vue": "^3.5.40"
 	},
 	"devDependencies": {
 		"@repo/shared": "workspace:*",
-		"vue-tsc": "^3.2.7"
+		"vue-tsc": "^3.3.8"
 	},
 	"packageManager": "pnpm@10.29.3"
 }

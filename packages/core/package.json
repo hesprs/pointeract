@@ -45,7 +45,7 @@
 		"dev": "vite"
 	},
 	"dependencies": {
-		"synthkernel": "^0.0.2"
+		"synthkernel": "^0.1.0"
 	},
 	"devDependencies": {
 		"@repo/shared": "workspace:*"
