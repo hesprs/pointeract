@@ -4,7 +4,7 @@
 	"private": true,
 	"type": "module",
 	"scripts": {
-		"lint": "oxlint --type-aware --fix && oxfmt",
+		"fix": "oxlint --silent --fix && oxfmt",
 		"check": "vue-tsc && oxfmt --check && oxlint --type-aware",
 		"dev": "MODE=dev vitepress dev",
 		"build": "MODE=prod vitepress build",
@@ -12,14 +12,13 @@
 	},
 	"dependencies": {
 		"pointeract": "workspace:*",
-		"vitepress": "2.0.0-alpha.17",
-		"vitepress-plugin-group-icons": "^1.7.5",
-		"vitepress-theme-trito": "^1.1.1",
-		"vue": "^3.5.33"
+		"typescript": "^6.0.3",
+		"vitepress": "^2.0.0-alpha.19",
+		"vitepress-plugin-group-icons": "^1.7.6",
+		"vitepress-theme-trito": "^1.2.2",
+		"vue": "^3.5.41"
 	},
 	"devDependencies": {
-		"@repo/shared": "workspace:*",
-		"vue-tsc": "^3.2.7"
-	},
-	"packageManager": "pnpm@10.29.3"
+		"vue-tsc": "^3.3.10"
+	}
 }

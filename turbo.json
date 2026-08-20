@@ -1,6 +1,8 @@
 {
 	"$schema": "https://turborepo.dev/schema.json",
-	"ui": "tui",
+	"ui": "stream",
+	"noUpdateNotifier": true,
+	"concurrency": "100%",
 	"tasks": {
 		"build": {
 			"dependsOn": ["^build"],
@@ -8,7 +10,7 @@
 			"outputs": ["dist/**"],
 			"cache": true
 		},
-		"lint": {
+		"fix": {
 			"dependsOn": [],
 			"cache": true
 		},
@@ -21,11 +23,11 @@
 			"cache": false,
 			"persistent": true
 		},
-		"test": {
+		"tests": {
 			"dependsOn": ["^build"],
 			"cache": true
 		},
-		"test:coverage": {
+		"tests:coverage": {
 			"dependsOn": ["^build"],
 			"cache": true
 		}

@@ -1,19 +1,12 @@
-/// <reference types="vitest/config" />
-
-import createP from '@repo/shared';
+// oxlint-disable import/no-nodejs-modules
+import { resolve } from 'node:path';
 import { defineConfig } from 'vite';
 
-const p = createP(import.meta.url);
+function p(path: string) {
+	return resolve(import.meta.dirname, '..', path);
+}
 
 export default defineConfig({
 	resolve: { alias: { '@': p('src/') } },
 	root: 'tests/dev',
-	test: {
-		coverage: {
-			include: ['src/**/*.ts'],
-		},
-		environment: 'happy-dom',
-		root: p('.'),
-		setupFiles: ['./tests/test-utils.ts'],
-	},
 });

@@ -46,7 +46,7 @@ export default class Swipe extends BaseModule {
 		const last = getLast(records);
 		const dx = last.x - first.x;
 		const dy = last.y - first.y;
-		const displacement = Math.sqrt(dx * dx + dy * dy);
+		const displacement = Math.hypot(dx, dy);
 		if (displacement < minDistance) return;
 
 		const angle = Math.atan2(-dy, dx); // Specially invert dy to for standard Cartesian displacements
@@ -69,7 +69,7 @@ export default class Swipe extends BaseModule {
 			const wDx = wLast.x - wFirst.x;
 			const wDy = wLast.y - wFirst.y;
 			const wTime = wLast.timestamp - wFirst.timestamp;
-			velocity = wTime > 0 ? Math.sqrt(wDx * wDx + wDy * wDy) / wTime : 0;
+			velocity = wTime > 0 ? Math.hypot(wDx, wDy) / wTime : 0;
 		}
 		if (velocity < minVelocity) return;
 

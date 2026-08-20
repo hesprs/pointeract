@@ -1,10 +1,12 @@
-import createP from '@repo/shared';
+// oxlint-disable import/no-nodejs-modules
+import { resolve } from 'node:path';
 import { defineConfig } from 'vitepress';
 import { groupIconMdPlugin, groupIconVitePlugin } from 'vitepress-plugin-group-icons';
 import { ThemeConfig } from 'vitepress-theme-trito';
 
-const inDev = process.env.MODE === 'dev';
-const p = createP(import.meta.url);
+function p(path: string) {
+	return resolve(import.meta.dirname, '..', path);
+}
 
 export default defineConfig<ThemeConfig>({
 	cleanUrls: true,
@@ -12,14 +14,6 @@ export default defineConfig<ThemeConfig>({
 	head: [
 		['link', { href: '/favicon.ico', rel: 'icon' }],
 		['meta', { content: 'dark light', name: 'color-scheme' }],
-		[
-			'script',
-			{
-				'data-website-id': 'f4ddf973-093c-4660-bda7-65a511d5b26c',
-				defer: '',
-				src: inDev ? '' : 'https://analytics.consensia.cc/script.js',
-			},
-		],
 		[
 			'meta',
 			{
@@ -37,14 +31,16 @@ export default defineConfig<ThemeConfig>({
 		config(md) {
 			md.use(groupIconMdPlugin);
 		},
-		image: { lazyLoading: true },
+		image: { lazyLoad: true },
 	},
+	outDir: p('dist'),
 	rewrites: { 'en/:rest*': ':rest*' },
 	sitemap: { hostname: 'https://pointeract.consensia.cc' },
+	srcDir: p('src/pages'),
 	themeConfig: {
 		// https://vitepress.dev/reference/default-theme-config
 		aside: 'left',
-		editLink: 'https://github.com/hesprs/pointeract/edit/main/docs/:path',
+		editLink: 'https://github.com/hesprs/pointeract/edit/main/docs/src/pages/en/:path',
 		footer: {
 			copyright: 'Copyright © 2025-2026 Hēsperus',
 			message:
@@ -115,8 +111,8 @@ export default defineConfig<ThemeConfig>({
 	},
 	title: 'Pointeract',
 	vite: {
-		plugins: [groupIconVitePlugin() as never], // Legacy plugin cannot adapt vite 8
-		publicDir: p('../public'),
+		plugins: [groupIconVitePlugin()],
+		publicDir: p('public'),
 		ssr: {
 			noExternal: ['vitepress-theme-trito'],
 		},
