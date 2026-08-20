@@ -40,7 +40,7 @@
 		"build": "bun --bun tsdown",
 		"tests": "bun --preload=./test/setup.ts test",
 		"fix": "oxlint --silent --fix && oxfmt",
-		"tests:coverage": "bun --preload=./test/setup.ts test --coverage",
+		"tests:coverage": "bun --preload=./test/setup.ts test --coverage --coverage-reporter=lcov",
 		"check": "tsc && oxlint && oxfmt --check",
 		"dev": "bun --bun vite"
 	},
