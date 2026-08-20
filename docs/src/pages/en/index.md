@@ -3,8 +3,8 @@ layout: home
 
 hero:
   name: Pointeract
-  text: human gesture recognizer
-  tagline: modular, composable, elegant
+  text: Human Interaction Recognizer
+  tagline: tiny, modular, composable
   actions:
     - theme: brand
       text: Get Started

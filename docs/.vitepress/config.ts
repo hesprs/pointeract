@@ -72,6 +72,7 @@ export default defineConfig<ThemeConfig>({
 				text: 'Basic',
 			},
 			{
+				collapsed: true,
 				items: [
 					{ link: '/modules/prevent-default', text: 'Prevent Default' },
 					{ link: '/modules/click', text: 'Click' },
@@ -85,6 +86,7 @@ export default defineConfig<ThemeConfig>({
 				text: 'Modules',
 			},
 			{
+				collapsed: true,
 				items: [
 					{ link: '/events/pan', text: 'Pan' },
 					{ link: '/events/true-click', text: 'True Click' },
