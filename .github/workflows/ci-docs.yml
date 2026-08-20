@@ -41,7 +41,7 @@ jobs:
         run: bun install
 
       - name: Build docs
-        run: bun run build -D docs
+        run: bun run build -F docs
 
       - name: Upload artifact
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
