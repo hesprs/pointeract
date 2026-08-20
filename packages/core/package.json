@@ -45,6 +45,6 @@
 		"dev": "bun --bun vite"
 	},
 	"dependencies": {
-		"synthkernel": "^0.0.2"
+		"synthkernel": "^0.1.0"
 	}
 }
