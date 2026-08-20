@@ -42,6 +42,6 @@ jobs:
 
       - name: Upload coverage reports to Codecov (push to main)
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v7
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
