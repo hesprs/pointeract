@@ -1,24 +1,23 @@
 import BaseModule from '@/BaseModule';
 
 export default class PreventDefault extends BaseModule {
-	onWheel = (e: WheelEvent) => e.preventDefault();
-	readonly #preventDefaultFunction = (e: Event) => e.preventDefault();
-
+	onWheel = preventDefaultFunction;
 	onStart = () => {
 		this.element.style.touchAction = 'none';
-		this.element.addEventListener('gesturestart', this.#preventDefaultFunction, {
+		this.element.addEventListener('gesturestart', preventDefaultFunction, {
 			passive: false,
 		});
-		this.element.addEventListener('gesturechange', this.#preventDefaultFunction, {
+		this.element.addEventListener('gesturechange', preventDefaultFunction, {
 			passive: false,
 		});
 	};
-
 	onStop = () => {
 		this.element.style.touchAction = '';
-		this.element.removeEventListener('gesturestart', this.#preventDefaultFunction);
-		this.element.removeEventListener('gesturechange', this.#preventDefaultFunction);
+		this.element.removeEventListener('gesturestart', preventDefaultFunction);
+		this.element.removeEventListener('gesturechange', preventDefaultFunction);
 	};
 
 	dispose = this.onStop;
 }
+
+const preventDefaultFunction = (e: WheelEvent | Event) => e.preventDefault();

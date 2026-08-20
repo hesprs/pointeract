@@ -37,18 +37,14 @@
 		"provenance": true
 	},
 	"scripts": {
-		"build": "tsdown",
-		"test": "vitest run",
-		"lint": "oxlint --type-aware --fix && oxfmt",
-		"test:coverage": "vitest run --coverage",
-		"check": "oxfmt --check && oxlint --type-aware",
-		"dev": "vite"
+		"build": "bun --bun tsdown",
+		"tests": "bun --preload=./test/setup.ts test",
+		"fix": "oxlint --silent --fix && oxfmt",
+		"tests:coverage": "bun --preload=./test/setup.ts test --coverage",
+		"check": "tsc && oxlint && oxfmt --check",
+		"dev": "bun --bun vite"
 	},
 	"dependencies": {
 		"synthkernel": "^0.0.2"
-	},
-	"devDependencies": {
-		"@repo/shared": "workspace:*"
-	},
-	"packageManager": "pnpm@10.29.3"
+	}
 }

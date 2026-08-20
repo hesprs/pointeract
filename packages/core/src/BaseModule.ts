@@ -1,3 +1,4 @@
+// oxlint-disable no-empty-function class-methods-use-this
 import type { ModuleInput as MI, Orchestratable } from 'synthkernel';
 import type {
 	Pointer,

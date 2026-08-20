@@ -1,6 +1,8 @@
 type Indexable = string | number | symbol;
-export type GeneralFunction = (...args: Array<any>) => any;
-export type GeneralDictionary = Record<Indexable, any>;
+// oxlint-disable-next-line typescript/no-explicit-any
+export type General = any;
+export type GeneralFunction = (...args: Array<General>) => General;
+export type GeneralDictionary = Record<Indexable, General>;
 
 export type Coordinates = {
 	x: number;
@@ -13,7 +15,7 @@ export type Pointer = {
 	records: Array<{ x: number; y: number; timestamp: number }>;
 	target: EventTarget | null;
 	index: number;
-	[key: Indexable]: any;
+	[key: Indexable]: General;
 };
 
 export type StdEvents = {

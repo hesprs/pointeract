@@ -15,21 +15,16 @@ type Reloadable<T extends ModuleInputCtor> = Array<T[number]>;
 export class Pointeract<T extends ModuleInputCtor = []> {
 	readonly #element: HTMLElement;
 	readonly #pointers: Pointers = new Map();
+	readonly #window: Window;
 	#modules: Record<string, BaseModule> = {};
 	#pausedModules: Record<string, BaseModule> = {};
-	#_window: Window | undefined;
 	#subscribers: { [K in keyof Events<T>]?: Set<(event: Events<T>[K]) => void> } = {};
 	options: Options<T>;
 	declare private readonly _augmentSlot: unknown;
 
-	get #window() {
-		if (!this.#_window) throw new Error('[Pointeract] Window is not defined.');
-		return this.#_window;
-	}
-
 	constructor(options: Options<T>, _modules?: T) {
 		const modules = _modules ?? [];
-		this.#_window = options.element.ownerDocument.defaultView ?? undefined;
+		this.#window = options.element.ownerDocument.defaultView ?? window;
 		this.#element = options.element;
 		if (!options.coordinateOutput) options.coordinateOutput = 'relative';
 		this.options = options;
@@ -111,7 +106,7 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 		field: K,
 		...args: Parameters<Required<BaseModule>[K]>
 	) => {
-		Object.values(this.#modules).forEach((module) => module[field](...(args as any)));
+		Object.values(this.#modules).forEach((module) => module[field](...(args as Array<never>)));
 	};
 
 	readonly #onPointerDown = (e: PointerEvent) => {
@@ -156,11 +151,12 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 			this.#pausedModules[moduleCtor.name] = module;
 			delete this.#modules[moduleCtor.name];
 		};
-		if (!toStop) stopPointeract();
-		else
+		if (toStop)
 			toStop.forEach((module) => {
 				stopModule(module);
 			});
+		else stopPointeract();
+
 		return this;
 	};
 
@@ -179,17 +175,17 @@ export class Pointeract<T extends ModuleInputCtor = []> {
 			this.#modules[moduleCtor.name] = module;
 			delete this.#pausedModules[moduleCtor.name];
 		};
-		if (!toStart) startPointeract();
-		else
+		if (toStart)
 			toStart.forEach((module) => {
 				startModule(module);
 			});
+		else startPointeract();
+
 		return this;
 	};
 
 	dispose = () => {
 		this.stop();
-		this.#_window = undefined;
 		this.#runHooks('dispose');
 		this.#subscribers = {};
 	};

@@ -1,12 +1,14 @@
 {
 	"$schema": "./node_modules/oxlint/configuration_schema.json",
-	"plugins": ["unicorn", "typescript", "oxc", "import", "react", "vitest"],
+	"plugins": ["unicorn", "typescript", "oxc", "import"],
 	"categories": {
 		"correctness": "warn",
 		"perf": "warn",
 		"nursery": "warn",
 		"suspicious": "warn",
-		"style": "warn"
+		"style": "warn",
+		"restriction": "warn",
+		"pedantic": "warn"
 	},
 	"rules": {
 		"typescript/prefer-readonly-parameter-types": "off",
@@ -38,7 +40,7 @@
 		],
 		"unicorn/prefer-global-this": "off",
 		"eslint/no-new": "off",
-		"eslint/sort-imports": "off", // disable temporarily since it is glitchy
+		"eslint/sort-imports": "off",
 		"eslint/no-duplicate-imports": ["warn", { "allowSeparateTypeImports": true }],
 		"eslint/new-cap": "off",
 		"typescript/consistent-type-imports": "off",
@@ -56,6 +58,7 @@
 					"snakeCase": false,
 					"pascalCase": true
 				},
+				"ignore": ["zg-Hans.ts", "zh-Hant.ts"]
 			}
 		],
 		"unicorn/consistent-function-scoping": "off",
@@ -64,38 +67,102 @@
 			"warn",
 			{ "allow": ["**/*.css", "**/*.scss", "**/*.less"] }
 		],
-		"eslint/no-underscore-dangle": ["warn", { "allow": ["__root__"], "allowAfterThis": true }],
+		"eslint/no-underscore-dangle": [
+			"warn",
+			{ "allow": ["__root__", "__assign__", "__getModule__", "__addModule__"] }
+		],
 		"unicorn/number-literal-case": "off",
 		"eslint/no-multi-assign": "off",
-		"jest/prefer-expect-assertions": "off",
-		"vitest/prefer-expect-assertions": "off",
-		"vitest/no-importing-vitest-globals": "off",
-		"vitest/prefer-import-in-mock": "off",
-		"jest/no-untyped-mock-factory": "off",
-		"vitest/require-mock-type-parameters": "off",
-		"vitest/prefer-to-be-truthy": "off",
-		"vitest/prefer-to-be-falsy": "off",
-		"vitest/prefer-describe-function-title": "off",
-		"jest/max-expects": "off",
-		"vitest/max-expects": "off",
-		"jest/prefer-ending-with-an-expect": "off",
-		"jest/no-conditional-expect": "off",
-		"vitest/no-conditional-expect": "off",
-		"jest/require-hook": "off",
-		"vitest/prefer-called-once": "off",
 		"react/jsx-handler-names": "off",
-		"jest/require-top-level-describe": "off",
-		"vitest/require-top-level-describe": "off",
-		"jest/no-hooks": "off",
-		"vitest/no-hooks": "off",
+		"typescript/method-signature-style": ["warn", "property"],
+		"typescript/explicit-module-boundary-types": "off",
+		"typescript/explicit-member-accessibility": ["warn", { "accessibility": "no-public" }],
+		"typescript/explicit-function-return-type": "off",
+		"typescript/promise-function-async": "off",
+		"eslint/no-void": "off",
+		"eslint/no-use-before-define": "off",
+		"unicorn/no-abusive-eslint-disable": "off",
+		"eslint/no-undefined": "off",
+		"oxc/no-optional-chaining": "off",
+		"eslint/no-empty-function": ["warn", { "allow": ["arrowFunctions"] }],
+		"oxc/no-async-await": "off",
+		"oxc/no-rest-spread-properties": "off",
+		"import/no-default-export": "off",
+		"import/no-relative-parent-imports": "off",
+		"unicorn/no-array-for-each": "off",
+		"eslint/default-case": "off",
+		"eslint/no-plusplus": "off",
+		"eslint/no-bitwise": "off",
+		"eslint/no-param-reassign": "off",
+		"eslint/complexity": "off",
+		"typescript/non-nullable-type-assertion-style": "off",
+		"import/unambiguous": "off",
+		"typescript/no-dynamic-delete": "off",
+		"typescript/no-invalid-void-type": "off",
+		"eslint/max-lines-per-function": "off",
+		"unicorn/no-array-callback-reference": "off",
+		"import/max-dependencies": "off",
+		"typescript/no-confusing-void-expression": "off",
+		"eslint/max-classes-per-file": "off",
+		"typescript/strict-boolean-expressions": "off",
+		"eslint/require-unicode-regexp": ["warn", { "requireFlag": "u" }],
+		"typescript/strict-void-return": "off",
+		"unicorn/explicit-length-check": "off",
+		"eslint/max-lines": ["warn", { "max": 500 }],
+		"typescript/prefer-nullish-coalescing": ["warn", { "ignorePrimitives": true }],
+		"unicorn/prefer-query-selector": "off",
+		"eslint/no-inline-comments": "off",
+		"unicorn/prefer-number-coercion": "off",
+		"prefer-promise-reject-errors": "off", // Has TypeScript equivalence
+		"eslint/no-throw-literal": "off", // Officially deprecated
+		"eslint/max-depth": "off",
+		"typescript/switch-exhaustiveness-check": "off",
+		"eslint/no-loop-func": "off",
+		"eslint/radix": "off",
+		"unicorn/import-style": "off",
+		"unicorn/no-process-exit": "off",
+		"eslint/one-var": ["warn", "never"],
+		"unicorn/max-nested-calls": ["warn", { "max": 5 }]
 	},
 	"env": {
 		"builtin": true,
 		"browser": true,
-		"node": true
+		"vue": true
 	},
 	"globals": {
-		"activeDocument": "readonly"
+		"Bun": "readonly",
+		"global": "readonly"
 	},
-	"ignorePatterns": ["**/node_modules/**", "**/dist/**"]
+	"overrides": [
+		{
+			"files": ["*.test.ts"],
+			"plugins": ["unicorn", "typescript", "oxc", "import", "vitest"],
+			"rules": {
+				"jest/prefer-expect-assertions": "off",
+				"vitest/prefer-expect-assertions": "off",
+				"vitest/no-importing-vitest-globals": "off",
+				"vitest/prefer-import-in-mock": "off",
+				"jest/no-untyped-mock-factory": "off",
+				"vitest/require-mock-type-parameters": "off",
+				"vitest/prefer-to-be-truthy": "off",
+				"vitest/prefer-to-be-falsy": "off",
+				"vitest/prefer-describe-function-title": "off",
+				"jest/max-expects": "off",
+				"vitest/max-expects": "off",
+				"jest/prefer-ending-with-an-expect": "off",
+				"jest/no-conditional-expect": "off",
+				"vitest/no-conditional-expect": "off",
+				"jest/require-hook": "off",
+				"vitest/prefer-called-once": "off",
+				"import/no-namespace": "off",
+				"vitest/prefer-importing-vitest-globals": "off",
+				"vitest/require-hook": "off",
+				"eslint/max-lines": ["warn", { "max": 2000 }]
+			}
+		}
+	],
+	"ignorePatterns": ["**/node_modules/**", "**/dist/**"],
+	"options": {
+		"typeAware": true
+	}
 }

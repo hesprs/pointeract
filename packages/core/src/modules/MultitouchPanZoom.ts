@@ -13,7 +13,7 @@ export default class MultitouchPanZoom extends BaseModule {
 		const pointer1Coords = getLast(this.getNthPointer(1).records);
 		const dx = pointer0Coords.x - pointer1Coords.x;
 		const dy = pointer0Coords.y - pointer1Coords.y;
-		return Math.sqrt(dx * dx + dy * dy);
+		return Math.hypot(dx, dy);
 	}
 
 	// Output screen coords

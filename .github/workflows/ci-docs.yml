@@ -14,6 +14,8 @@ on:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -22,30 +24,31 @@ concurrency:
 jobs:
   ci:
     runs-on: ubuntu-slim
+    environment:
+      name: docs
+      url: ${{ steps.deployment.outputs.page_url }}
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           fetch-depth: 0
 
-      - name: Set up pnpm
-        uses: pnpm/action-setup@v4.2.0
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: latest
-          cache: 'pnpm'
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install
+        run: bun install
 
-      - name: Build Docs
-        run: pnpm build -F docs
+      - name: Build docs
+        run: bun run build -F docs
 
-      - name: Deploy (push to main)
-        uses: JamesIves/github-pages-deploy-action@v4
+      - name: Upload artifact
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: actions/upload-pages-artifact@v5
         with:
-          folder: docs/.vitepress/dist
+          path: 'docs/dist'
+
+      - name: Deploy to GitHub Pages
+        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+        uses: actions/deploy-pages@v5

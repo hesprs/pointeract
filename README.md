@@ -1,6 +1,6 @@
 <h1 align="center">
   <a href="https://pointeract.consensia.cc">
-    <img src="./assets/logo-text.svg" alt="Pointeract" width="280px">
+    <img src="./docs/public/logo-text.svg" alt="Pointeract" width="280px">
   </a>
   <br>
 </h1>

@@ -10,6 +10,8 @@
 		"noEmit": true,
 		"allowImportingTsExtensions": true,
 		"rootDir": ".",
-		"lib": ["ESNext", "DOM"],
-	}
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		"types": ["bun"]
+	},
+	"include": [".github/scripts/**/*.ts"]
 }
